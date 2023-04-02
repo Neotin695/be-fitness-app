@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "310094117223",
+    "project_id": "be-fitness-4ca28",
+    "storage_bucket": "be-fitness-4ca28.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310094117223:android:cc444535833bab3ef117c2",
+        "android_client_info": {
+          "package_name": "mehani.sim.be_fitness_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310094117223-j4ish1qqhfpuhnlj9pl9hul0hrq0b50k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXVSV-kkTSiSCWbQjkIOXNGY8oGG7vy-I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310094117223-j4ish1qqhfpuhnlj9pl9hul0hrq0b50k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
