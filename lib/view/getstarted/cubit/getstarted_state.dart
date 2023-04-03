@@ -8,3 +8,13 @@ abstract class GetstartedState extends Equatable {
 }
 
 class GetstartedInitial extends GetstartedState {}
+
+class UploadFailure extends GetstartedState {
+  final String message;
+
+  const UploadFailure({required this.message});
+}
+
+class UploadSucess extends GetstartedState{}
+
+class UploadLoading extends GetstartedState{}

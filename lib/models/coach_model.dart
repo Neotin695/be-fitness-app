@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:be_fitness_app/models/address_model.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
@@ -12,7 +13,7 @@ class CoachModel extends Equatable {
   bool state;
   String userName;
   String email;
-  String address;
+  AddressModel address;
   String profilePhoto;
   Gender gender;
   double totalRating;
@@ -56,9 +57,9 @@ class CoachModel extends Equatable {
       'state': state,
       'userName': userName,
       'email': email,
-      'address': address,
+      'address': address.toMap(),
       'profilePhoto': profilePhoto,
-      'gender': gender,
+      'gender': GenderService().convertEnumToString(gender),
       'totalRating': totalRating,
       'ratingCount': ratingCount,
       'ratingAverage': ratingAverage,
@@ -72,7 +73,7 @@ class CoachModel extends Equatable {
       state: map['state'] as bool,
       userName: map['userName'] as String,
       email: map['email'] as String,
-      address: map['address'] as String,
+      address: AddressModel.fromMap(map['address']),
       profilePhoto: map['profilePhoto'] as String,
       gender: GenderService().convertStringToEnum(map['gender'].toString()),
       totalRating: map['totalRating'] as double,

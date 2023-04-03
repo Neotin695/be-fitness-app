@@ -26,6 +26,14 @@ dependencies:
   flutter_native_splash: ^2.2.19
   equatable: ^2.0.5
   awesome_dialog: ^3.0.2
+  internet_connection_checker: ^1.0.0+1
+  connectivity_plus: ^3.0.3
+  flutter_svg: ^2.0.4
+  geolocator: ^9.0.2
+  geocoding: ^2.1.0
+  flutter_smart_dialog: ^4.9.0+4
+  document_scanner_flutter: ^0.2.7
+  
 
 dev_dependencies:
   flutter_test:

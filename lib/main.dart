@@ -1,6 +1,11 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
+import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
+import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
+import 'package:be_fitness_app/view/home/screens/home_layout.dart';
+import 'package:be_fitness_app/view/verifycoach/screens/verify_coach_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/service/firebase/firebase_options.dart';
@@ -25,7 +30,16 @@ class MainWidget extends StatelessWidget {
         theme: ThemeData(
           primaryColor: Colors.indigo,
         ),
-        home: const DecisionsTree(),
+        navigatorObservers: [FlutterSmartDialog.observer],
+        builder: FlutterSmartDialog.init(),
+        initialRoute: DecisionsTree.routeName,
+        routes: {
+          GetStartedScreen.routeName: (_) => const GetStartedScreen(),
+          VerifyCoachScreen.routeName: (_) => const VerifyCoachScreen(),
+          CreateProfileScreen.routeName: (_) => const CreateProfileScreen(),
+          HomeLayoutScreen.routeName: (_) => const HomeLayoutScreen(),
+          DecisionsTree.routeName: (_) => const DecisionsTree(),
+        },
       );
     });
   }

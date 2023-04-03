@@ -1,25 +1,23 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
+import 'package:be_fitness_app/models/address_model.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/core/service/enumservice/level_service.dart';
 
 // ignore: must_be_immutable
-class UserModel extends Equatable {
+class TraineeModel extends Equatable {
   String id;
   String userName;
   String email;
-  String address;
+  AddressModel address;
   String profilePhoto;
   int age;
-  int height;
-  int weight;
+  double height;
+  double weight;
   Gender gender;
   Level level;
 
-  UserModel({
+  TraineeModel({
     required this.id,
     required this.userName,
     required this.email,
@@ -53,26 +51,26 @@ class UserModel extends Equatable {
       'id': id,
       'userName': userName,
       'email': email,
-      'address': address,
+      'address': address.toMap(),
       'profilePhoto': profilePhoto,
       'age': age,
       'height': height,
       'weight': weight,
-      'gender': gender,
-      'level': level,
+      'gender': GenderService().convertEnumToString(gender),
+      'level': LevelService().convertEnumToString(level),
     };
   }
 
-  factory UserModel.fromMap(Map<String, dynamic> map) {
-    return UserModel(
+  factory TraineeModel.fromMap(Map<String, dynamic> map) {
+    return TraineeModel(
       id: map['id'] as String,
       userName: map['userName'] as String,
       email: map['email'] as String,
-      address: map['address'] as String,
+      address: AddressModel.fromMap(map['address']),
       profilePhoto: map['profilePhoto'] as String,
-      age: map['age'] as int,
-      height: map['height'] as int,
-      weight: map['weight'] as int,
+      age: int.parse(map['age'].toString()),
+      height: double.parse(map['height'].toString()),
+      weight: double.parse(map['weight'].toString()),
       gender: GenderService().convertStringToEnum(map['gender'].toString()),
       level: LevelService().convertStringToEnum(map['level'].toString()),
     );
