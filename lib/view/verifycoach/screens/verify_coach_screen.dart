@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mrz_scanner/flutter_mrz_scanner.dart';
 
 class VerifyCoachScreen extends StatelessWidget {
   static const String routeName = 'verifyCoachScreen';
