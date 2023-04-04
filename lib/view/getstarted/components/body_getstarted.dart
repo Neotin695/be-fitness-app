@@ -42,42 +42,40 @@ class _BodyStartedState extends State<BodyStarted> {
       child: SafeArea(
         child: Form(
           key: cubit.key,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 4.h),
-                SvgPicture.asset(
-                  MediaConstance.account,
-                  width: 20.w,
-                  height: 20.h,
-                ),
-                SizedBox(height: 2.h),
-                Text(
-                  'Tell us more about you',
-                  style: TextStyle(fontSize: 24.sp),
-                ),
-                buildStepperWidget(cubit),
-              ],
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: 2.h),
+              SvgPicture.asset(
+                MediaConstance.account,
+                width: 15.w,
+                height: 15.h,
+              ),
+              SizedBox(height: 2.h),
+              Text(
+                'Tell us more about you',
+                style: TextStyle(fontSize: 24.sp),
+              ),
+              Expanded(child: buildStepperWidget(cubit)),
+            ],
           ),
         ),
       ),
     );
   }
 
-  Widget buildStepperWidget(cubit) {
+  Widget buildStepperWidget(GetstartedCubit cubit) {
     return Stepper(
       steps: fetchStep(cubit),
       currentStep: cubit.currentStep,
       onStepContinue: () {
         bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
-        if (!isLastStep) {
-          setState(() {
-            cubit.currentStep += 1;
-          });
-        } else {
+        if (isLastStep) {
           cubit.uploadData();
+        } else {
+          setState(() {
+            cubit.currentStep++;
+          });
         }
       },
       onStepCancel: () {
@@ -94,30 +92,26 @@ class _BodyStartedState extends State<BodyStarted> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             ElevatedButton(
-              onPressed: () async {
-                details.onStepContinue;
-              },
+              onPressed: details.onStepContinue,
               child: Text(isLastStep ? 'Upload My Data' : 'Continue'),
             ),
-            ElevatedButton(
-              onPressed: () async {
-                details.onStepCancel;
-              },
-              child: const Text('Back'),
-            ),
+            cubit.currentStep == 0
+                ? const SizedBox()
+                : ElevatedButton(
+                    onPressed: details.onStepCancel,
+                    child: const Text('Back'),
+                  ),
           ],
         );
       },
     );
   }
 
-  List<Step> fetchStep(cubit) {
+  List<Step> fetchStep(GetstartedCubit cubit) {
     return [
       Step(
-        isActive: cubit.currentStep > 0,
-        state: cubit.currentStep == fetchStep(cubit).length - 1
-            ? StepState.complete
-            : StepState.indexed,
+        isActive: cubit.currentStep >= 0,
+        state: cubit.currentStep > 0 ? StepState.complete : StepState.indexed,
         title: const Text('Basic Info'),
         content: Column(
           children: [
@@ -140,9 +134,7 @@ class _BodyStartedState extends State<BodyStarted> {
       ),
       Step(
         isActive: cubit.currentStep >= 1,
-        state: cubit.currentStep == fetchStep(cubit).length - 1
-            ? StepState.complete
-            : StepState.indexed,
+        state: cubit.currentStep > 1 ? StepState.complete : StepState.indexed,
         title: const Text('Additional Info'),
         content: Column(
           children: [
@@ -166,9 +158,7 @@ class _BodyStartedState extends State<BodyStarted> {
       ),
       Step(
         isActive: cubit.currentStep >= 2,
-        state: cubit.currentStep == fetchStep(cubit).length - 1
-            ? StepState.complete
-            : StepState.indexed,
+        state: cubit.currentStep > 2 ? StepState.complete : StepState.indexed,
         title: const Text('Your location'),
         content: Column(
           children: [
@@ -188,9 +178,7 @@ class _BodyStartedState extends State<BodyStarted> {
         ),
       ),
       Step(
-        state: cubit.currentStep == fetchStep(cubit).length - 1
-            ? StepState.complete
-            : StepState.indexed,
+        state: cubit.currentStep > 3 ? StepState.complete : StepState.indexed,
         isActive: cubit.currentStep >= 3,
         title: const Text('Complete'),
         content: const SizedBox(),
