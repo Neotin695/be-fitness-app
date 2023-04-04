@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../cubit/verifycoach_cubit.dart';
 
 class VerifyCoachScreen extends StatelessWidget {
   static const String routeName = 'verifyCoachScreen';
@@ -7,7 +10,10 @@ class VerifyCoachScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Container()
+      body: BlocProvider(
+        create: (context) => VerifyCoachCubit(),
+        child: Container(),
+      )
     );
   }
 }

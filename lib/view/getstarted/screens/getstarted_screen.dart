@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../core/appconstance/media_constance.dart';
 import '../../verifycoach/screens/verify_coach_screen.dart';
 
 class GetStartedScreen extends StatelessWidget {
@@ -16,7 +17,7 @@ class GetStartedScreen extends StatelessWidget {
         children: [
           SizedBox(height: 4.h),
           SvgPicture.asset(
-            'assets/icons/choose.svg',
+            MediaConstance.choose,
             width: 25.w,
             height: 25.h,
           ),

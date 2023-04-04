@@ -5,6 +5,8 @@ import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../core/appconstance/media_constance.dart';
+import '../../../core/service/locatoin_service.dart';
 import '../../home/screens/home_layout.dart';
 import '../cubit/getstarted_cubit.dart';
 import 'custom_text_field.dart';
@@ -46,7 +48,7 @@ class _BodyStartedState extends State<BodyStarted> {
               children: [
                 SizedBox(height: 4.h),
                 SvgPicture.asset(
-                  'assets/icons/account.svg',
+                  MediaConstance.account,
                   width: 20.w,
                   height: 20.h,
                 ),
@@ -55,43 +57,145 @@ class _BodyStartedState extends State<BodyStarted> {
                   'Tell us more about you',
                   style: TextStyle(fontSize: 24.sp),
                 ),
-                CustomTextField(
-                  cn: cubit.userName,
-                  title: 'UserName',
-                  icon: Icons.person,
-                  inputType: TextInputType.name,
-                  fieldFor: FieldFor.name,
-                ),
-                CustomTextField(
-                  cn: cubit.age,
-                  title: 'Age',
-                  icon: Icons.person_2_outlined,
-                  inputType: TextInputType.number,
-                  fieldFor: FieldFor.age,
-                ),
-                CustomTextField(
-                  cn: cubit.height,
-                  title: 'Height',
-                  icon: Icons.height,
-                  inputType: TextInputType.number,
-                  fieldFor: FieldFor.height,
-                ),
-                CustomTextField(
-                  cn: cubit.weight,
-                  title: 'Weight',
-                  icon: Icons.line_weight,
-                  inputType: TextInputType.number,
-                  fieldFor: FieldFor.weight,
-                ),
-                dropDownButton(cubit),
-                SizedBox(height: 3.h),
-                buttonsSection(context, cubit)
+                buildStepperWidget(cubit),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget buildStepperWidget(cubit) {
+    return Stepper(
+      steps: fetchStep(cubit),
+      currentStep: cubit.currentStep,
+      onStepContinue: () {
+        bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
+        if (!isLastStep) {
+          setState(() {
+            cubit.currentStep += 1;
+          });
+        } else {
+          cubit.uploadData();
+        }
+      },
+      onStepCancel: () {
+        bool isFirstStep = cubit.currentStep == 0;
+        if (!isFirstStep) {
+          setState(() {
+            cubit.currentStep -= 1;
+          });
+        }
+      },
+      controlsBuilder: (context, details) {
+        bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            ElevatedButton(
+              onPressed: () async {
+                details.onStepContinue;
+              },
+              child: Text(isLastStep ? 'Upload My Data' : 'Continue'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                details.onStepCancel;
+              },
+              child: const Text('Back'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  List<Step> fetchStep(cubit) {
+    return [
+      Step(
+        isActive: cubit.currentStep > 0,
+        state: cubit.currentStep == fetchStep(cubit).length - 1
+            ? StepState.complete
+            : StepState.indexed,
+        title: const Text('Basic Info'),
+        content: Column(
+          children: [
+            CustomTextField(
+              cn: cubit.userName,
+              title: 'UserName',
+              icon: Icons.person,
+              inputType: TextInputType.name,
+              fieldFor: FieldFor.name,
+            ),
+            CustomTextField(
+              cn: cubit.age,
+              title: 'Age',
+              icon: Icons.person_2_outlined,
+              inputType: TextInputType.number,
+              fieldFor: FieldFor.age,
+            ),
+          ],
+        ),
+      ),
+      Step(
+        isActive: cubit.currentStep >= 1,
+        state: cubit.currentStep == fetchStep(cubit).length - 1
+            ? StepState.complete
+            : StepState.indexed,
+        title: const Text('Additional Info'),
+        content: Column(
+          children: [
+            CustomTextField(
+              cn: cubit.height,
+              title: 'Height',
+              icon: Icons.height,
+              inputType: TextInputType.number,
+              fieldFor: FieldFor.height,
+            ),
+            CustomTextField(
+              cn: cubit.weight,
+              title: 'Weight',
+              icon: Icons.line_weight,
+              inputType: TextInputType.number,
+              fieldFor: FieldFor.weight,
+            ),
+            dropDownButton(cubit),
+          ],
+        ),
+      ),
+      Step(
+        isActive: cubit.currentStep >= 2,
+        state: cubit.currentStep == fetchStep(cubit).length - 1
+            ? StepState.complete
+            : StepState.indexed,
+        title: const Text('Your location'),
+        content: Column(
+          children: [
+            Text(
+                '${cubit.address.name}, ${cubit.address.country}, ${cubit.address.locality}, ${cubit.address.postalCode},'),
+            ElevatedButton.icon(
+              onPressed: () async {
+                var tempAddress = await LocationService().getCurrentLocation();
+                setState(() {
+                  cubit.address = tempAddress;
+                });
+              },
+              label: const Text('Locate Current Location'),
+              icon: const Icon(Icons.my_location),
+            )
+          ],
+        ),
+      ),
+      Step(
+        state: cubit.currentStep == fetchStep(cubit).length - 1
+            ? StepState.complete
+            : StepState.indexed,
+        isActive: cubit.currentStep >= 3,
+        title: const Text('Complete'),
+        content: const SizedBox(),
+      ),
+    ];
   }
 
   AwesomeDialog showErrorMessage(BuildContext context, UploadFailure state) {
@@ -103,62 +207,6 @@ class _BodyStartedState extends State<BodyStarted> {
       desc: state.message,
       btnCancelOnPress: () {},
     );
-  }
-
-  Row buttonsSection(BuildContext context, GetstartedCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            showBottomSheetLocation(context, cubit);
-          },
-          child: const Text('Bring address'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            await cubit.uploadData();
-          },
-          child: const Text('Done'),
-        )
-      ],
-    );
-  }
-
-  PersistentBottomSheetController<void> showBottomSheetLocation(
-      BuildContext context, GetstartedCubit cubit) {
-    return showBottomSheet<void>(
-        context: context,
-        builder: (_) {
-          return StatefulBuilder(
-            builder: (context, setState) => Container(
-              height: 30.h,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30)),
-                  color: Colors.black26),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                      '${cubit.address.name}, ${cubit.address.country}, ${cubit.address.locality}, ${cubit.address.postalCode},'),
-                  ElevatedButton.icon(
-                    onPressed: () async {
-                      var temp = await cubit.getCurrentLocation();
-                      setState(() {
-                        cubit.address = temp;
-                      });
-                    },
-                    label: const Text('Locate Current Location'),
-                    icon: const Icon(Icons.my_location),
-                  )
-                ],
-              ),
-            ),
-          );
-        });
   }
 
   Row dropDownButton(GetstartedCubit cubit) {

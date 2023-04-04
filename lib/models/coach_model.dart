@@ -1,8 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-import 'dart:math';
-
 import 'package:be_fitness_app/models/address_model.dart';
+import 'package:be_fitness_app/models/rating_model.dart';
 import 'package:equatable/equatable.dart';
 
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
@@ -13,24 +10,24 @@ class CoachModel extends Equatable {
   bool state;
   String userName;
   String email;
-  AddressModel address;
   String profilePhoto;
-  Gender gender;
-  double totalRating;
-  List<String> ratingCount;
-  double ratingAverage;
+  String certificateId;
+  String nationalId;
   List<String> subscribers;
+  AddressModel address; 
+  RatingModel rating;
+  Gender gender;
   CoachModel({
     required this.id,
     required this.state,
     required this.userName,
     required this.email,
     required this.address,
+    required this.certificateId,
+    required this.nationalId,
     required this.profilePhoto,
     required this.gender,
-    required this.totalRating,
-    required this.ratingCount,
-    required this.ratingAverage,
+    required this.rating,
     required this.subscribers,
   });
 
@@ -42,11 +39,11 @@ class CoachModel extends Equatable {
       userName,
       email,
       address,
+      certificateId,
+      nationalId,
       profilePhoto,
       gender,
-      totalRating,
-      ratingCount,
-      ratingAverage,
+      rating,
       subscribers,
     ];
   }
@@ -57,12 +54,12 @@ class CoachModel extends Equatable {
       'state': state,
       'userName': userName,
       'email': email,
+      'certificateId':certificateId,
+      'nationalId': nationalId,
       'address': address.toMap(),
       'profilePhoto': profilePhoto,
       'gender': GenderService().convertEnumToString(gender),
-      'totalRating': totalRating,
-      'ratingCount': ratingCount,
-      'ratingAverage': ratingAverage,
+      'rating': rating.toMap(),
       'subscribers': subscribers,
     };
   }
@@ -73,12 +70,12 @@ class CoachModel extends Equatable {
       state: map['state'] as bool,
       userName: map['userName'] as String,
       email: map['email'] as String,
+      nationalId: map['nationalId'] as String,
+      certificateId: map['certificateId'] as String,
       address: AddressModel.fromMap(map['address']),
       profilePhoto: map['profilePhoto'] as String,
       gender: GenderService().convertStringToEnum(map['gender'].toString()),
-      totalRating: map['totalRating'] as double,
-      ratingCount: List<String>.from(map['ratingCount'].map((e) => e)),
-      ratingAverage: map['ratingAverage'] as double,
+      rating: RatingModel.fromMap(map['rating']),
       subscribers: List<String>.from(map['subscribers'].map((e) => e)),
     );
   }
