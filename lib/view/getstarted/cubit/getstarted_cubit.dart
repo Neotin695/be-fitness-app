@@ -24,7 +24,6 @@ class GetstartedCubit extends Cubit<GetstartedState> {
   String genderSelected = 'male';
   String levelSelected = 'intermediate';
   int currentStep = 0;
-  
 
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
@@ -61,6 +60,10 @@ class GetstartedCubit extends Cubit<GetstartedState> {
     try {
       _store.doc(trainee.id).set(trainee.toMap());
       emit(UploadSucess());
+      FirebaseFirestore.instance
+          .collection('tempuser')
+          .doc(trainee.id)
+          .delete();
     } on FirebaseException catch (e) {
       emit(UploadFailure(message: e.toString()));
     }

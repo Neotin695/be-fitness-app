@@ -31,9 +31,13 @@ dependencies:
   flutter_svg: ^2.0.4
   geolocator: ^9.0.2
   geocoding: ^2.1.0
-  flutter_smart_dialog: ^4.9.0+4
+
   document_scanner_flutter: ^0.2.7
-  
+  responsive_framework: ^0.2.0
+  image_picker: ^0.8.7+1
+  cool_alert: ^2.0.1
+  get_storage: ^2.1.1
+  shared_preferences: ^2.1.0
 
 dev_dependencies:
   flutter_test:

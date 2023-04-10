@@ -1,5 +1,4 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
@@ -19,9 +18,8 @@ class FormWidget extends StatelessWidget {
       listener: (context, state) {
         if (state is AuthSucess) {
           if (state.isNewUser) {
-            getStarted(context);
           } else {
-            gotoHome(context);
+            //gotoHome(context);
           }
         } else if (state is AuthFailure) {
           showErrorMessage(context, state).show();
@@ -52,45 +50,13 @@ class FormWidget extends StatelessWidget {
               ],
             ),
           )),
-          ElevatedButton(
-            onPressed: () => getStarted(context),
-            style: ButtonStyle(
-                minimumSize: MaterialStateProperty.all(Size(80.w, 6.h))),
-            child: const Text('START'),
-          ),
-          SizedBox(height: 4.h),
-          Center(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  width: 28.w,
-                  child: const Divider(
-                    color: Colors.white54,
-                    thickness: 1,
-                  ),
-                ),
-                const Center(
-                    child: Text(
-                  'Already our user?',
-                  style: TextStyle(color: Colors.white54),
-                )),
-                SizedBox(
-                    width: 28.w,
-                    child: const Divider(
-                      color: Colors.white54,
-                      thickness: 1,
-                    )),
-              ],
-            ),
-          ),
           ElevatedButton.icon(
               onPressed: () async {
                 await cubit.signIn();
               },
               icon: const Icon(Icons.login),
               label: const Text('SignIn With Google')),
-          SizedBox(height: 5.h)
+          SizedBox(height: 4.h),
         ],
       ),
     );
@@ -109,7 +75,6 @@ class FormWidget extends StatelessWidget {
 
   void getStarted(context) {
     Navigator.pushNamed(context, GetStartedScreen.routeName);
-    
   }
 
   void gotoHome(context) {

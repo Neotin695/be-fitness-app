@@ -1,7 +1,9 @@
 // ignore: depend_on_referenced_packages
 import 'package:be_fitness_app/core/service/internet_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -10,6 +12,7 @@ part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
   static AuthCubit get(context) => BlocProvider.of(context);
+
   AuthCubit() : super(AuthInitial());
   Future<UserCredential> _signInWithGoogle() async {
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -27,7 +30,6 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signIn() async {
     bool isConnected = await InternetService().isConnected();
-    print(isConnected);
     if (!isConnected) {
       emit(const AuthFailure(
           messsage:
@@ -36,7 +38,9 @@ class AuthCubit extends Cubit<AuthState> {
     }
     try {
       final auth = await _signInWithGoogle();
-      if (auth.additionalUserInfo != null) {
+      if (auth.additionalUserInfo != null &&
+          auth.additionalUserInfo!.isNewUser) {
+        initUser(auth.user!.uid);
         emit(AuthSucess(isNewUser: auth.additionalUserInfo!.isNewUser));
       } else {
         emit(const AuthFailure(
@@ -49,5 +53,12 @@ class AuthCubit extends Cubit<AuthState> {
     } catch (e) {
       emit(AuthFailure(messsage: e.toString()));
     }
+  }
+
+  Future<void> initUser(uid) async {
+    FirebaseFirestore.instance
+        .collection('tempuser')
+        .doc(uid)
+        .set({'status': 'new'});
   }
 }

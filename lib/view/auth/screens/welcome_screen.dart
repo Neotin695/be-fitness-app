@@ -6,6 +6,7 @@ import '../components/video_background_widget.dart';
 import '../cubit/auth_cubit.dart';
 
 class WelcomeScreen extends StatefulWidget {
+  static const String routeName = 'welcome screen';
   const WelcomeScreen({super.key});
 
   @override
@@ -27,9 +28,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             top: 20,
             child: IconButton(
                 onPressed: () {
-                  setState(() {
-                    isMute = !isMute ? true : false;
-                  });
+                  if (mounted) {
+                    setState(() {
+                      isMute = !isMute ? true : false;
+                    });
+                  }
                 },
                 icon: Icon(
                   isMute ? Icons.volume_off_outlined : Icons.volume_up_outlined,

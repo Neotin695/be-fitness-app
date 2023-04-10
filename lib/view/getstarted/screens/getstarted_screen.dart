@@ -6,9 +6,16 @@ import 'package:sizer/sizer.dart';
 import '../../../core/appconstance/media_constance.dart';
 import '../../verifycoach/screens/verify_coach_screen.dart';
 
-class GetStartedScreen extends StatelessWidget {
+class GetStartedScreen extends StatefulWidget {
   static const String routeName = 'getstarted';
   const GetStartedScreen({super.key});
+
+  @override
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
+}
+
+class _GetStartedScreenState extends State<GetStartedScreen>
+    with RestorationMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,5 +53,14 @@ class GetStartedScreen extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  @override
+  // TODO: implement restorationId
+  String? get restorationId => 'get_started';
+
+  @override
+  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
+    // TODO: implement restoreState
   }
 }

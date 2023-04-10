@@ -1,12 +1,14 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
 import '../../../core/service/locatoin_service.dart';
+import '../../auth/cubit/auth_cubit.dart';
 import '../../home/screens/home_layout.dart';
 import '../cubit/getstarted_cubit.dart';
 import 'custom_text_field.dart';
@@ -29,10 +31,10 @@ class _BodyStartedState extends State<BodyStarted> {
         if (state is UploadFailure) {
           showErrorMessage(context, state).show();
         } else if (state is UploadLoading) {
-          SmartDialog.showLoading();
+          CoolAlert.show(context: context, type: CoolAlertType.loading);
         } else if (state is UploadSucess) {
           cubit.resetValues();
-          SmartDialog.dismiss();
+          Navigator.pop(context);
           Navigator.pushReplacementNamed(
             context,
             HomeLayoutScreen.routeName,

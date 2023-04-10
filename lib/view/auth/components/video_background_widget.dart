@@ -14,6 +14,12 @@ class _BackgroundVideoPlayerState extends State<BackgroundVideoPlayer> {
   late final VideoPlayerController videoPlayerController;
 
   @override
+  void dispose() {
+    videoPlayerController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     videoPlayerController =

@@ -1,11 +1,16 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
+import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout.dart';
+import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/verify_coach_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:responsive_framework/responsive_wrapper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/service/firebase/firebase_options.dart';
@@ -16,6 +21,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   runApp(const MainWidget());
 }
 
@@ -26,19 +32,32 @@ class MainWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
+        restorationScopeId: 'app',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.indigo,
         ),
-        navigatorObservers: [FlutterSmartDialog.observer],
-        builder: FlutterSmartDialog.init(),
-        initialRoute: DecisionsTree.routeName,
+        builder: (context, child) {
+          return ResponsiveWrapper.builder(child,
+              maxWidth: 1200,
+              minWidth: 480,
+              defaultScale: true,
+              breakpoints: [
+                const ResponsiveBreakpoint.resize(480, name: MOBILE),
+                const ResponsiveBreakpoint.autoScale(800, name: TABLET),
+                const ResponsiveBreakpoint.resize(1000, name: DESKTOP),
+              ],
+              background: Container(color: const Color(0xFFF5F5F5)));
+        },
+        initialRoute: '/',
         routes: {
+          '/': (_) => const DecisionsTree(),
+          WelcomeScreen.routeName: (_) => const WelcomeScreen(),
           GetStartedScreen.routeName: (_) => const GetStartedScreen(),
           VerifyCoachScreen.routeName: (_) => const VerifyCoachScreen(),
           CreateProfileScreen.routeName: (_) => const CreateProfileScreen(),
+          NotAcceptedScreen.routeName: (_) => const NotAcceptedScreen(),
           HomeLayoutScreen.routeName: (_) => const HomeLayoutScreen(),
-          DecisionsTree.routeName: (_) => const DecisionsTree(),
         },
       );
     });
