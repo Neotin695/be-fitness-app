@@ -12,8 +12,7 @@ class CreateProfileScreen extends StatefulWidget {
   State<CreateProfileScreen> createState() => _CreateProfileScreenState();
 }
 
-class _CreateProfileScreenState extends State<CreateProfileScreen>
-    with RestorationMixin {
+class _CreateProfileScreenState extends State<CreateProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,14 +22,5 @@ class _CreateProfileScreenState extends State<CreateProfileScreen>
         child: const BodyStarted(),
       ),
     );
-  }
-
-  @override
-  // TODO: implement restorationId
-  String? get restorationId => 'create_profile';
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    // TODO: implement restoreState
   }
 }

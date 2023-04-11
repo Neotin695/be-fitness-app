@@ -1,3 +1,4 @@
+import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/models/address_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
@@ -28,7 +29,7 @@ class GetstartedCubit extends Cubit<GetstartedState> {
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
 
-  final _store = FirebaseFirestore.instance.collection('trainee');
+  final _store = FirebaseFirestore.instance.collection(LogicConst.trainee);
   final _auth = FirebaseAuth.instance.currentUser;
 
   TraineeModel initData() {
@@ -61,7 +62,7 @@ class GetstartedCubit extends Cubit<GetstartedState> {
       _store.doc(trainee.id).set(trainee.toMap());
       emit(UploadSucess());
       FirebaseFirestore.instance
-          .collection('tempuser')
+          .collection(LogicConst.tempUser)
           .doc(trainee.id)
           .delete();
     } on FirebaseException catch (e) {

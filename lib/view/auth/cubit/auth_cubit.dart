@@ -1,9 +1,9 @@
 // ignore: depend_on_referenced_packages
+import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/internet_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,6 +14,7 @@ class AuthCubit extends Cubit<AuthState> {
   static AuthCubit get(context) => BlocProvider.of(context);
 
   AuthCubit() : super(AuthInitial());
+
   Future<UserCredential> _signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
@@ -36,8 +37,7 @@ class AuthCubit extends Cubit<AuthState> {
     bool isConnected = await InternetService().isConnected();
     if (!isConnected) {
       emit(const AuthFailure(
-          messsage:
-              'No internet!, Please check your connection and try agian'));
+          message: 'No internet!, Please check your connection and try agian'));
       return;
     }
     try {
@@ -48,21 +48,21 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthSucess(isNewUser: auth.additionalUserInfo!.isNewUser));
       } else {
         emit(const AuthFailure(
-            messsage: 'somthing wont wrong! please try again later'));
+            message: 'somthing wont wrong! please try again later'));
       }
     } on FirebaseAuthException catch (e) {
-      emit(AuthFailure(messsage: e.toString()));
+      emit(AuthFailure(message: e.toString()));
     } on PlatformException catch (e) {
-      emit(AuthFailure(messsage: e.toString()));
+      emit(AuthFailure(message: e.toString()));
     } catch (e) {
-      emit(AuthFailure(messsage: e.toString()));
+      emit(AuthFailure(message: e.toString()));
     }
   }
 
   Future<void> initUser(uid) async {
     FirebaseFirestore.instance
-        .collection('tempuser')
+        .collection(LogicConst.tempUser)
         .doc(uid)
-        .set({'status': 'new'});
+        .set({LogicConst.status: LogicConst.newTxt});
   }
 }

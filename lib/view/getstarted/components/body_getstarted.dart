@@ -1,14 +1,12 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
 import '../../../core/service/locatoin_service.dart';
-import '../../auth/cubit/auth_cubit.dart';
 import '../../home/screens/home_layout.dart';
 import '../cubit/getstarted_cubit.dart';
 import 'custom_text_field.dart';
@@ -29,7 +27,7 @@ class _BodyStartedState extends State<BodyStarted> {
     return BlocListener<GetstartedCubit, GetstartedState>(
       listener: (context, state) {
         if (state is UploadFailure) {
-          showErrorMessage(context, state).show();
+          showErrorMessage(context, state);
         } else if (state is UploadLoading) {
           CoolAlert.show(context: context, type: CoolAlertType.loading);
         } else if (state is UploadSucess) {
@@ -55,7 +53,7 @@ class _BodyStartedState extends State<BodyStarted> {
               ),
               SizedBox(height: 2.h),
               Text(
-                'Tell us more about you',
+                AppConst.createProfileHeading,
                 style: TextStyle(fontSize: 24.sp),
               ),
               Expanded(child: buildStepperWidget(cubit)),
@@ -90,20 +88,9 @@ class _BodyStartedState extends State<BodyStarted> {
       },
       controlsBuilder: (context, details) {
         bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-              onPressed: details.onStepContinue,
-              child: Text(isLastStep ? 'Upload My Data' : 'Continue'),
-            ),
-            cubit.currentStep == 0
-                ? const SizedBox()
-                : ElevatedButton(
-                    onPressed: details.onStepCancel,
-                    child: const Text('Back'),
-                  ),
-          ],
+        return ElevatedButton(
+          onPressed: details.onStepContinue,
+          child: Text(isLastStep ? AppConst.uploadTxt : AppConst.continueTxt),
         );
       },
     );
@@ -114,19 +101,19 @@ class _BodyStartedState extends State<BodyStarted> {
       Step(
         isActive: cubit.currentStep >= 0,
         state: cubit.currentStep > 0 ? StepState.complete : StepState.indexed,
-        title: const Text('Basic Info'),
+        title: const Text(AppConst.basicInfoTxt),
         content: Column(
           children: [
             CustomTextField(
               cn: cubit.userName,
-              title: 'UserName',
+              title: AppConst.userNameTxt,
               icon: Icons.person,
               inputType: TextInputType.name,
               fieldFor: FieldFor.name,
             ),
             CustomTextField(
               cn: cubit.age,
-              title: 'Age',
+              title: AppConst.ageTxt,
               icon: Icons.person_2_outlined,
               inputType: TextInputType.number,
               fieldFor: FieldFor.age,
@@ -137,19 +124,19 @@ class _BodyStartedState extends State<BodyStarted> {
       Step(
         isActive: cubit.currentStep >= 1,
         state: cubit.currentStep > 1 ? StepState.complete : StepState.indexed,
-        title: const Text('Additional Info'),
+        title: const Text(AppConst.additionalInfoTxt),
         content: Column(
           children: [
             CustomTextField(
               cn: cubit.height,
-              title: 'Height',
+              title: AppConst.heightTxt,
               icon: Icons.height,
               inputType: TextInputType.number,
               fieldFor: FieldFor.height,
             ),
             CustomTextField(
               cn: cubit.weight,
-              title: 'Weight',
+              title: AppConst.weightTxt,
               icon: Icons.line_weight,
               inputType: TextInputType.number,
               fieldFor: FieldFor.weight,
@@ -161,7 +148,7 @@ class _BodyStartedState extends State<BodyStarted> {
       Step(
         isActive: cubit.currentStep >= 2,
         state: cubit.currentStep > 2 ? StepState.complete : StepState.indexed,
-        title: const Text('Your location'),
+        title: const Text(AppConst.locationTxt),
         content: Column(
           children: [
             Text(
@@ -173,7 +160,7 @@ class _BodyStartedState extends State<BodyStarted> {
                   cubit.address = tempAddress;
                 });
               },
-              label: const Text('Locate Current Location'),
+              label: const Text(AppConst.locateLocationTxt),
               icon: const Icon(Icons.my_location),
             )
           ],
@@ -182,20 +169,19 @@ class _BodyStartedState extends State<BodyStarted> {
       Step(
         state: cubit.currentStep > 3 ? StepState.complete : StepState.indexed,
         isActive: cubit.currentStep >= 3,
-        title: const Text('Complete'),
+        title: const Text(AppConst.completeTxt),
         content: const SizedBox(),
       ),
     ];
   }
 
-  AwesomeDialog showErrorMessage(BuildContext context, UploadFailure state) {
-    return AwesomeDialog(
+  void showErrorMessage(BuildContext context, UploadFailure state) {
+    CoolAlert.show(
       context: context,
-      dialogType: DialogType.error,
-      animType: AnimType.rightSlide,
-      title: 'Error',
-      desc: state.message,
-      btnCancelOnPress: () {},
+      type: CoolAlertType.error,
+      title: AppConst.errorTxt,
+      text: state.message,
+      onCancelBtnTap: () => Navigator.pop(context),
     );
   }
 
@@ -205,7 +191,8 @@ class _BodyStartedState extends State<BodyStarted> {
       children: [
         DropdownButton<String>(
           value: cubit.genderSelected,
-          items: ['male', 'female'].map<DropdownMenuItem<String>>((e) {
+          items: [AppConst.maleTxt, AppConst.femaleTxt]
+              .map<DropdownMenuItem<String>>((e) {
             return DropdownMenuItem(
               value: e,
               child: Text(e),
@@ -219,8 +206,11 @@ class _BodyStartedState extends State<BodyStarted> {
         ),
         DropdownButton<String>(
           value: cubit.levelSelected,
-          items: ['beginner', 'intermediate', 'advanced']
-              .map<DropdownMenuItem<String>>((e) {
+          items: [
+            AppConst.beginnerTxt,
+            AppConst.intermediateTxt,
+            AppConst.advancedTxt
+          ].map<DropdownMenuItem<String>>((e) {
             return DropdownMenuItem(
               value: e,
               child: Text(e),

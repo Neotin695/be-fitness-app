@@ -1,4 +1,4 @@
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
@@ -17,12 +17,8 @@ class FormWidget extends StatelessWidget {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSucess) {
-          if (state.isNewUser) {
-          } else {
-            //gotoHome(context);
-          }
         } else if (state is AuthFailure) {
-          showErrorMessage(context, state).show();
+          showErrorMessage(context, state);
         }
       },
       child: Column(
@@ -33,14 +29,14 @@ class FormWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppConstance.LOGO_TEXT,
+                  AppConst.logoText,
                   style: TextStyle(
                       fontSize: 30.sp,
                       color: Colors.white,
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  AppConstance.SUBTITLE_LOGO,
+                  AppConst.subTitleLogo,
                   style: TextStyle(
                       fontSize: 16.sp,
                       color: Colors.white,
@@ -62,14 +58,13 @@ class FormWidget extends StatelessWidget {
     );
   }
 
-  AwesomeDialog showErrorMessage(BuildContext context, AuthFailure state) {
-    return AwesomeDialog(
+  void showErrorMessage(BuildContext context, AuthFailure state) {
+    CoolAlert.show(
       context: context,
-      dialogType: DialogType.error,
-      animType: AnimType.rightSlide,
+      type: CoolAlertType.error,
       title: 'Error',
-      desc: state.messsage,
-      btnCancelOnPress: () {},
+      text: state.message,
+      onCancelBtnTap: () => Navigator.pop(context),
     );
   }
 

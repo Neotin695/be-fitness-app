@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/models/coach_model.dart';
 import 'package:be_fitness_app/models/rating_model.dart';
@@ -113,12 +114,15 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
     final requestData = initDataReq(tempDownUrl);
     final coachData = initDataCoach();
 
-    _store.collection('coachs').doc(_auth!.uid).set(coachData.toMap());
-    _store.collection('requests').doc(_auth!.uid).set(requestData.toMap());
+    _store.collection(LogicConst.coache).doc(_auth!.uid).set(coachData.toMap());
+    _store
+        .collection(LogicConst.requests)
+        .doc(_auth!.uid)
+        .set(requestData.toMap());
     FirebaseFirestore.instance
-        .collection('tempuser')
+        .collection(LogicConst.tempUser)
         .doc(coachData.id)
-        .update({"status": 'notAccepted'});
+        .update({LogicConst.status: LogicConst.unauthenticate});
     emit(RequestSentSucess());
 
     resetData();

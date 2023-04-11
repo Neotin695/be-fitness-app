@@ -1,8 +1,9 @@
+import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/internet_service.dart';
 import 'package:be_fitness_app/models/request_online_coach.dart';
-import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'admin_state.dart';
@@ -21,7 +22,7 @@ class AdminCubit extends Cubit<AdminState> {
       return;
     }
     try {
-      _store.collection('requests').get().then((value) {
+      _store.collection(LogicConst.requests).get().then((value) {
         for (var doc in value.docs) {
           tempRequests.add(RequestOnlineCoachModel.fromMap(doc.data()));
           //print(doc.data());
@@ -42,9 +43,16 @@ class AdminCubit extends Cubit<AdminState> {
       emitFailure();
       return;
     }
-    _store.collection('requests').doc(id).delete();
-    await _store.collection('coachs').doc(id).update({'state': true});
-     await _store.collection('tempuser').doc(id).update({'status': 'authenticate'});
+    _store.collection(LogicConst.requests).doc(id).delete();
+    await _store
+        .collection(LogicConst.coache)
+        .doc(id)
+        .update({LogicConst.state: true});
+    await _store
+        .collection(LogicConst.tempUser)
+        .doc(id)
+        .update({LogicConst.status: LogicConst.authenticate});
+    await FirebaseStorage.instance.ref().child(id).delete();
     emit(AccepteRequest());
   }
 
@@ -59,9 +67,13 @@ class AdminCubit extends Cubit<AdminState> {
       emitFailure();
       return;
     }
-    await _store.collection('tempuser').doc(id).update({'status': 'new'});
-    await _store.collection('coachs').doc(id).delete();
-    _store.collection('requests').doc(id).delete();
+    await _store
+        .collection(LogicConst.tempUser)
+        .doc(id)
+        .update({LogicConst.status: LogicConst.newTxt});
+    await _store.collection(LogicConst.coache).doc(id).delete();
+    await _store.collection(LogicConst.requests).doc(id).delete();
+    await FirebaseStorage.instance.ref().child(id).delete();
     emit(RejectRequest());
   }
 }

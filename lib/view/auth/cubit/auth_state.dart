@@ -12,9 +12,9 @@ class AuthInitial extends AuthState {}
 class AuthLoading extends AuthState {}
 
 class AuthFailure extends AuthState {
-  final String messsage;
+  final String message;
 
-  const AuthFailure({required this.messsage});
+  const AuthFailure({required this.message});
 }
 
 class AuthSucess extends AuthState {
@@ -22,3 +22,7 @@ class AuthSucess extends AuthState {
 
   const AuthSucess({required this.isNewUser});
 }
+
+class AuthenticateState extends AuthState{}
+
+class UnauthenticateState extends AuthState{}

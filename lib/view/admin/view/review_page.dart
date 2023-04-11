@@ -14,24 +14,17 @@ class ReviewPage extends StatelessWidget {
     final RequestOnlineCoachModel request =
         ModalRoute.of(context)!.settings.arguments as RequestOnlineCoachModel;
 
-    return BlocBuilder<AdminCubit, AdminState>(
-      builder: (context, state) {
-        if (state is AccepteRequest) {
-          Navigator.pop(context);
-        } else if (state is RejectRequest) {
-          Navigator.pop(context);
-        }
-        return Scaffold(
-            appBar: AppBar(
-              title: const Text('Review Request'),
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Review Request'),
+        ),
+        body: BlocProvider(
+          create: (context) => AdminCubit(),
+          child: SafeArea(
+            child: ReviewAdminView(
+              request: request,
             ),
-            body: BlocProvider(
-              create: (context) => AdminCubit(),
-              child: ReviewAdminView(
-                request: request,
-              ),
-            ));
-      },
-    );
+          ),
+        ));
   }
 }

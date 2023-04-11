@@ -10,6 +10,10 @@ class MainAdminPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Main Admin'),
+        automaticallyImplyLeading: false,
+      ),
       body: BlocProvider(
         create: (context) => AdminCubit(),
         child: const MainAdminView(),

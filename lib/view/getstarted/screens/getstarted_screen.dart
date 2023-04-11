@@ -1,3 +1,4 @@
+import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -14,11 +15,14 @@ class GetStartedScreen extends StatefulWidget {
   State<GetStartedScreen> createState() => _GetStartedScreenState();
 }
 
-class _GetStartedScreenState extends State<GetStartedScreen>
-    with RestorationMixin {
+class _GetStartedScreenState extends State<GetStartedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: const Text(AppConst.appBarWelcome),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -31,7 +35,7 @@ class _GetStartedScreenState extends State<GetStartedScreen>
           SizedBox(height: 5.h),
           Center(
               child: Text(
-            'How are you?',
+            AppConst.getStartedHeading,
             style: TextStyle(fontSize: 25.sp),
           )),
           SizedBox(height: 5.h),
@@ -42,25 +46,17 @@ class _GetStartedScreenState extends State<GetStartedScreen>
                   onPressed: () {
                     Navigator.pushNamed(context, CreateProfileScreen.routeName);
                   },
-                  child: const Text('Trainee')),
+                  child: const Text(AppConst.confirmTxt)),
               ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, VerifyCoachScreen.routeName);
-                  },
-                  child: const Text('Coach'))
+                onPressed: () {
+                  Navigator.pushNamed(context, VerifyCoachScreen.routeName);
+                },
+                child: const Text(AppConst.cancelTxt),
+              )
             ],
           )
         ],
       ),
     );
-  }
-
-  @override
-  // TODO: implement restorationId
-  String? get restorationId => 'get_started';
-
-  @override
-  void restoreState(RestorationBucket? oldBucket, bool initialRestore) {
-    // TODO: implement restoreState
   }
 }
