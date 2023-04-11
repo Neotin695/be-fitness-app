@@ -44,9 +44,16 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
       certificateIdImg: '',
       personalImg: '',
       fulName: '',
+      userId: '',
       birthDate: '',
       nationalId: '',
-      ceritifcateId: '');
+      certificateId: '',
+      address: AddressModel(
+          name: '',
+          postalCode: '',
+          country: '',
+          subLocality: '',
+          locality: ''));
 
   File src = File('');
 
@@ -107,7 +114,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
     final coachData = initDataCoach();
 
     _store.collection('coachs').doc(_auth!.uid).set(coachData.toMap());
-    _store.collection('requests').add(requestData.toMap());
+    _store.collection('requests').doc(_auth!.uid).set(requestData.toMap());
     FirebaseFirestore.instance
         .collection('tempuser')
         .doc(coachData.id)
@@ -118,18 +125,20 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
   }
 
   void resetData() {
+    address = AddressModel(
+        name: '', postalCode: '', country: '', subLocality: '', locality: '');
     request = RequestOnlineCoachModel(
         nationalIdFrontImg: '',
         nationalIdBakcImg: '',
         certificateIdImg: '',
         personalImg: '',
+        userId: '',
         fulName: '',
         birthDate: '',
         nationalId: '',
-        ceritifcateId: '');
+        certificateId: '',
+        address: address);
     name.clear();
-    address = AddressModel(
-        name: '', postalCode: '', country: '', subLocality: '', locality: '');
     certificateId.clear();
     nationalId.clear();
   }
@@ -168,10 +177,24 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
         nationalIdBakcImg: tempDownUrl[1],
         certificateIdImg: tempDownUrl[2],
         personalImg: tempDownUrl[3],
+        userId: FirebaseAuth.instance.currentUser!.uid,
         fulName: name.text,
         birthDate: DateFormat.yMd().format(birthDate),
         nationalId: nationalId.text,
-        ceritifcateId: certificateId.text);
+        certificateId: certificateId.text,
+        address: address);
+  }
+
+  Future<String> retrieveLostData() async {
+    final response = await _imagePicker.retrieveLostData();
+    if (response.isEmpty) {
+      return '';
+    }
+    if (response.file != null) {
+      return response.file!.path;
+    } else {
+      return '';
+    }
   }
 
   CoachModel initDataCoach() {

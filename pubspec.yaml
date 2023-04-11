@@ -38,6 +38,8 @@ dependencies:
   cool_alert: ^2.0.1
   get_storage: ^2.1.1
   shared_preferences: ^2.1.0
+  carousel_slider: ^4.2.1
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,6 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
+import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
+import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
@@ -7,10 +9,7 @@ import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart
 import 'package:be_fitness_app/view/verifycoach/screens/verify_coach_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/service/firebase/firebase_options.dart';
@@ -52,6 +51,8 @@ class MainWidget extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (_) => const DecisionsTree(),
+          MainAdminPage.routeName: (_)=> const MainAdminPage(),
+          ReviewPage.routeName: (_)=> const ReviewPage(),
           WelcomeScreen.routeName: (_) => const WelcomeScreen(),
           GetStartedScreen.routeName: (_) => const GetStartedScreen(),
           VerifyCoachScreen.routeName: (_) => const VerifyCoachScreen(),
