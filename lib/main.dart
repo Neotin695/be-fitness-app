@@ -31,7 +31,6 @@ class MainWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Sizer(builder: (context, orientation, deviceType) {
       return MaterialApp(
-        restorationScopeId: 'app',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primaryColor: Colors.indigo,
@@ -51,8 +50,8 @@ class MainWidget extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (_) => const DecisionsTree(),
-          MainAdminPage.routeName: (_)=> const MainAdminPage(),
-          ReviewPage.routeName: (_)=> const ReviewPage(),
+          MainAdminPage.routeName: (_) => const MainAdminPage(),
+          ReviewPage.routeName: (_) => const ReviewPage(),
           WelcomeScreen.routeName: (_) => const WelcomeScreen(),
           GetStartedScreen.routeName: (_) => const GetStartedScreen(),
           VerifyCoachScreen.routeName: (_) => const VerifyCoachScreen(),
