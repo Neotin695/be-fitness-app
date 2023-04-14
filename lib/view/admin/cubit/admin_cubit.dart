@@ -52,7 +52,15 @@ class AdminCubit extends Cubit<AdminState> {
         .collection(LogicConst.tempUser)
         .doc(id)
         .update({LogicConst.status: LogicConst.authenticate});
-    await FirebaseStorage.instance.ref().child(id).delete();
+    try {
+      await FirebaseStorage.instance.ref(id).delete();
+
+      emit(RejectRequest());
+    } on FirebaseException catch (e) {
+      emit(FailureFetchRequests(message: e.toString()));
+    } catch (e) {
+      emit(FailureFetchRequests(message: e.toString()));
+    }
     emit(AccepteRequest());
   }
 
@@ -73,7 +81,14 @@ class AdminCubit extends Cubit<AdminState> {
         .update({LogicConst.status: LogicConst.newTxt});
     await _store.collection(LogicConst.coache).doc(id).delete();
     await _store.collection(LogicConst.requests).doc(id).delete();
-    await FirebaseStorage.instance.ref().child(id).delete();
-    emit(RejectRequest());
+    try {
+      await FirebaseStorage.instance.ref(id).delete();
+
+      emit(RejectRequest());
+    } on FirebaseException catch (e) {
+      emit(FailureFetchRequests(message: e.toString()));
+    } catch (e) {
+      emit(FailureFetchRequests(message: e.toString()));
+    }
   }
 }

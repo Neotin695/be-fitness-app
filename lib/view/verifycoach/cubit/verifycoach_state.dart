@@ -28,3 +28,7 @@ class RequestSentFailure extends VerifyCoachState {
   final String message;
   const RequestSentFailure({required this.message});
 }
+
+class AceeptedState extends VerifyCoachState {}
+
+class RejectState extends VerifyCoachState {}

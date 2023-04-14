@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
@@ -30,8 +31,9 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
   final GlobalKey<FormState> key = GlobalKey();
 
   final _store = FirebaseFirestore.instance;
-  final _storage = FirebaseStorage.instance.ref();
+  final _storage = FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance.currentUser;
+  StreamSubscription? streamSubscription;
 
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
@@ -158,7 +160,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
     emit(ImgUploading());
     for (var path in tempPaths) {
       final task = await _storage
-          .child(_auth!.uid)
+          .ref(_auth!.uid)
           .child(path.split('/').last)
           .putFile(File(path));
       if (task.state == TaskState.running) {
@@ -218,5 +220,28 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
           ratingAverage: 0,
         ),
         subscribers: const []);
+  }
+
+  void checkCoachState() {
+    streamSubscription?.cancel();
+    streamSubscription = _store
+        .collection(LogicConst.tempUser)
+        .doc(_auth!.uid)
+        .snapshots()
+        .listen((event) {
+      var state = (event.data() as Map<String, dynamic>)[LogicConst.status];
+
+      if (state == LogicConst.authenticate) {
+        emit(AceeptedState());
+      } else if (state == LogicConst.newTxt) {
+        emit(RejectState());
+      }
+    });
+  }
+
+  @override
+  Future<void> close() {
+    streamSubscription?.cancel();
+    return super.close();
   }
 }
