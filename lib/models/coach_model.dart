@@ -10,11 +10,12 @@ class CoachModel extends Equatable {
   bool state;
   String userName;
   String email;
+  String birthDate;
   String profilePhoto;
   String certificateId;
   String nationalId;
   List<String> subscribers;
-  AddressModel address; 
+  AddressModel address;
   RatingModel rating;
   Gender gender;
   CoachModel({
@@ -22,6 +23,7 @@ class CoachModel extends Equatable {
     required this.state,
     required this.userName,
     required this.email,
+    required this.birthDate,
     required this.address,
     required this.certificateId,
     required this.nationalId,
@@ -38,6 +40,7 @@ class CoachModel extends Equatable {
       state,
       userName,
       email,
+      birthDate,
       address,
       certificateId,
       nationalId,
@@ -54,7 +57,8 @@ class CoachModel extends Equatable {
       'state': state,
       'userName': userName,
       'email': email,
-      'certificateId':certificateId,
+      'birthDate': birthDate,
+      'certificateId': certificateId,
       'nationalId': nationalId,
       'address': address.toMap(),
       'profilePhoto': profilePhoto,
@@ -70,6 +74,7 @@ class CoachModel extends Equatable {
       state: map['state'] as bool,
       userName: map['userName'] as String,
       email: map['email'] as String,
+      birthDate: map['birthDate'],
       nationalId: map['nationalId'] as String,
       certificateId: map['certificateId'] as String,
       address: AddressModel.fromMap(map['address']),

@@ -1,4 +1,6 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
+import 'package:be_fitness_app/view/admin/view/body_part_page.dart';
+import 'package:be_fitness_app/view/admin/view/excercise_page.dart';
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
@@ -58,6 +60,8 @@ class MainWidget extends StatelessWidget {
           CreateProfileScreen.routeName: (_) => const CreateProfileScreen(),
           NotAcceptedScreen.routeName: (_) => const NotAcceptedScreen(),
           HomeLayoutScreen.routeName: (_) => const HomeLayoutScreen(),
+          BodyPartPage.routeName: (_) => const BodyPartPage(),
+          ExercisePage.routeName: (_) => const ExercisePage(),
         },
       );
     });

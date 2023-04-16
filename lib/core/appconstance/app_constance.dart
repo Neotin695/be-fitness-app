@@ -1,5 +1,5 @@
 class AppConst {
-  static const String logoText = 'BE FITNESS';
+  static const String brandTxt = 'BE FITNESS';
   static const String subTitleLogo = 'WORKOUT';
 
   static const String getStartedHeading = 'Are you trainee?';

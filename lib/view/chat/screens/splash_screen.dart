@@ -50,7 +50,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                AppConst.logoText,
+                AppConst.brandTxt,
                 style: TextStyle(
                     fontSize: 30.sp,
                     color: Colors.white,

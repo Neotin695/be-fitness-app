@@ -29,7 +29,7 @@ class FormWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  AppConst.logoText,
+                  AppConst.brandTxt,
                   style: TextStyle(
                       fontSize: 30.sp,
                       color: Colors.white,

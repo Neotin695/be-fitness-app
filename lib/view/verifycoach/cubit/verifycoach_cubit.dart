@@ -28,6 +28,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
   final TextEditingController name = TextEditingController();
   final TextEditingController certificateId = TextEditingController();
   final TextEditingController nationalId = TextEditingController();
+
   final GlobalKey<FormState> key = GlobalKey();
 
   final _store = FirebaseFirestore.instance;
@@ -185,7 +186,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
         personalImg: tempDownUrl[3],
         userId: FirebaseAuth.instance.currentUser!.uid,
         fulName: name.text,
-        birthDate: DateFormat.yMd().format(birthDate),
+        birthDate: DateFormat('yyyy-mm/dd').format(birthDate),
         nationalId: nationalId.text,
         certificateId: certificateId.text,
         address: address);
@@ -209,6 +210,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
         state: false,
         userName: name.text,
         email: _auth!.email!,
+        birthDate: DateFormat('yyyy-mm-dd').format(birthDate),
         address: address,
         certificateId: certificateId.text,
         nationalId: nationalId.text,

@@ -4,13 +4,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../components/drawer.dart';
+
 class MainAdminPage extends StatelessWidget {
-  static const String routeName = 'mainAdmin_page';
+  static const String routeName = '/mainAdminPage';
   const MainAdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerAdmin(),
       appBar: AppBar(
         title: const Text('Main Admin'),
         automaticallyImplyLeading: false,

@@ -1,9 +1,9 @@
-import 'package:cool_alert/cool_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../../core/appconstance/app_constance.dart';
 import '../../../core/service/locatoin_service.dart';
-import '../../getstarted/cubit/getstarted_cubit.dart';
 import '../cubit/verifycoach_cubit.dart';
 import 'custom_text_field_coach.dart';
 
@@ -89,7 +89,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
               inputType: TextInputType.number,
               fieldFor: FieldFor.certificateId,
             ),
-            dropDownButton(cubit),
+            dateAndGender(cubit),
           ],
         ),
       ),
@@ -98,7 +98,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
         state: cubit.currentStep > 1 ? StepState.complete : StepState.indexed,
         title: const Text(AppConst.personalPhotoTxt),
         content: Center(
-          child: ElevatedButton(
+          child: ElevatedButton.icon(
             onPressed: () async {
               cubit.request.personalImg = await cubit.pickPersonalImg();
 
@@ -106,7 +106,8 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
                 onContinue(cubit);
               }
             },
-            child: const Text(AppConst.takePersonalPhotoTxt),
+            icon: const Icon(Icons.camera),
+            label: const Text(AppConst.takePersonalPhotoTxt),
           ),
         ),
       ),
@@ -115,7 +116,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
         isActive: cubit.currentStep >= 2,
         title: const Text(AppConst.certificateDocTxt),
         content: Center(
-          child: ElevatedButton(
+          child: ElevatedButton.icon(
               onPressed: () async {
                 cubit.request.certificateIdImg =
                     await cubit.pickDocument(context);
@@ -124,7 +125,8 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
                   onContinue(cubit);
                 }
               },
-              child: const Text(AppConst.certificateDocTxt)),
+              icon: const Icon(Icons.document_scanner),
+              label: const Text(AppConst.certificateDocTxt)),
         ),
       ),
       Step(
@@ -132,7 +134,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
         isActive: cubit.currentStep >= 3,
         title: const Text(AppConst.frontIdCardDocTxt),
         content: Center(
-          child: ElevatedButton(
+          child: ElevatedButton.icon(
               onPressed: () async {
                 cubit.request.nationalIdFrontImg =
                     await cubit.pickDocument(context);
@@ -141,7 +143,8 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
                   onContinue(cubit);
                 }
               },
-              child: const Text(AppConst.frontIdCardDocTxt)),
+              icon: const Icon(Icons.document_scanner),
+              label: const Text(AppConst.frontIdCardDocTxt)),
         ),
       ),
       Step(
@@ -149,7 +152,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
         isActive: cubit.currentStep >= 4,
         title: const Text(AppConst.backIdCardDocTxt),
         content: Center(
-            child: ElevatedButton(
+            child: ElevatedButton.icon(
                 onPressed: () async {
                   cubit.request.nationalIdBakcImg =
                       await cubit.pickDocument(context);
@@ -158,7 +161,8 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
                     onContinue(cubit);
                   }
                 },
-                child: const Text(AppConst.backIdCardDocTxt))),
+                icon: const Icon(Icons.document_scanner),
+                label: const Text(AppConst.backIdCardDocTxt))),
       ),
       Step(
         isActive: cubit.currentStep >= 5,
@@ -189,6 +193,40 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
         content: const SizedBox(),
       ),
     ];
+  }
+
+  Row dateAndGender(VerifyCoachCubit cubit) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: [
+        TextButton(
+          onPressed: () {
+            pickDate(cubit);
+          },
+          child: const Text(
+            'show date time picker',
+            style: TextStyle(color: Colors.blue),
+          ),
+        ),
+        dropDownButton(cubit),
+      ],
+    );
+  }
+
+  void pickDate(VerifyCoachCubit cubit) {
+    DatePicker.showDatePicker(
+      context,
+      showTitleActions: true,
+      minTime: DateTime(1970),
+      maxTime: DateTime(2005, 12, 31),
+      onChanged: (date) {},
+      onConfirm: (date) {
+        setState(() {
+          cubit.birthDate = date;
+        });
+      },
+      currentTime: DateTime.now(),
+    );
   }
 
   Widget dropDownButton(VerifyCoachCubit cubit) {

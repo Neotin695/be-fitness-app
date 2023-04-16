@@ -2,6 +2,7 @@ import 'package:be_fitness_app/view/admin/cubit/admin_cubit.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../models/request_online_coach.dart';
@@ -32,7 +33,7 @@ class MainAdminView extends StatelessWidget {
               itemCount: state.requests.length,
               itemBuilder: (context, index) {
                 final request = state.requests[index];
-                print(request);
+
                 return RequestItem(
                   request: request,
                   cubit: cubit,
@@ -43,7 +44,12 @@ class MainAdminView extends StatelessWidget {
         } else if (state is LoadingRequestState) {
           return const Center(child: CircularProgressIndicator());
         }
-        return const SizedBox();
+        return Center(
+            child: SvgPicture.asset(
+          'assets/icons/empty.svg',
+          width: 30.w,
+          height: 30.h,
+        ));
       },
     );
   }
