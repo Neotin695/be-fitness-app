@@ -1,7 +1,7 @@
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
-import 'package:be_fitness_app/view/home/screens/home_layout.dart';
+import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -29,8 +29,8 @@ class DecisionsTree extends StatelessWidget {
                 .get(),
             builder: (_, snapshot) {
               if (snapshot.hasData) {
-                final String status =
-                    (snapshot.data!.data() as Map<String, dynamic>)[LogicConst.status];
+                final String status = (snapshot.data!.data()
+                    as Map<String, dynamic>)[LogicConst.status];
                 if (status == LogicConst.unauthenticate) {
                   return const NotAcceptedScreen();
                 } else if (status == LogicConst.newTxt) {
@@ -40,7 +40,7 @@ class DecisionsTree extends StatelessWidget {
                   }
                   return const GetStartedScreen();
                 } else if (status == LogicConst.authenticate) {
-                  return const HomeLayoutScreen();
+                  return const HomeLayoutPage();
                 }
                 return const WelcomeScreen();
               }

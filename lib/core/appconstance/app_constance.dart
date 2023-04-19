@@ -35,4 +35,5 @@ class AppConst {
   static const String certificateDocTxt = 'Certificate Doc';
   static const String frontIdCardDocTxt = 'Front Id Card Doc';
   static const String backIdCardDocTxt = 'Back Id Card Doc';
+  static const String errorMessage = 'somthing want wrong!, please try again';
 }

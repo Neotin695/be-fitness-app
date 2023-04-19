@@ -1,7 +1,10 @@
 import 'package:be_fitness_app/core/appconstance/app_constance.dart';
+import 'package:be_fitness_app/view/admin/view/body_part_page.dart';
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+
+import '../view/excercise_page.dart';
 
 class DrawerAdmin extends StatelessWidget {
   const DrawerAdmin({super.key});
@@ -28,15 +31,15 @@ class DrawerAdmin extends StatelessWidget {
           ListTile(
             title: const Text('Add body part'),
             trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => Navigator.pushReplacementNamed(
-                context, MainAdminPage.routeName),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, BodyPartPage.routeName),
           ),
           ListTile(
             title: const Text('Add excercise'),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () => Navigator.pushReplacementNamed(
-                context, MainAdminPage.routeName),
-          ), 
+                context, ExcercisePage.routeName),
+          ),
         ],
       ),
     );

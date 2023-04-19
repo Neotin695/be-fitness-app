@@ -5,7 +5,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/app_constance.dart';
 import '../../getstarted/screens/getstarted_screen.dart';
-import '../../home/screens/home_layout.dart';
+import '../../home/screens/home_layout_page.dart';
 import '../cubit/auth_cubit.dart';
 
 class FormWidget extends StatelessWidget {
@@ -73,6 +73,6 @@ class FormWidget extends StatelessWidget {
   }
 
   void gotoHome(context) {
-    Navigator.pushReplacementNamed(context, HomeLayoutScreen.routeName);
+    Navigator.pushReplacementNamed(context, HomeLayoutPage.routeName);
   }
 }

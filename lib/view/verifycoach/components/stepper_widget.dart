@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
@@ -100,7 +99,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
         content: Center(
           child: ElevatedButton.icon(
             onPressed: () async {
-              cubit.request.personalImg = await cubit.pickPersonalImg();
+              cubit.request.personalImg = await cubit.pickSingleImg();
 
               if (cubit.request.personalImg.isNotEmpty) {
                 onContinue(cubit);
@@ -119,7 +118,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
           child: ElevatedButton.icon(
               onPressed: () async {
                 cubit.request.certificateIdImg =
-                    await cubit.pickDocument(context);
+                    await cubit.pickSingleDoc(context);
 
                 if (cubit.request.certificateIdImg.isNotEmpty) {
                   onContinue(cubit);
@@ -137,7 +136,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
           child: ElevatedButton.icon(
               onPressed: () async {
                 cubit.request.nationalIdFrontImg =
-                    await cubit.pickDocument(context);
+                    await cubit.pickSingleDoc(context);
 
                 if (cubit.request.nationalIdFrontImg.isNotEmpty) {
                   onContinue(cubit);
@@ -155,7 +154,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
             child: ElevatedButton.icon(
                 onPressed: () async {
                   cubit.request.nationalIdBakcImg =
-                      await cubit.pickDocument(context);
+                      await cubit.pickSingleDoc(context);
 
                   if (cubit.request.nationalIdBakcImg.isNotEmpty) {
                     onContinue(cubit);

@@ -8,6 +8,7 @@ import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 class CoachModel extends Equatable {
   String id;
   bool state;
+  bool isCoach;
   String userName;
   String email;
   String birthDate;
@@ -23,6 +24,7 @@ class CoachModel extends Equatable {
     required this.state,
     required this.userName,
     required this.email,
+    required this.isCoach,
     required this.birthDate,
     required this.address,
     required this.certificateId,
@@ -46,6 +48,7 @@ class CoachModel extends Equatable {
       nationalId,
       profilePhoto,
       gender,
+      isCoach,
       rating,
       subscribers,
     ];
@@ -60,6 +63,7 @@ class CoachModel extends Equatable {
       'birthDate': birthDate,
       'certificateId': certificateId,
       'nationalId': nationalId,
+      'isCoach': isCoach,
       'address': address.toMap(),
       'profilePhoto': profilePhoto,
       'gender': GenderService().convertEnumToString(gender),
@@ -75,6 +79,7 @@ class CoachModel extends Equatable {
       userName: map['userName'] as String,
       email: map['email'] as String,
       birthDate: map['birthDate'],
+      isCoach: map['isCoach'] as bool,
       nationalId: map['nationalId'] as String,
       certificateId: map['certificateId'] as String,
       address: AddressModel.fromMap(map['address']),

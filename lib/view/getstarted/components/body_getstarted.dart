@@ -7,7 +7,7 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
 import '../../../core/service/locatoin_service.dart';
-import '../../home/screens/home_layout.dart';
+import '../../home/screens/home_layout_page.dart';
 import '../cubit/getstarted_cubit.dart';
 import 'custom_text_field.dart';
 
@@ -35,7 +35,7 @@ class _BodyStartedState extends State<BodyStarted> {
           Navigator.pop(context);
           Navigator.pushReplacementNamed(
             context,
-            HomeLayoutScreen.routeName,
+            HomeLayoutPage.routeName,
           );
         }
       },

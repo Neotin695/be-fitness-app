@@ -29,7 +29,7 @@ class GetstartedCubit extends Cubit<GetstartedState> {
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
 
-  final _store = FirebaseFirestore.instance.collection(LogicConst.trainee);
+  final _store = FirebaseFirestore.instance.collection(LogicConst.users);
   final _auth = FirebaseAuth.instance.currentUser;
 
   TraineeModel initData() {

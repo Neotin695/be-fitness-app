@@ -4,9 +4,10 @@ import 'package:be_fitness_app/view/admin/view/excercise_page.dart';
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
+import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
-import 'package:be_fitness_app/view/home/screens/home_layout.dart';
+import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/verify_coach_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -59,9 +60,10 @@ class MainWidget extends StatelessWidget {
           VerifyCoachScreen.routeName: (_) => const VerifyCoachScreen(),
           CreateProfileScreen.routeName: (_) => const CreateProfileScreen(),
           NotAcceptedScreen.routeName: (_) => const NotAcceptedScreen(),
-          HomeLayoutScreen.routeName: (_) => const HomeLayoutScreen(),
+          HomeLayoutPage.routeName: (_) => const HomeLayoutPage(),
           BodyPartPage.routeName: (_) => const BodyPartPage(),
-          ExercisePage.routeName: (_) => const ExercisePage(),
+          ExcercisePage.routeName: (_) => const ExcercisePage(),
+          ChatRoomPage.routeName: (_)=> const ChatRoomPage(),
         },
       );
     });

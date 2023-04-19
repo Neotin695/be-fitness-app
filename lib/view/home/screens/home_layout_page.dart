@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class HomeLayoutScreen extends StatelessWidget {
+import '../../verifycoach/screens/coachs_page.dart';
+
+class HomeLayoutPage extends StatelessWidget {
   static const String routeName = 'homeLayour';
-  const HomeLayoutScreen({super.key});
+  const HomeLayoutPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +25,7 @@ class HomeLayoutScreen extends StatelessWidget {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: '')
         ],
       ),
-      body: const Text('home screen'),
+      body: const CoachsPage(),
     );
   }
 }

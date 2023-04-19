@@ -1,6 +1,6 @@
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
-import 'package:be_fitness_app/view/home/screens/home_layout.dart';
+import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -39,7 +39,7 @@ class BodyNotAccepted extends StatelessWidget {
     return BlocBuilder<VerifyCoachCubit, VerifyCoachState>(
       builder: (context, state) {
         if (state is AceeptedState) {
-          return const HomeLayoutScreen();
+          return const HomeLayoutPage();
         } else if (state is RejectState) {
           return const DecisionsTree();
         }

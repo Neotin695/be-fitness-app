@@ -1,28 +1,29 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
-import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
-import 'package:be_fitness_app/models/coach_model.dart';
-import 'package:be_fitness_app/models/rating_model.dart';
-import 'package:be_fitness_app/models/request_online_coach.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:document_scanner_flutter/configs/configs.dart';
-import 'package:document_scanner_flutter/document_scanner_flutter.dart';
 import 'package:equatable/equatable.dart';
-import 'package:intl/intl.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+// ignore: depend_on_referenced_packages
+import 'package:intl/intl.dart';
+
+import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
+import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
+import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
+import 'package:be_fitness_app/models/coach_model.dart';
+import 'package:be_fitness_app/models/rating_model.dart';
+import 'package:be_fitness_app/models/request_online_coach.dart';
 
 import '../../../models/address_model.dart';
 
 part 'verifycoach_state.dart';
 
-class VerifyCoachCubit extends Cubit<VerifyCoachState> {
+class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
   static VerifyCoachCubit get(context) => BlocProvider.of(context);
   VerifyCoachCubit() : super(VerifyCoachInitial());
   final TextEditingController name = TextEditingController();
@@ -61,33 +62,18 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
 
   File src = File('');
 
-  Future<String> pickDocument(context) async {
+  Future<String> pickSingleImg() async {
     try {
-      File? scannedDoc = await DocumentScannerFlutter.launch(
-        context,
-        source: ScannerFileSource.CAMERA,
-      );
-      if (scannedDoc == null) {
-        return '';
-      } else {
-        return scannedDoc.path;
-      }
-    } on PlatformException {
+      return await pickSingleImage(ImageSource.camera);
+    } catch (e) {
       return '';
     }
   }
 
-  final ImagePicker _imagePicker = ImagePicker();
-
-  Future<String> pickPersonalImg() async {
+  Future<String> pickSingleDoc(BuildContext context) async {
     try {
-      final file = await _imagePicker.pickImage(source: ImageSource.camera);
-      if (file == null) {
-        return '';
-      } else {
-        return file.path;
-      }
-    } on PlatformException catch (e) {
+      return await pickDocument(context, ScannerFileSource.CAMERA);
+    } catch (e) {
       return '';
     }
   }
@@ -96,10 +82,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
     if (!key.currentState!.validate()) {
       return;
     }
-    if (request.certificateIdImg.isEmpty ||
-        request.nationalIdBakcImg.isEmpty ||
-        request.nationalIdFrontImg.isEmpty ||
-        request.personalImg.isEmpty) {
+    if (isFilesEmpty) {
       emit(const RequestSentFailure(message: 'some document not set'));
       return;
     }
@@ -111,13 +94,13 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
 
     final tempDownUrl = await uploadFiles();
     if (tempDownUrl.isEmpty) {
-      emit(RequestSentFailure(message: 'somthing want wrong! $tempDownUrl'));
+      emit(const RequestSentFailure(message: 'somthing want wrong!'));
       return;
     }
     final requestData = initDataReq(tempDownUrl);
     final coachData = initDataCoach();
 
-    _store.collection(LogicConst.coache).doc(_auth!.uid).set(coachData.toMap());
+    _store.collection(LogicConst.users).doc(_auth!.uid).set(coachData.toMap());
     _store
         .collection(LogicConst.requests)
         .doc(_auth!.uid)
@@ -129,6 +112,13 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
     emit(RequestSentSucess());
 
     resetData();
+  }
+
+  bool get isFilesEmpty {
+    return request.certificateIdImg.isEmpty ||
+        request.nationalIdBakcImg.isEmpty ||
+        request.nationalIdFrontImg.isEmpty ||
+        request.personalImg.isEmpty;
   }
 
   void resetData() {
@@ -151,31 +141,24 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
   }
 
   Future<List<String>> uploadFiles() async {
-    List<String> tempDownloadUrl = [];
-    List<String> tempPaths = [
-      request.nationalIdFrontImg,
-      request.nationalIdBakcImg,
-      request.certificateIdImg,
-      request.personalImg
-    ];
     emit(ImgUploading());
-    for (var path in tempPaths) {
-      final task = await _storage
-          .ref(_auth!.uid)
-          .child(path.split('/').last)
-          .putFile(File(path));
-      if (task.state == TaskState.running) {
-      } else if (task.state == TaskState.success) {
-        tempDownloadUrl.add(await task.ref.getDownloadURL());
-      } else if (task.state == TaskState.error) {
-        emit(const ImgUploadFailure(
-            message: 'somthing want wrong!, please try agai'));
-        tempDownloadUrl.clear();
-        continue;
-      }
+    try {
+      final result = await uploadMultiFiles([
+        request.nationalIdFrontImg,
+        request.nationalIdBakcImg,
+        request.certificateIdImg,
+        request.personalImg
+      ], _storage.ref(_auth!.uid));
+
+      emit(ImgUploadSucess());
+      return result;
+    } on FirebaseException catch (e) {
+      emit(ImgUploadFailure(message: e.toString()));
+      return [];
+    } catch (e) {
+      emit(ImgUploadFailure(message: e.toString()));
+      return [];
     }
-    emit(ImgUploadSucess());
-    return tempDownloadUrl;
   }
 
   RequestOnlineCoachModel initDataReq(List<String> tempDownUrl) {
@@ -192,22 +175,11 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> {
         address: address);
   }
 
-  Future<String> retrieveLostData() async {
-    final response = await _imagePicker.retrieveLostData();
-    if (response.isEmpty) {
-      return '';
-    }
-    if (response.file != null) {
-      return response.file!.path;
-    } else {
-      return '';
-    }
-  }
-
   CoachModel initDataCoach() {
     return CoachModel(
         id: _auth!.uid,
         state: false,
+        isCoach: true,
         userName: name.text,
         email: _auth!.email!,
         birthDate: DateFormat('yyyy-mm-dd').format(birthDate),

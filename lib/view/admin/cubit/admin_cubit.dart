@@ -45,7 +45,7 @@ class AdminCubit extends Cubit<AdminState> {
     }
     _store.collection(LogicConst.requests).doc(id).delete();
     await _store
-        .collection(LogicConst.coache)
+        .collection(LogicConst.users)
         .doc(id)
         .update({LogicConst.state: true});
     await _store
@@ -79,7 +79,7 @@ class AdminCubit extends Cubit<AdminState> {
         .collection(LogicConst.tempUser)
         .doc(id)
         .update({LogicConst.status: LogicConst.newTxt});
-    await _store.collection(LogicConst.coache).doc(id).delete();
+    await _store.collection(LogicConst.users).doc(id).delete();
     await _store.collection(LogicConst.requests).doc(id).delete();
     try {
       await FirebaseStorage.instance.ref(id).delete();
