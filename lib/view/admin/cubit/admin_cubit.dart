@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/target_muscles.dart';
@@ -23,12 +21,20 @@ class AdminCubit extends Cubit<AdminState> {
   final TextEditingController excerciseName = TextEditingController();
   final TextEditingController gifUrl = TextEditingController();
 
-  String selectedBodyPart = 'neck';
-  String selectedTargetMuscles = 'triceps';
-  Duration selectedTime = const Duration(seconds: 2);
+  String selectedBodyPart = 'body part';
+  String selectedTargetMuscles = 'target muscles';
+
+  bool isSelected() =>
+      selectedBodyPart != 'body part' &&
+      selectedTargetMuscles != 'target muscles' &&
+      selectedTime != defaultTime;
+
+  Duration selectedTime = const Duration(seconds: 0);
+  Duration defaultTime = const Duration(seconds: 0);
 
   Future<void> uploadExcercise() async {
     emit(UploadingExcercise());
+    if (formKey.currentState!.validate()) {}
     if (!await InternetService().isConnected()) {
       emitFailure();
       return;
@@ -40,6 +46,7 @@ class AdminCubit extends Cubit<AdminState> {
         .doc()
         .set(initModel().toMap());
     emit(UploadedExcercise());
+    resetData();
   }
 
   ExcerciseModel initModel() {
@@ -49,6 +56,14 @@ class AdminCubit extends Cubit<AdminState> {
         targetMuscles:
             TargetMusclesService().convertStringToEnum(selectedTargetMuscles),
         timer: [selectedTime.inMinutes, selectedTime.inSeconds]);
+  }
+
+  void resetData() {
+    selectedBodyPart = 'body part';
+    selectedTargetMuscles = 'target muscles';
+    selectedTime = const Duration(seconds: 0);
+    excerciseName.clear();
+    gifUrl.clear();
   }
 
   Future<void> fetchRequests() async {

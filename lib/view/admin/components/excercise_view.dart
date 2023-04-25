@@ -1,7 +1,12 @@
+import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
+import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/view/admin/cubit/admin_cubit.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 class ExcerciseView extends StatefulWidget {
@@ -16,38 +21,76 @@ class _ExcerciseViewState extends State<ExcerciseView> {
   Widget build(BuildContext context) {
     AdminCubit cubit = AdminCubit.get(context);
     return BlocListener<AdminCubit, AdminState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is UploadedExcercise) {
+          CoolAlert.show(
+              context: context,
+              type: CoolAlertType.success,
+              text: 'excercise successfully',
+              title: 'successfully');
+        } else if (state is FailureState) {
+          CoolAlert.show(
+              context: context,
+              type: CoolAlertType.error,
+              text: state.message,
+              title: 'Error');
+        }
+      },
       child: Form(
         key: cubit.formKey,
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 10.h),
+              SizedBox(height: 7.h),
               Text(
                 'Add Excercise',
                 style: TextStyle(fontSize: 25.sp),
               ),
+              SizedBox(height: 3.h),
+              SvgPicture.asset(
+                MediaConstance.workout,
+                width: 30.w,
+                height: 30.h,
+              ),
               adminTextField('Excercise Name', cubit.excerciseName),
               adminTextField('GIF Url', cubit.gifUrl),
               SizedBox(height: 3.h),
-              TextButton(
-                  child: Text(
-                    'time:${cubit.selectedTime.inMinutes}:${cubit.selectedTime.inSeconds}',
-                    style: TextStyle(fontSize: 20.sp),
-                  ),
-                  onPressed: () {
-                    showDialogTimerPicker(context, cubit);
-                  }),
               dropDown(cubit),
-              ElevatedButton(
-                  onPressed: () async {
-                    await cubit.uploadExcercise();
-                  },
-                  child: const Text('upload'))
+              buttons(cubit, context),
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Row buttons(AdminCubit cubit, BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        cubit.isSelected()
+            ? ElevatedButton.icon(
+                onPressed: () async {
+                  await cubit.uploadExcercise();
+                },
+                label: Text(
+                  'Upload Excercise',
+                  style: TextStyle(fontSize: 14.sp),
+                ),
+                icon: const Icon(FontAwesomeIcons.upload),
+              )
+            : const SizedBox(),
+        SizedBox(width: 3.w),
+        ElevatedButton.icon(
+            icon: const Icon(FontAwesomeIcons.clock),
+            label: Text(
+              'Select Duration',
+              style: TextStyle(fontSize: 14.sp),
+            ),
+            onPressed: () {
+              showDialogTimerPicker(context, cubit);
+            }),
+      ],
     );
   }
 
@@ -67,6 +110,7 @@ class _ExcerciseViewState extends State<ExcerciseView> {
                   height: 30.h,
                   width: 90.w,
                   child: CupertinoTimerPicker(
+                    initialTimerDuration: cubit.selectedTime,
                     mode: CupertinoTimerPickerMode.ms,
                     onTimerDurationChanged: (value) {
                       setState(() {
@@ -102,67 +146,39 @@ class _ExcerciseViewState extends State<ExcerciseView> {
   }
 
   Widget dropDown(AdminCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        DropdownButton<String>(
-            value: cubit.selectedBodyPart,
-            items: [
-              "back",
-              "cardio",
-              "chest",
-              "lower arms",
-              "lower legs",
-              "neck",
-              "shoulders",
-              "upper arms",
-              "upper legs",
-              "waist"
-            ]
-                .map<DropdownMenuItem<String>>((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                cubit.selectedBodyPart = value!;
-              });
-            }),
-        DropdownButton<String>(
-            value: cubit.selectedTargetMuscles,
-            items: [
-              "abductors",
-              "abs",
-              "adductors",
-              "biceps",
-              "calves",
-              "cardiovascular system",
-              "delts",
-              "forearms",
-              "glutes",
-              "hamstrings",
-              "lats",
-              "levator scapulae",
-              "pectorals",
-              "quads",
-              "serratus anterior",
-              "spine",
-              "traps",
-              "triceps",
-              "upper back"
-            ]
-                .map<DropdownMenuItem<String>>((e) => DropdownMenuItem(
-                      value: e,
-                      child: Text(e),
-                    ))
-                .toList(),
-            onChanged: (value) {
-              setState(() {
-                cubit.selectedTargetMuscles = value!;
-              });
-            }),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [
+          DropdownButton<String>(
+              hint: Text(cubit.selectedBodyPart),
+              items: LogicConst.bodyPart
+                  .map<DropdownMenuItem<String>>((e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  cubit.selectedBodyPart = value!;
+                });
+              }),
+          DropdownButton<String>(
+              hint: Text(cubit.selectedTargetMuscles),
+              items: LogicConst.targetMuscles
+                  .map<DropdownMenuItem<String>>((e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(e),
+                      ))
+                  .toList(),
+              onChanged: (value) {
+                setState(() {
+                  cubit.selectedTargetMuscles = value!;
+                });
+              }),
+        ],
+      ),
     );
   }
 
