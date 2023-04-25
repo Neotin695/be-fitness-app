@@ -17,9 +17,9 @@ class FetchRequestsState extends AdminState {
   });
 }
 
-class FailureFetchRequests extends AdminState {
+class FailureState extends AdminState {
   final String message;
-  const FailureFetchRequests({
+  const FailureState({
     required this.message,
   });
 }
@@ -29,3 +29,7 @@ class AccepteRequest extends AdminState {}
 class RejectRequest extends AdminState {}
 
 class LoadingRequestState extends AdminState {}
+
+class UploadingExcercise extends AdminState {}
+
+class UploadedExcercise extends AdminState {}

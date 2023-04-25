@@ -64,7 +64,7 @@ class GetstartedCubit extends Cubit<GetstartedState> {
       FirebaseFirestore.instance
           .collection(LogicConst.tempUser)
           .doc(trainee.id)
-          .delete();
+          .update({LogicConst.status: LogicConst.authenticate});
     } on FirebaseException catch (e) {
       emit(UploadFailure(message: e.toString()));
     }

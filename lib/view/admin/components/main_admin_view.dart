@@ -15,37 +15,48 @@ class MainAdminView extends StatelessWidget {
   Widget build(BuildContext context) {
     AdminCubit cubit = AdminCubit.get(context);
     excuteFetchData(cubit);
-    return RefreshIndicator(
-      onRefresh: () => cubit.fetchRequests(),
-      child: BlocBuilder<AdminCubit, AdminState>(
-        buildWhen: ((previous, current) => previous != current),
-        builder: (contxt, state) {
-          if (state is FailureFetchRequests) {
-            return Center(
-                child: SvgPicture.asset('assets/icons/empty.svg',
-                    width: 30.w, height: 30.h));
-          } else if (state is FetchRequestsState) {
-            return ListView.builder(
-              itemCount: state.requests.length,
-              itemBuilder: (context, index) {
-                final request = state.requests[index];
+    return SafeArea(
+      child: RefreshIndicator(
+        displacement: 500,
+        onRefresh: () => cubit.fetchRequests(),
+        child: BlocBuilder<AdminCubit, AdminState>(
+          buildWhen: ((previous, current) => previous != current),
+          builder: (contxt, state) {
+            if (state is FailureState) {
+              return Center(
+                  child: SvgPicture.asset('assets/icons/empty.svg',
+                      width: 30.w, height: 30.h));
+            } else if (state is FetchRequestsState) {
+              if (state.requests.isEmpty) {
+                return Center(
+                    child: SvgPicture.asset(
+                  'assets/icons/empty.svg',
+                  width: 30.w,
+                  height: 30.h,
+                ));
+              }
+              return ListView.builder(
+                itemCount: state.requests.length,
+                itemBuilder: (context, index) {
+                  final request = state.requests[index];
 
-                return RequestItem(
-                  request: request,
-                  cubit: cubit,
-                );
-              },
-            );
-          } else if (state is LoadingRequestState) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Center(
-              child: SvgPicture.asset(
-            'assets/icons/empty.svg',
-            width: 30.w,
-            height: 30.h,
-          ));
-        },
+                  return RequestItem(
+                    request: request,
+                    cubit: cubit,
+                  );
+                },
+              );
+            } else if (state is LoadingRequestState) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return Center(
+                child: SvgPicture.asset(
+              'assets/icons/empty.svg',
+              width: 30.w,
+              height: 30.h,
+            ));
+          },
+        ),
       ),
     );
   }

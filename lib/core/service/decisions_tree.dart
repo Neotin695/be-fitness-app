@@ -35,7 +35,9 @@ class DecisionsTree extends StatelessWidget {
                   return const NotAcceptedScreen();
                 } else if (status == LogicConst.newTxt) {
                   if (FirebaseAuth.instance.currentUser!.email ==
-                      'mehani695@gmail.com') {
+                          'mehani695@gmail.com' ||
+                      FirebaseAuth.instance.currentUser!.email ==
+                          'asia24954@gmail.com ') {
                     return const MainAdminPage();
                   }
                   return const GetStartedScreen();

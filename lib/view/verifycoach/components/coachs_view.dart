@@ -28,7 +28,7 @@ class CoachsView extends StatelessWidget {
               final coach = CoachModel.fromMap(doc.data());
               return ListTile(
                 onTap: () {
-                  Navigator.pushNamed(context, ChatRoomPage.routeName, 
+                  Navigator.pushNamed(context, ChatRoomPage.routeName,
                       arguments: coach.id);
                 },
                 leading: const Icon(Icons.person),

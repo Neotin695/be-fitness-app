@@ -32,41 +32,37 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> sendMessage() async {
     if (message.text.isEmpty) return;
     if (!await isConntected()) {
-      emit(MessageSentFailureState(
+      emit(const MessageSentFailureState(
           message: 'No Internet,please connect to internet and try again'));
       return;
     }
 
-    final roomModel = initRoomModel();
-    final messageModel = initMessageModel();
-    final chatModel = initChatModel();
     emit(MessageUploadingState());
     _store
         .collection('chatRooms')
+        .doc(generateRoomId())
+        .set(initRoomModel().toMap());
+
+    _store
+        .collection('chatRooms')
+        .doc(generateRoomId())
+        .collection('messages')
         .doc(generateMessageId())
-        .set(initRoomModel().toMap())
-        .then((value) {
-      _store
-          .collection('chatRooms')
-          .doc(generateRoomId())
-          .collection('messages')
-          .doc(initMessageModel().id)
-          .set(initMessageModel().toMap());
-    });
+        .set(initMessageModel().toMap());
 
     _store
         .collection(LogicConst.users)
         .doc(receiverId)
         .collection('conversetions')
         .doc(generateRoomId())
-        .set(initChatModel().toMap());
+        .set((await initChatModel()).toMap());
 
     _store
         .collection(LogicConst.users)
         .doc(_auth!.uid)
         .collection('conversetions')
         .doc(generateRoomId())
-        .set(initChatModel().toMap())
+        .set((await initChatModel()).toMap())
         .then((value) => message.clear());
     emit(MessageSentState());
   }
@@ -74,9 +70,12 @@ class ChatCubit extends Cubit<ChatState> {
   Future<bool> isConntected() async => await InternetService().isConnected();
 
   String generateRoomId() {
-    if (_auth!.uid.codeUnits[0] < receiverId.codeUnits[0]) {
+    if (_auth!.uid.toLowerCase().codeUnits[0] <
+        receiverId.toLowerCase().codeUnits[0]) {
+      print(_auth!.uid + receiverId);
       return _auth!.uid + receiverId;
     } else {
+      print(receiverId + _auth!.uid);
       return receiverId + _auth!.uid;
     }
   }
@@ -94,51 +93,34 @@ class ChatCubit extends Cubit<ChatState> {
         receiverId: receiverId,
         messageType: messageType,
         isSeen: false,
-        time: DateFormat('hh:MM').format(DateTime.now()),
+        time: DateFormat('hh:mm').format(DateTime.now()),
         timestamp: FieldValue.serverTimestamp());
   }
 
-  ChatModel initChatModel() {
+  Future<ChatModel> initChatModel() async {
+    var userName = (await fetchUserData())['userName'];
     return ChatModel(
       chatRoomId: initRoomModel().roomId,
-      userPhotoUrl: fetchUserData()['profilePhoto'].isEmpty
-          ? ''
-          : fetchUserData()['profilePhoto'],
-      userName: fetchUserData()['userName'],
+      userPhotoUrl: '',
+      userName: userName,
       messageModel: initMessageModel(),
     );
   }
 
-  Map<String, dynamic> fetchUserData() {
+  Future<Map<String, dynamic>> fetchUserData() async {
     Map<String, dynamic> temp = {};
-    _store
-        .collection(LogicConst.users)
-        .where('id', isEqualTo: receiverId)
-        .get()
-        .then((value) {
-      temp = value.docs.first as Map<String, dynamic>;
-    });
-    return temp;
+    final data =
+        await _store.collection(LogicConst.users).doc(receiverId).get();
+
+    return data.data()!;
   }
 
-  List<MessageModel> fetchMessages() {
-    List<MessageModel> temp = [];
-    _streamSubscription?.cancel();
-    _streamSubscription = _store
-        .collection('chatRooms')
-        .doc(generateRoomId())
-        .collection('messages')
-        .orderBy('tempstamp')
-        .snapshots()
-        .listen((event) {
-      temp = List<MessageModel>.from(
-          event.docs.reversed.map((e) => MessageModel.fromMap(e.data())));
-    });
-    return temp;
-  }
-
-  String generateMessageId() =>
-      _store.collection('chatRooms').doc('messages').collection('message').id;
+  String generateMessageId() => _store
+      .collection('chatRooms')
+      .doc(generateRoomId())
+      .collection('messages')
+      .doc()
+      .id;
 
   @override
   Future<void> close() {

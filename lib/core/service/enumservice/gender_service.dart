@@ -3,6 +3,7 @@ import 'package:be_fitness_app/core/service/interfaces/enum_interface.dart';
 enum Gender { male, female }
 
 class GenderService implements EnumService<Gender> {
+  
   @override
   String convertEnumToString(Gender enumType) {
     switch (enumType) {

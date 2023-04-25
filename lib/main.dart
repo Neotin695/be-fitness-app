@@ -5,6 +5,7 @@ import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
 import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
+import 'package:be_fitness_app/view/chat/screens/message_page.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
@@ -63,7 +64,8 @@ class MainWidget extends StatelessWidget {
           HomeLayoutPage.routeName: (_) => const HomeLayoutPage(),
           BodyPartPage.routeName: (_) => const BodyPartPage(),
           ExcercisePage.routeName: (_) => const ExcercisePage(),
-          ChatRoomPage.routeName: (_)=> const ChatRoomPage(),
+          ChatRoomPage.routeName: (_) => const ChatRoomPage(),
+          MessagePage.routeName: (_) => const MessagePage(),
         },
       );
     });

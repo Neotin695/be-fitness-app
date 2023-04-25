@@ -4,6 +4,7 @@ import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../home/screens/home_layout_page.dart';
 import '../view/excercise_page.dart';
 
 class DrawerAdmin extends StatelessWidget {
@@ -11,36 +12,47 @@ class DrawerAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: [
-          Container(
-            width: double.infinity,
-            height: 20.h,
-            color: Colors.blue,
-            child: const Center(
-              child: Text(AppConst.brandTxt),
+    return SafeArea(
+      child: Drawer(
+        child: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 25.h,
+              color: Colors.blue,
+              child: Center(
+                child: Text(
+                  AppConst.brandTxt,
+                  style: TextStyle(fontSize: 25.sp),
+                ),
+              ),
             ),
-          ),
-          ListTile(
-            title: const Text('Home'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => Navigator.pushReplacementNamed(
-                context, MainAdminPage.routeName),
-          ),
-          ListTile(
-            title: const Text('Add body part'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, BodyPartPage.routeName),
-          ),
-          ListTile(
-            title: const Text('Add excercise'),
-            trailing: const Icon(Icons.arrow_forward_ios),
-            onTap: () => Navigator.pushReplacementNamed(
-                context, ExcercisePage.routeName),
-          ),
-        ],
+            ListTile(
+              title: const Text('Home'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => Navigator.pushReplacementNamed(
+                  context, MainAdminPage.routeName),
+            ),
+            ListTile(
+              title: const Text('Main App'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () =>
+                  Navigator.pushNamed(context, HomeLayoutPage.routeName),
+            ),
+            ListTile(
+              title: const Text('Add body part'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () => Navigator.pushReplacementNamed(
+                  context, BodyPartPage.routeName),
+            ),
+            ListTile(
+              title: const Text('Add excercise'),
+              trailing: const Icon(Icons.arrow_forward_ios),
+              onTap: () =>
+                  Navigator.pushNamed(context, ExcercisePage.routeName),
+            ),
+          ],
+        ),
       ),
     );
   }

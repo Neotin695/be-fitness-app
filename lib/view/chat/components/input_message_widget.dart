@@ -1,5 +1,6 @@
 import 'package:be_fitness_app/view/chat/cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:sizer/sizer.dart';
 
 class InputMessage extends StatelessWidget {
   final ChatCubit cubit;
@@ -7,15 +8,18 @@ class InputMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: cubit.message,
-      decoration: InputDecoration(
-          hintText: 'Type a message...',
-          border: InputBorder.none,
-          suffix: IconButton(
-            onPressed: () async => await cubit.sendMessage(),
-            icon: const Icon(Icons.send),
-          )),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
+      child: TextField(
+        controller: cubit.message,
+        decoration: InputDecoration(
+            hintText: 'Type a message...',
+            border: InputBorder.none,
+            suffix: IconButton(
+              onPressed: () async => await cubit.sendMessage(),
+              icon: const Icon(Icons.send),
+            )),
+      ),
     );
   }
 }

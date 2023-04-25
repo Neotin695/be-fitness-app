@@ -1,9 +1,15 @@
+import 'dart:math';
+
+import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
+import 'package:be_fitness_app/core/service/enumservice/target_muscles.dart';
 import 'package:be_fitness_app/core/service/internet_service.dart';
+import 'package:be_fitness_app/models/excercise_model.dart';
 import 'package:be_fitness_app/models/request_online_coach.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 part 'admin_state.dart';
@@ -13,6 +19,37 @@ class AdminCubit extends Cubit<AdminState> {
   AdminCubit() : super(AdminInitial());
 
   final _store = FirebaseFirestore.instance;
+  final GlobalKey<FormState> formKey = GlobalKey();
+  final TextEditingController excerciseName = TextEditingController();
+  final TextEditingController gifUrl = TextEditingController();
+
+  String selectedBodyPart = 'neck';
+  String selectedTargetMuscles = 'triceps';
+  Duration selectedTime = const Duration(seconds: 2);
+
+  Future<void> uploadExcercise() async {
+    emit(UploadingExcercise());
+    if (!await InternetService().isConnected()) {
+      emitFailure();
+      return;
+    }
+    await _store
+        .collection(LogicConst.excercises)
+        .doc(LogicConst.excercise)
+        .collection(selectedBodyPart)
+        .doc()
+        .set(initModel().toMap());
+    emit(UploadedExcercise());
+  }
+
+  ExcerciseModel initModel() {
+    return ExcerciseModel(
+        gifUrl: gifUrl.text,
+        name: excerciseName.text,
+        targetMuscles:
+            TargetMusclesService().convertStringToEnum(selectedTargetMuscles),
+        timer: [selectedTime.inMinutes, selectedTime.inSeconds]);
+  }
 
   Future<void> fetchRequests() async {
     emit(LoadingRequestState());
@@ -30,9 +67,9 @@ class AdminCubit extends Cubit<AdminState> {
         emit(FetchRequestsState(requests: tempRequests));
       });
     } on FirebaseException catch (e) {
-      emit(FailureFetchRequests(message: e.toString()));
+      emit(FailureState(message: e.toString()));
     } catch (e) {
-      emit(FailureFetchRequests(message: e.toString()));
+      emit(FailureState(message: e.toString()));
     }
   }
 
@@ -57,17 +94,15 @@ class AdminCubit extends Cubit<AdminState> {
 
       emit(RejectRequest());
     } on FirebaseException catch (e) {
-      emit(FailureFetchRequests(message: e.toString()));
+      emit(FailureState(message: e.toString()));
     } catch (e) {
-      emit(FailureFetchRequests(message: e.toString()));
+      emit(FailureState(message: e.toString()));
     }
     emit(AccepteRequest());
   }
 
   void emitFailure() {
-    return emit(const FailureFetchRequests(
-        message:
-            'no internet connection!, please check you internet and try again'));
+    return emit(const FailureState(message: AppConst.noInternet));
   }
 
   Future<void> rejectRequest(id) async {
@@ -86,9 +121,9 @@ class AdminCubit extends Cubit<AdminState> {
 
       emit(RejectRequest());
     } on FirebaseException catch (e) {
-      emit(FailureFetchRequests(message: e.toString()));
+      emit(FailureState(message: e.toString()));
     } catch (e) {
-      emit(FailureFetchRequests(message: e.toString()));
+      emit(FailureState(message: e.toString()));
     }
   }
 }

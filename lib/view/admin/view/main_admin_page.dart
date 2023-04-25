@@ -15,8 +15,6 @@ class MainAdminPage extends StatelessWidget {
     return Scaffold(
       drawer: const DrawerAdmin(),
       appBar: AppBar(
-        title: const Text('Main Admin'),
-        automaticallyImplyLeading: false,
         actions: [
           IconButton(
               onPressed: () => FirebaseAuth.instance.signOut(),
@@ -24,6 +22,7 @@ class MainAdminPage extends StatelessWidget {
         ],
       ),
       body: BlocProvider(
+        lazy: false,
         create: (context) => AdminCubit(),
         child: const MainAdminView(),
       ),

@@ -7,6 +7,8 @@ class AppConst {
   static const String verifyCoachHeading = 'Request Online Coaching';
   static const String notAceeptedHeading =
       'your request under review please wait, we notify you when done';
+  static const String noInternet =
+      'no internet connection!, please check you internet and try again';
 
   static const String appBarWelcome = 'Welcome To BE FITNESS APP';
   static const String confirmTxt = 'YES';

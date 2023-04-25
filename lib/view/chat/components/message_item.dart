@@ -11,8 +11,8 @@ class MessageItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final id = FirebaseAuth.instance.currentUser!.uid;
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+      margin: EdgeInsets.symmetric(horizontal: 0.5.w, vertical: 2.h),
+      width: 80.w,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(25),
           color: id == message.senderId ? Colors.blue : Colors.cyan),
