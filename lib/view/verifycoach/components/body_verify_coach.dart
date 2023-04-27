@@ -38,8 +38,7 @@ class _BodyVerifyCoachState extends State<BodyVerifyCoach> {
           key: cubit.key,
           child: Column(
             children: [
-              SvgPicture.asset(MediaConstance.verify,
-                  width: 25.w, height: 25.h),
+              SvgPicture.asset(MediaConst.verify, width: 25.w, height: 25.h),
               Text(
                 AppConst.verifyCoachHeading,
                 style: TextStyle(fontSize: 25.sp),

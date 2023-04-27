@@ -1,6 +1,6 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/view/admin/view/body_part_page.dart';
-import 'package:be_fitness_app/view/admin/view/excercise_page.dart';
+import 'package:be_fitness_app/view/admin/view/excercise_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
@@ -9,8 +9,11 @@ import 'package:be_fitness_app/view/chat/screens/message_page.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_screen.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
+import 'package:be_fitness_app/view/profile/screens/profile_page.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/verify_coach_screen.dart';
+import 'package:be_fitness_app/view/workout/screens/excercises_page.dart';
+import 'package:be_fitness_app/view/workout/screens/play_excercise_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -63,9 +66,12 @@ class MainWidget extends StatelessWidget {
           NotAcceptedScreen.routeName: (_) => const NotAcceptedScreen(),
           HomeLayoutPage.routeName: (_) => const HomeLayoutPage(),
           BodyPartPage.routeName: (_) => const BodyPartPage(),
-          ExcercisePage.routeName: (_) => const ExcercisePage(),
+          ExcerciseAdminPage.routeName: (_) => const ExcerciseAdminPage(),
           ChatRoomPage.routeName: (_) => const ChatRoomPage(),
           MessagePage.routeName: (_) => const MessagePage(),
+          ExcercisePage.routeName: (_) => const ExcercisePage(),
+          PlayExcercisePage.routeName: (_) => const PlayExcercisePage(),
+          ProfilePage.routeName: (_) => const ProfilePage(),
         },
       );
     });

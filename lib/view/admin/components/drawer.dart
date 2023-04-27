@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../home/screens/home_layout_page.dart';
-import '../view/excercise_page.dart';
+import '../view/excercise_admin_page.dart';
 
 class DrawerAdmin extends StatelessWidget {
   const DrawerAdmin({super.key});
@@ -49,7 +49,7 @@ class DrawerAdmin extends StatelessWidget {
               title: const Text('Add excercise'),
               trailing: const Icon(Icons.arrow_forward_ios),
               onTap: () =>
-                  Navigator.pushNamed(context, ExcercisePage.routeName),
+                  Navigator.pushNamed(context, ExcerciseAdminPage.routeName),
             ),
           ],
         ),

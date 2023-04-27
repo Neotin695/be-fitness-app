@@ -14,16 +14,15 @@ class LogicConst {
   static const int second = 1;
 
   static const List<String> bodyPart = [
-    "back",
     "cardio",
     "chest",
-    "lower arms",
-    "lower legs",
-    "neck",
+    "back",
     "shoulders",
-    "upper arms",
-    "upper legs",
-    "waist"
+    "arms",
+    "legs",
+    "neck",
+    "waist",
+    'abs',
   ];
 
   static const List<String> targetMuscles = [

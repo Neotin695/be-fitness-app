@@ -9,6 +9,7 @@ enum BodyPart {
   neck,
   shoulders,
   waist,
+  abs,
 }
 
 class BodyPartService implements EnumService<BodyPart> {
@@ -31,6 +32,8 @@ class BodyPartService implements EnumService<BodyPart> {
         return 'shoulders';
       case BodyPart.waist:
         return 'waist';
+      case BodyPart.abs:
+        return 'abs';
     }
   }
 
@@ -53,6 +56,8 @@ class BodyPartService implements EnumService<BodyPart> {
         return BodyPart.shoulders;
       case 'waist':
         return BodyPart.waist;
+      case 'abs':
+        return BodyPart.abs;
       default:
         return BodyPart.back;
     }

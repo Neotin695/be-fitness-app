@@ -49,7 +49,7 @@ class BodyNotAccepted extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SvgPicture.asset(
-                  MediaConstance.waiting,
+                  MediaConst.waiting,
                   width: 30.w,
                   height: 30.h,
                 ),

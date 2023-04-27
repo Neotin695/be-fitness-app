@@ -28,7 +28,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
         children: [
           SizedBox(height: 4.h),
           SvgPicture.asset(
-            MediaConstance.choose,
+            MediaConst.choose,
             width: 25.w,
             height: 25.h,
           ),

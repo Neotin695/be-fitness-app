@@ -97,14 +97,11 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
       emit(const RequestSentFailure(message: 'somthing want wrong!'));
       return;
     }
-    final requestData = initDataReq(tempDownUrl);
+    request = initDataReq(tempDownUrl);
     final coachData = initDataCoach();
 
     _store.collection(LogicConst.users).doc(_auth!.uid).set(coachData.toMap());
-    _store
-        .collection(LogicConst.requests)
-        .doc(_auth!.uid)
-        .set(requestData.toMap());
+    _store.collection(LogicConst.requests).doc(_auth!.uid).set(request.toMap());
     FirebaseFirestore.instance
         .collection(LogicConst.tempUser)
         .doc(coachData.id)
@@ -186,7 +183,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
         address: address,
         certificateId: certificateId.text,
         nationalId: nationalId.text,
-        profilePhoto: '',
+        profilePhoto: request.personalImg,
         gender: GenderService().convertStringToEnum(selectedGender),
         rating: RatingModel(
           totalRating: 0,

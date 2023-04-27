@@ -9,14 +9,14 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 
-class ExcerciseView extends StatefulWidget {
-  const ExcerciseView({super.key});
+class ExcerciseAdminView extends StatefulWidget {
+  const ExcerciseAdminView({super.key});
 
   @override
-  State<ExcerciseView> createState() => _ExcerciseViewState();
+  State<ExcerciseAdminView> createState() => _ExcerciseAdminViewState();
 }
 
-class _ExcerciseViewState extends State<ExcerciseView> {
+class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
   @override
   Widget build(BuildContext context) {
     AdminCubit cubit = AdminCubit.get(context);
@@ -48,7 +48,7 @@ class _ExcerciseViewState extends State<ExcerciseView> {
               ),
               SizedBox(height: 3.h),
               SvgPicture.asset(
-                MediaConstance.workout,
+                MediaConst.workout,
                 width: 30.w,
                 height: 30.h,
               ),

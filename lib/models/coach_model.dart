@@ -11,14 +11,15 @@ class CoachModel extends Equatable {
   bool isCoach;
   String userName;
   String email;
-  String birthDate;
+  AddressModel address;
   String profilePhoto;
+  Gender gender;
+  
+  String birthDate;
   String certificateId;
   String nationalId;
-  List<String> subscribers;
-  AddressModel address;
   RatingModel rating;
-  Gender gender;
+  List<String> subscribers;
   CoachModel({
     required this.id,
     required this.state,

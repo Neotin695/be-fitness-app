@@ -11,10 +11,11 @@ class TraineeModel extends Equatable {
   String email;
   AddressModel address;
   String profilePhoto;
+  Gender gender;
+  
   int age;
   double height;
   double weight;
-  Gender gender;
   Level level;
 
   TraineeModel({

@@ -47,7 +47,7 @@ class _BodyStartedState extends State<BodyStarted> {
             children: [
               SizedBox(height: 2.h),
               SvgPicture.asset(
-                MediaConstance.account,
+                MediaConst.account,
                 width: 15.w,
                 height: 15.h,
               ),

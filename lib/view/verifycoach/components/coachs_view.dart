@@ -19,30 +19,45 @@ class CoachsView extends StatelessWidget {
       stream: FirebaseFirestore.instance
           .collection(LogicConst.users)
           .where('isCoach', isEqualTo: true)
-          .where('id',isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
+          .where('id', isNotEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .snapshots(),
       builder: (_, snapshot) {
         if (snapshot.hasData) {
           return ListView(
             children: snapshot.data!.docs.map((doc) {
               final coach = CoachModel.fromMap(doc.data());
-              return ListTile(
-                onTap: () {
-                  Navigator.pushNamed(context, ChatRoomPage.routeName,
-                      arguments: coach.id);
-                },
-                leading: const Icon(Icons.person),
-                title: Text(coach.userName),
-                subtitle:
-                    Text(GenderService().convertEnumToString(coach.gender)),
+              return Container(
+                margin: EdgeInsets.symmetric(vertical: 2.h),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10)),
+                  elevation: 2,
+                  child: ListTile(
+                    onTap: () {
+                      Navigator.pushNamed(context, ChatRoomPage.routeName,
+                          arguments: coach.id);
+                    },
+                    leading: Image.network(
+                      coach.profilePhoto,
+                      width: 25.w,
+                      height: 25.h,
+                      fit: BoxFit.cover,
+                    ),
+                    title: Text(coach.userName),
+                    subtitle:
+                        Text(GenderService().convertEnumToString(coach.gender)),
+                  ),
+                ),
               );
             }).toList(),
           );
         }
-        return SvgPicture.asset(
-          MediaConstance.empty,
-          width: 30.w,
-          height: 30.h,
+        return Center(
+          child: SvgPicture.asset(
+            MediaConst.empty,
+            width: 30.w,
+            height: 30.h,
+          ),
         );
       },
     );

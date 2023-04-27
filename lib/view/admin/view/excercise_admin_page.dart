@@ -4,9 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../components/excercise_view.dart';
 
-class ExcercisePage extends StatelessWidget {
-  static const String routeName = '/exercise';
-  const ExcercisePage({super.key});
+class ExcerciseAdminPage extends StatelessWidget {
+  static const String routeName = '/exerciseAdminPage';
+  const ExcerciseAdminPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class ExcercisePage extends StatelessWidget {
       ),
       body: BlocProvider(
         create: (context) => AdminCubit(),
-        child: const ExcerciseView(),
+        child: const ExcerciseAdminView(),
       ),
     );
   }
