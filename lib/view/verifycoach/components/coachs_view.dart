@@ -34,6 +34,7 @@ class CoachsView extends StatelessWidget {
                   elevation: 2,
                   child: ListTile(
                     onTap: () {
+                      print(coach.id);
                       Navigator.pushNamed(context, ChatRoomPage.routeName,
                           arguments: coach.id);
                     },

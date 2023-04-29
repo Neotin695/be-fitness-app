@@ -76,12 +76,10 @@ mixin PickMedia {
     return tempDownloadUrl;
   }
 
-  Future<String> uploadSingleFile(String filePath, Reference reference) async {
-    final task =
-        await reference.child(filePath.split('/').last).putFile(File(filePath));
-    if (task.state == TaskState.error) {
-      throw 'somthing went wrong';
-    }
-    return await reference.getDownloadURL();
+  Future<TaskSnapshot> uploadSingleFile(
+      String filePath, Reference reference) async {
+    return await reference
+        .child(filePath.split('/').last)
+        .putFile(File(filePath));
   }
 }

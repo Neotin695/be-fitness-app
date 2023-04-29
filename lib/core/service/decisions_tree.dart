@@ -1,6 +1,6 @@
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
-import 'package:be_fitness_app/view/getstarted/screens/getstarted_screen.dart';
+import 'package:be_fitness_app/view/getstarted/screens/getstarted_page.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

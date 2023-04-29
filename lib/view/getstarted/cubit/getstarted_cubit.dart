@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
+import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/address_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,7 +17,7 @@ import '../../../models/trainee_model.dart';
 
 part 'getstarted_state.dart';
 
-class GetstartedCubit extends Cubit<GetstartedState> {
+class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
   static GetstartedCubit get(context) => BlocProvider.of(context);
   GetstartedCubit() : super(GetstartedInitial());
   final TextEditingController userName = TextEditingController();
@@ -24,22 +28,24 @@ class GetstartedCubit extends Cubit<GetstartedState> {
 
   String genderSelected = 'male';
   String levelSelected = 'intermediate';
+  String imagePath = '';
   int currentStep = 0;
 
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
 
   final _store = FirebaseFirestore.instance.collection(LogicConst.users);
-  final _auth = FirebaseAuth.instance.currentUser;
+  final _storage = FirebaseStorage.instance;
+  final _auth = FirebaseAuth.instance.currentUser!;
 
-  TraineeModel initData() {
+  TraineeModel initData(profilePhoto) {
     return TraineeModel(
-        id: _auth!.uid,
+        id: _auth.uid,
         userName: userName.text,
         age: int.parse(age.text),
         address: address,
-        profilePhoto: '',
-        email: _auth!.email!,
+        profilePhoto: profilePhoto,
+        email: _auth.email!,
         gender: GenderService().convertStringToEnum(genderSelected),
         level: LevelService().convertStringToEnum(levelSelected),
         height: double.parse(height.text),
@@ -56,8 +62,8 @@ class GetstartedCubit extends Cubit<GetstartedState> {
     if (address.country.isEmpty) {
       emit(const UploadFailure(message: 'please bring address'));
     }
-    emit(UploadLoading());
-    final trainee = initData();
+    final profilePhoto = await uploadProfilePhoto();
+    final trainee = initData(profilePhoto);
     try {
       _store.doc(trainee.id).set(trainee.toMap());
       emit(UploadSucess());
@@ -68,6 +74,20 @@ class GetstartedCubit extends Cubit<GetstartedState> {
     } on FirebaseException catch (e) {
       emit(UploadFailure(message: e.toString()));
     }
+  }
+
+  Future<String> uploadProfilePhoto() async {
+    final task = await uploadSingleFile(imagePath, _storage.ref(_auth.uid));
+
+    if (task.state == TaskState.running) {
+      emit(UploadLoading());
+    }
+
+    if (task.state == TaskState.success) {
+      emit(UploadSucess());
+      return await task.ref.getDownloadURL();
+    }
+    return '';
   }
 
   void resetValues() {

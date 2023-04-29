@@ -2,7 +2,7 @@ import 'package:be_fitness_app/view/getstarted/cubit/getstarted_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../components/body_getstarted.dart';
+import '../components/create_profile_view.dart';
 
 class CreateProfileScreen extends StatefulWidget {
   static const String routeName = 'createProfileScreen';
@@ -19,7 +19,7 @@ class _CreateProfileScreenState extends State<CreateProfileScreen> {
       appBar: AppBar(),
       body: BlocProvider(
         create: (context) => GetstartedCubit(),
-        child: const BodyStarted(),
+        child: const CreateProfileView(),
       ),
     );
   }

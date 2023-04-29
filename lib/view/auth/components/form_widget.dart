@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/app_constance.dart';
-import '../../getstarted/screens/getstarted_screen.dart';
+import '../../getstarted/screens/getstarted_page.dart';
 import '../../home/screens/home_layout_page.dart';
 import '../cubit/auth_cubit.dart';
 

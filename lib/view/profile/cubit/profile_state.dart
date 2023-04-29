@@ -8,3 +8,12 @@ abstract class ProfileState extends Equatable {
 }
 
 class ProfileInitial extends ProfileState {}
+
+class UploadingDataState extends ProfileState {}
+
+class UploadFailureState extends ProfileState {
+  final String message;
+  const UploadFailureState({required this.message});
+}
+
+class UploadSuccess extends ProfileState {}

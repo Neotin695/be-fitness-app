@@ -1,8 +1,12 @@
+import 'dart:io';
+
 import 'package:be_fitness_app/core/appconstance/app_constance.dart';
+import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
@@ -11,16 +15,16 @@ import '../../home/screens/home_layout_page.dart';
 import '../cubit/getstarted_cubit.dart';
 import 'custom_text_field.dart';
 
-class BodyStarted extends StatefulWidget {
-  const BodyStarted({
+class CreateProfileView extends StatefulWidget {
+  const CreateProfileView({
     super.key,
   });
 
   @override
-  State<BodyStarted> createState() => _BodyStartedState();
+  State<CreateProfileView> createState() => _CreateProfileViewState();
 }
 
-class _BodyStartedState extends State<BodyStarted> {
+class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
   @override
   Widget build(BuildContext context) {
     GetstartedCubit cubit = GetstartedCubit.get(context);
@@ -104,6 +108,14 @@ class _BodyStartedState extends State<BodyStarted> {
         title: const Text(AppConst.basicInfoTxt),
         content: Column(
           children: [
+            InkWell(
+              onTap: () async {
+                cubit.imagePath = await pickSingleImage(ImageSource.camera);
+              },
+              child: CircleAvatar(
+                foregroundImage: FileImage(File(cubit.imagePath)),
+              ),
+            ),
             CustomTextField(
               cn: cubit.userName,
               title: AppConst.userNameTxt,

@@ -11,7 +11,7 @@ import 'package:sizer/sizer.dart';
 import '../screens/chat_room_page.dart';
 
 class MessageView extends StatelessWidget {
-  const MessageView({super.key});
+  const  MessageView({super.key});
 
   @override
   Widget build(BuildContext context) {
