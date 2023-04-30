@@ -7,7 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/app_constance.dart';
-import '../cubit/verifycoach_cubit.dart';
+import '../cubit/coach_cubit.dart';
 
 class NotAcceptedScreen extends StatefulWidget {
   static const String routeName = 'not accepted';
@@ -21,7 +21,7 @@ class _NotAcceptedScreenState extends State<NotAcceptedScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => VerifyCoachCubit(),
+      create: (context) => CoachCubit(),
       child: const BodyNotAccepted(),
     );
   }
@@ -34,9 +34,9 @@ class BodyNotAccepted extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    VerifyCoachCubit cubit = VerifyCoachCubit.get(context);
+    CoachCubit cubit = CoachCubit.get(context);
     cubit.checkCoachState();
-    return BlocBuilder<VerifyCoachCubit, VerifyCoachState>(
+    return BlocBuilder<CoachCubit, CoachState>(
       builder: (context, state) {
         if (state is AceeptedState) {
           return const HomeLayoutPage();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../components/form_widget.dart';
+import '../components/auth_view.dart';
 import '../components/video_background_widget.dart';
 import '../cubit/auth_cubit.dart';
 

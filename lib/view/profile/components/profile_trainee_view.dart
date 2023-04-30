@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/trainee_model.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
+import 'package:be_fitness_app/view/profile/screens/update_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
@@ -92,7 +93,12 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
             ),
           ),
           const Divider(),
-          ElevatedButton(onPressed: () {}, child: const Text('Edit Profile'))
+          ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, UpdateProfilePage.routeName,
+                    arguments: widget.traineeModel);
+              },
+              child: const Text('Edit Profile'))
         ],
       ),
     );

@@ -1,7 +1,7 @@
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/models/coach_model.dart';
-import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
+import 'package:be_fitness_app/view/coach/screens/review_coach_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +23,14 @@ class CoachsView extends StatelessWidget {
           .snapshots(),
       builder: (_, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data!.docs.isEmpty) {
+            return Center(
+                child: SvgPicture.asset(
+              MediaConst.empty,
+              width: 30.w,
+              height: 30.h,
+            ));
+          }
           return ListView(
             children: snapshot.data!.docs.map((doc) {
               final coach = CoachModel.fromMap(doc.data());
@@ -34,9 +42,8 @@ class CoachsView extends StatelessWidget {
                   elevation: 2,
                   child: ListTile(
                     onTap: () {
-                      print(coach.id);
-                      Navigator.pushNamed(context, ChatRoomPage.routeName,
-                          arguments: coach.id);
+                      Navigator.pushNamed(context, ReviewCoachPage.routeName,
+                          arguments: coach);
                     },
                     leading: Image.network(
                       coach.profilePhoto,
@@ -52,6 +59,8 @@ class CoachsView extends StatelessWidget {
               );
             }).toList(),
           );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
         }
         return Center(
           child: SvgPicture.asset(

@@ -1,5 +1,3 @@
-import 'package:be_fitness_app/view/profile/components/profile_coach_view.dart';
-import 'package:be_fitness_app/view/profile/components/profile_trainee_view.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

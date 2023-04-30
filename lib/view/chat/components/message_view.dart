@@ -1,7 +1,6 @@
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/models/chat_model.dart';
-import 'package:be_fitness_app/view/chat/cubit/chat_cubit.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -10,12 +9,17 @@ import 'package:sizer/sizer.dart';
 
 import '../screens/chat_room_page.dart';
 
-class MessageView extends StatelessWidget {
-  const  MessageView({super.key});
+class MessageView extends StatefulWidget {
+  const MessageView({super.key});
 
   @override
+  State<MessageView> createState() => _MessageViewState();
+}
+
+class _MessageViewState extends State<MessageView> {
+  @override
   Widget build(BuildContext context) {
-    final cubit = ChatCubit.get(context);
+    bool isNew = false;
     return StreamBuilder<QuerySnapshot>(
       stream: FirebaseFirestore.instance
           .collection(LogicConst.users)
@@ -36,6 +40,9 @@ class MessageView extends StatelessWidget {
             children: snapshot.data!.docs.map((doc) {
               final chatRoom =
                   ChatModel.fromMap(doc.data() as Map<String, dynamic>);
+
+              isNew = chatRoom.messageModel.senderId !=
+                  FirebaseAuth.instance.currentUser!.uid;
               return Container(
                 margin: EdgeInsets.symmetric(vertical: 2.h),
                 child: Card(
@@ -54,14 +61,38 @@ class MessageView extends StatelessWidget {
                       Icons.person,
                       size: 25.sp,
                     ),
-                    trailing: Text(chatRoom.messageModel.time),
-                    title: Text(chatRoom.userName),
-                    subtitle: Text(chatRoom.messageModel.message),
+                    trailing: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(chatRoom.messageModel.time),
+                        isNew
+                            ? Container(
+                                padding: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(365),
+                                    color: Colors.green),
+                                child: const Text('New'),
+                              )
+                            : const SizedBox()
+                      ],
+                    ),
+                    title: Text(
+                      chatRoom.userName,
+                    ),
+                    subtitle: Text(
+                      chatRoom.messageModel.message,
+                      style: TextStyle(
+                          color: isNew ? Colors.green : Colors.grey,
+                          fontWeight:
+                              isNew ? FontWeight.bold : FontWeight.normal),
+                    ),
                   ),
                 ),
               );
             }).toList(),
           );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
         }
         return Center(
             child: SvgPicture.asset(

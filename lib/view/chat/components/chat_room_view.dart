@@ -9,6 +9,8 @@ class ChatRoomView extends StatelessWidget {
   final String receiverId;
   const ChatRoomView({super.key, required this.receiverId});
 
+  
+
   @override
   Widget build(BuildContext context) {
     ChatCubit cubit = ChatCubit.get(context);

@@ -77,7 +77,7 @@ class AdminCubit extends Cubit<AdminState> {
       _store.collection(LogicConst.requests).get().then((value) {
         for (var doc in value.docs) {
           tempRequests.add(RequestOnlineCoachModel.fromMap(doc.data()));
-          //print(doc.data());
+         
         }
         emit(FetchRequestsState(requests: tempRequests));
       });

@@ -1,4 +1,4 @@
-import 'package:be_fitness_app/view/verifycoach/cubit/verifycoach_cubit.dart';
+import 'package:be_fitness_app/view/coach/cubit/coach_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -11,7 +11,7 @@ class CoachsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
-        create: (context) => VerifyCoachCubit(),
+        create: (context) => CoachCubit(),
         child: const CoachsView(),
       ),
     );

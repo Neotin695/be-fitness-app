@@ -1,5 +1,4 @@
-import 'package:be_fitness_app/view/verifycoach/components/stepper_widget.dart';
-import 'package:be_fitness_app/view/verifycoach/screens/not_accepted_screen.dart';
+import 'package:be_fitness_app/view/coach/components/stepper_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,7 +7,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/app_constance.dart';
 import '../../../core/appconstance/media_constance.dart';
-import '../cubit/verifycoach_cubit.dart';
+import '../cubit/coach_cubit.dart';
+import '../screens/not_accepted_screen.dart';
 
 class BodyVerifyCoach extends StatefulWidget {
   const BodyVerifyCoach({super.key});
@@ -20,8 +20,8 @@ class BodyVerifyCoach extends StatefulWidget {
 class _BodyVerifyCoachState extends State<BodyVerifyCoach> {
   @override
   Widget build(BuildContext context) {
-    VerifyCoachCubit cubit = VerifyCoachCubit.get(context);
-    return BlocListener<VerifyCoachCubit, VerifyCoachState>(
+    CoachCubit cubit = CoachCubit.get(context);
+    return BlocListener<CoachCubit, CoachState>(
       listener: (context, state) {
         if (state is ImgUploading) {
           CoolAlert.show(context: context, type: CoolAlertType.loading);

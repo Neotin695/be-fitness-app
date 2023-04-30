@@ -21,20 +21,20 @@ import 'package:be_fitness_app/models/request_online_coach.dart';
 
 import '../../../models/address_model.dart';
 
-part 'verifycoach_state.dart';
+part 'coach_state.dart';
 
-class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
-  static VerifyCoachCubit get(context) => BlocProvider.of(context);
-  VerifyCoachCubit() : super(VerifyCoachInitial());
+class CoachCubit extends Cubit<CoachState> with PickMedia {
+  static CoachCubit get(context) => BlocProvider.of(context);
+  CoachCubit() : super(CoachInitial());
   final TextEditingController name = TextEditingController();
   final TextEditingController certificateId = TextEditingController();
   final TextEditingController nationalId = TextEditingController();
 
   final GlobalKey<FormState> key = GlobalKey();
 
-  final _store = FirebaseFirestore.instance;
+  final store = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
-  final _auth = FirebaseAuth.instance.currentUser;
+  final auth = FirebaseAuth.instance.currentUser!;
   StreamSubscription? streamSubscription;
 
   AddressModel address = AddressModel(
@@ -78,6 +78,49 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
     }
   }
 
+  Future<CoachModel> subscribe(CoachModel coach) async {
+    coach.subscribers.add(auth.uid);
+
+    await  store
+        .collection(LogicConst.users)
+        .doc(coach.id)
+        .update(coach.toMap());
+    return CoachModel.fromMap(
+        (await store.collection(LogicConst.users).doc(coach.id).get()).data()
+            as Map<String, dynamic>);
+  }
+  Future<CoachModel> unSubscribe(CoachModel coach) async {
+    coach.subscribers.removeWhere((val)=> auth.uid == val);
+
+    await  store
+        .collection(LogicConst.users)
+        .doc(coach.id)
+        .update(coach.toMap());
+    return CoachModel.fromMap(
+        (await store.collection(LogicConst.users).doc(coach.id).get()).data()
+            as Map<String, dynamic>);
+  }
+
+  Future<CoachModel> rate(double rateValue, CoachModel coach) async {
+    if (isAlreadyRated(coach)) {
+      coach.rating.ratingCount.add(auth.uid);
+      coach.rating.totalRating += rateValue;
+      var evaluatorsCount = coach.rating.ratingCount.length;
+      var totalRating = coach.rating.totalRating;
+      coach.rating.ratingAverage = totalRating / evaluatorsCount;
+      store.collection(LogicConst.users).doc(coach.id).update(coach.toMap());
+
+      return CoachModel.fromMap(
+          (await store.collection(LogicConst.users).doc(coach.id).get()).data()
+              as Map<String, dynamic>);
+    } else {
+      return coach;
+    }
+  }
+
+  bool isAlreadyRated(CoachModel coach) =>
+      !coach.rating.ratingCount.contains(auth.uid);
+
   Future<void> sentRequest() async {
     if (!key.currentState!.validate()) {
       return;
@@ -100,8 +143,8 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
     request = initDataReq(tempDownUrl);
     final coachData = initDataCoach();
 
-    _store.collection(LogicConst.users).doc(_auth!.uid).set(coachData.toMap());
-    _store.collection(LogicConst.requests).doc(_auth!.uid).set(request.toMap());
+    store.collection(LogicConst.users).doc(auth.uid).set(coachData.toMap());
+    store.collection(LogicConst.requests).doc(auth.uid).set(request.toMap());
     FirebaseFirestore.instance
         .collection(LogicConst.tempUser)
         .doc(coachData.id)
@@ -145,7 +188,7 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
         request.nationalIdBakcImg,
         request.certificateIdImg,
         request.personalImg
-      ], _storage.ref(_auth!.uid));
+      ], _storage.ref(auth.uid));
 
       emit(ImgUploadSucess());
       return result;
@@ -174,11 +217,11 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
 
   CoachModel initDataCoach() {
     return CoachModel(
-        id: _auth!.uid,
+        id: auth.uid,
         state: false,
         isCoach: true,
         userName: name.text,
-        email: _auth!.email!,
+        email: auth.email!,
         birthDate: DateFormat('yyyy-mm-dd').format(birthDate),
         address: address,
         certificateId: certificateId.text,
@@ -195,9 +238,9 @@ class VerifyCoachCubit extends Cubit<VerifyCoachState> with PickMedia {
 
   void checkCoachState() {
     streamSubscription?.cancel();
-    streamSubscription = _store
+    streamSubscription = store
         .collection(LogicConst.tempUser)
-        .doc(_auth!.uid)
+        .doc(auth.uid)
         .snapshots()
         .listen((event) {
       var state = (event.data() as Map<String, dynamic>)[LogicConst.status];

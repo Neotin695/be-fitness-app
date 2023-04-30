@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:be_fitness_app/core/service/enumservice/target_muscles.dart';
 
+// ignore: must_be_immutable
 class ExcerciseModel extends Equatable {
   String name;
   String gifUrl;

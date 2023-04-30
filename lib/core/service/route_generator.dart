@@ -1,19 +1,20 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
-import 'package:be_fitness_app/models/excercise_model.dart';
 import 'package:be_fitness_app/view/admin/view/excercise_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
 import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
+import 'package:be_fitness_app/view/coach/screens/review_coach_page.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_page.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_page.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:be_fitness_app/view/profile/screens/profile_page.dart';
-import 'package:be_fitness_app/view/verifycoach/screens/verify_coach_screen.dart';
+import 'package:be_fitness_app/view/coach/screens/verify_coach_screen.dart';
 import 'package:be_fitness_app/view/workout/screens/play_excercise_page.dart';
 import 'package:flutter/material.dart';
 
 import '../../view/admin/view/main_admin_page.dart';
-import '../../view/verifycoach/screens/not_accepted_screen.dart';
+import '../../view/profile/screens/update_profile_page.dart';
+import '../../view/coach/screens/not_accepted_screen.dart';
 import '../../view/workout/screens/excercises_page.dart';
 
 class RouteGenerator {
@@ -29,8 +30,8 @@ class RouteGenerator {
         return _pageRoute(const WelcomeScreen());
       case GetStartedScreen.routeName:
         return _pageRoute(const GetStartedScreen());
-      case VerifyCoachScreen.routeName:
-        return _pageRoute(const VerifyCoachScreen());
+      case VerifyCoachPage.routeName:
+        return _pageRoute(const VerifyCoachPage());
       case CreateProfileScreen.routeName:
         return _pageRoute(const CreateProfileScreen());
       case NotAcceptedScreen.routeName:
@@ -40,16 +41,22 @@ class RouteGenerator {
       case ExcerciseAdminPage.routeName:
         return _pageRoute(const ExcerciseAdminPage());
       case ChatRoomPage.routeName:
-        final arg = routeSettings.arguments as String;
+        final arg = routeSettings.arguments;
         return _pageRoute(const ChatRoomPage(), arg);
       case ExcercisePage.routeName:
-        final arg = routeSettings.arguments as List<dynamic>;
+        final arg = routeSettings.arguments;
         return _pageRoute(const ExcercisePage(), arg);
       case PlayExcercisePage.routeName:
-        final arg = routeSettings.arguments as ExcerciseModel;
+        final arg = routeSettings.arguments;
         return _pageRoute(const PlayExcercisePage(), arg);
       case ProfilePage.routeName:
         return _pageRoute(const ProfilePage());
+      case UpdateProfilePage.routeName:
+        final arg = routeSettings.arguments;
+        return _pageRoute(const UpdateProfilePage(), arg);
+      case ReviewCoachPage.routeName:
+        final arg = routeSettings.arguments;
+        return _pageRoute(const ReviewCoachPage(), arg);
       default:
         return _errorRoute();
     }

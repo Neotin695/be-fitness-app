@@ -3,11 +3,11 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
 import '../../../core/appconstance/app_constance.dart';
 import '../../../core/service/locatoin_service.dart';
-import '../cubit/verifycoach_cubit.dart';
+import '../cubit/coach_cubit.dart';
 import 'custom_text_field_coach.dart';
 
 class CustomStepperWidget extends StatefulWidget {
-  final VerifyCoachCubit cubit;
+  final CoachCubit cubit;
   const CustomStepperWidget({super.key, required this.cubit});
 
   @override
@@ -45,7 +45,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
     );
   }
 
-  void onContinue(VerifyCoachCubit cubit) async {
+  void onContinue(CoachCubit cubit) async {
     bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
     if (cubit.currentStep == 0 && !cubit.key.currentState!.validate()) {
       return;
@@ -59,7 +59,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
     isLastStep ? await cubit.sentRequest() : null;
   }
 
-  List<Step> fetchStep(VerifyCoachCubit cubit) {
+  List<Step> fetchStep(CoachCubit cubit) {
     return [
       Step(
         isActive: cubit.currentStep >= 0,
@@ -194,7 +194,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
     ];
   }
 
-  Row dateAndGender(VerifyCoachCubit cubit) {
+  Row dateAndGender(CoachCubit cubit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -212,7 +212,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
     );
   }
 
-  void pickDate(VerifyCoachCubit cubit) {
+  void pickDate(CoachCubit cubit) {
     DatePicker.showDatePicker(
       context,
       showTitleActions: true,
@@ -228,7 +228,7 @@ class _CustomStepperWidgetState extends State<CustomStepperWidget> {
     );
   }
 
-  Widget dropDownButton(VerifyCoachCubit cubit) {
+  Widget dropDownButton(CoachCubit cubit) {
     return DropdownButton<String>(
       value: cubit.selectedGender,
       items: [AppConst.maleTxt, AppConst.femaleTxt]

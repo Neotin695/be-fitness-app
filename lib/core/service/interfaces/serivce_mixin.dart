@@ -18,10 +18,10 @@ mixin PickMedia {
       } else {
         return file.path;
       }
-    } on PlatformException catch (e) {
-      throw e;
+    } on PlatformException {
+      rethrow;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -53,10 +53,10 @@ mixin PickMedia {
       } else {
         return scanResult.path;
       }
-    } on PlatformException catch (e) {
-      throw e;
+    } on PlatformException {
+      rethrow;
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 

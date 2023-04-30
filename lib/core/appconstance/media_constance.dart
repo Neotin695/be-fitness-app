@@ -6,6 +6,7 @@ class MediaConst {
   static const String empty = 'assets/icons/empty.svg';
   static const String workout = 'assets/icons/workout.svg';
   static const String person = 'assets/images/person_3d.png';
+  static const String admin = 'assets/icons/admin.svg';
 
   static const List<String> images = [
     'assets/images/1.jpeg',

@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
-import '../../verifycoach/screens/verify_coach_screen.dart';
+import '../../coach/screens/verify_coach_screen.dart';
 
 class GetStartedScreen extends StatefulWidget {
   static const String routeName = 'getstarted';
@@ -49,7 +49,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
                   child: const Text(AppConst.confirmTxt)),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, VerifyCoachScreen.routeName);
+                  Navigator.pushNamed(context, VerifyCoachPage.routeName);
                 },
                 child: const Text(AppConst.cancelTxt),
               )

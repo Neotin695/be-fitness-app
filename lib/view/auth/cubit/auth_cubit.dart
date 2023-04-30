@@ -29,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       return await FirebaseAuth.instance.signInWithCredential(credential);
     } catch (e) {
-      throw e;
+      rethrow;
     }
   }
 
@@ -46,9 +46,6 @@ class AuthCubit extends Cubit<AuthState> {
           auth.additionalUserInfo!.isNewUser) {
         initUser(auth.user!.uid);
         emit(AuthSucess(isNewUser: auth.additionalUserInfo!.isNewUser));
-      } else {
-        emit(const AuthFailure(
-            message: 'somthing wont wrong! please try again later'));
       }
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(message: e.toString()));

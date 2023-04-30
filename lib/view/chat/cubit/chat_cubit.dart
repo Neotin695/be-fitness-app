@@ -6,12 +6,11 @@ import 'package:be_fitness_app/core/service/internet_service.dart';
 import 'package:be_fitness_app/models/chat_model.dart';
 import 'package:be_fitness_app/models/message_model.dart';
 import 'package:be_fitness_app/models/room_model.dart';
-import 'package:bloc/bloc.dart';
+// ignore: depend_on_referenced_packages
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -24,8 +23,7 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription? _streamSubscription;
 
   final _store = FirebaseFirestore.instance;
-  final _storage = FirebaseStorage.instance;
-  final _auth = FirebaseAuth.instance.currentUser;
+  final _auth = FirebaseAuth.instance.currentUser!;
   String receiverId = '';
   MessageType messageType = MessageType.text;
 
@@ -59,7 +57,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     _store
         .collection(LogicConst.users)
-        .doc(_auth!.uid)
+        .doc(_auth.uid)
         .collection('conversetions')
         .doc(generateRoomId())
         .set((await initChatModel()).toMap())
@@ -70,26 +68,24 @@ class ChatCubit extends Cubit<ChatState> {
   Future<bool> isConntected() async => await InternetService().isConnected();
 
   String generateRoomId() {
-    if (_auth!.uid.toLowerCase().codeUnits[0] <
+    if (_auth.uid.toLowerCase().codeUnits[0] <
         receiverId.toLowerCase().codeUnits[0]) {
-      print(_auth!.uid + receiverId);
-      return _auth!.uid + receiverId;
+      return _auth.uid + receiverId;
     } else {
-      print(receiverId + _auth!.uid);
-      return receiverId + _auth!.uid;
+      return receiverId + _auth.uid;
     }
   }
 
   RoomModel initRoomModel() {
     return RoomModel(
-        roomId: generateRoomId(), participantsId: [_auth!.uid, receiverId]);
+        roomId: generateRoomId(), participantsId: [_auth.uid, receiverId]);
   }
 
   MessageModel initMessageModel() {
     return MessageModel(
         id: generateMessageId(),
         message: message.text,
-        senderId: _auth!.uid,
+        senderId: _auth.uid,
         receiverId: receiverId,
         messageType: messageType,
         isSeen: false,
@@ -98,21 +94,30 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   Future<ChatModel> initChatModel() async {
-    var userName = (await fetchUserData())['userName'];
+    var userData = (await fetchUserData());
     return ChatModel(
       chatRoomId: initRoomModel().roomId,
-      userPhotoUrl: '',
-      userName: userName,
+      userPhotoUrl: userData['profilePhoto'],
+      userName: userData['userName'],
       messageModel: initMessageModel(),
     );
   }
 
   Future<Map<String, dynamic>> fetchUserData() async {
-    Map<String, dynamic> temp = {};
-    final data =
-        await _store.collection(LogicConst.users).doc(receiverId).get();
+    final data = await _store.collection(LogicConst.users).doc(_auth.uid).get();
 
     return data.data()!;
+  }
+
+  Future<void> seen(MessageModel message) async {
+    if (message.senderId != _auth.uid) {
+      await _store
+          .collection('chatRooms')
+          .doc(generateRoomId())
+          .collection('messages')
+          .doc(message.id)
+          .update({'isSeen': true});
+    }
   }
 
   String generateMessageId() => _store

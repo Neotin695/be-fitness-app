@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
 class BeFitnessApp extends MaterialApp {
-  BeFitnessApp(RouteGenerator routeGenerator)
+  BeFitnessApp(RouteGenerator routeGenerator, {super.key})
       : super(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(

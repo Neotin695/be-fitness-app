@@ -17,6 +17,11 @@ part 'profile_state.dart';
 class ProfileCubit extends Cubit<ProfileState> with PickMedia {
   static ProfileCubit get(context) => BlocProvider.of(context);
   ProfileCubit() : super(ProfileInitial());
+  final TextEditingController userName = TextEditingController();
+  final TextEditingController age = TextEditingController();
+  final TextEditingController height = TextEditingController();
+  final TextEditingController weight = TextEditingController();
+
   final store = FirebaseFirestore.instance;
   final _storage = FirebaseStorage.instance;
   final auth = FirebaseAuth.instance.currentUser!;
@@ -55,4 +60,6 @@ class ProfileCubit extends Cubit<ProfileState> with PickMedia {
     emit(UploadSuccess());
     return await task.ref.getDownloadURL();
   }
+
+  Future<void> updateProfile() async {}
 }
