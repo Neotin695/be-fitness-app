@@ -25,7 +25,8 @@ class RouteGenerator {
       case MainAdminPage.routeName:
         return _pageRoute(const MainAdminPage());
       case ReviewPage.routeName:
-        return _pageRoute(const ReviewPage());
+        final arg = routeSettings.arguments;
+        return _pageRoute(const ReviewPage(), arg);
       case WelcomeScreen.routeName:
         return _pageRoute(const WelcomeScreen());
       case GetStartedScreen.routeName:
