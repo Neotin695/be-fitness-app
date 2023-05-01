@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:document_scanner_flutter/configs/configs.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -81,7 +82,7 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
   Future<CoachModel> subscribe(CoachModel coach) async {
     coach.subscribers.add(auth.uid);
 
-    await  store
+    await store
         .collection(LogicConst.users)
         .doc(coach.id)
         .update(coach.toMap());
@@ -89,10 +90,11 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         (await store.collection(LogicConst.users).doc(coach.id).get()).data()
             as Map<String, dynamic>);
   }
-  Future<CoachModel> unSubscribe(CoachModel coach) async {
-    coach.subscribers.removeWhere((val)=> auth.uid == val);
 
-    await  store
+  Future<CoachModel> unSubscribe(CoachModel coach) async {
+    coach.subscribers.removeWhere((val) => auth.uid == val);
+
+    await store
         .collection(LogicConst.users)
         .doc(coach.id)
         .update(coach.toMap());
@@ -141,7 +143,8 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
       return;
     }
     request = initDataReq(tempDownUrl);
-    final coachData = initDataCoach();
+    final token = await FirebaseMessaging.instance.getToken();
+    final coachData = initDataCoach(token);
 
     store.collection(LogicConst.users).doc(auth.uid).set(coachData.toMap());
     store.collection(LogicConst.requests).doc(auth.uid).set(request.toMap());
@@ -215,13 +218,14 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         address: address);
   }
 
-  CoachModel initDataCoach() {
+  CoachModel initDataCoach(token) {
     return CoachModel(
         id: auth.uid,
         state: false,
         isCoach: true,
         userName: name.text,
         email: auth.email!,
+        token: token,
         birthDate: DateFormat('yyyy-mm-dd').format(birthDate),
         address: address,
         certificateId: certificateId.text,

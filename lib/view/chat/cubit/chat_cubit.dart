@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/message_type.dart';
 import 'package:be_fitness_app/core/service/internet_service.dart';
+import 'package:be_fitness_app/core/service/notification/push_notification.dart';
 import 'package:be_fitness_app/models/chat_model.dart';
 import 'package:be_fitness_app/models/message_model.dart';
 import 'package:be_fitness_app/models/room_model.dart';
@@ -61,7 +62,11 @@ class ChatCubit extends Cubit<ChatState> {
         .collection('conversetions')
         .doc(generateRoomId())
         .set((await initChatModel()).toMap())
-        .then((value) => message.clear());
+        .then((value) async {
+      await notify();
+      message.clear();
+    });
+
     emit(MessageSentState());
   }
 
@@ -103,8 +108,22 @@ class ChatCubit extends Cubit<ChatState> {
     );
   }
 
+  Future<void> notify() async {
+    PushNotification().snetNotification(
+        (await receiverData())['token'] as String,
+        message.text,
+        'New Message from ${(await receiverData())['userName']}');
+  }
+
   Future<Map<String, dynamic>> fetchUserData() async {
     final data = await _store.collection(LogicConst.users).doc(_auth.uid).get();
+
+    return data.data()!;
+  }
+
+  Future<Map<String, dynamic>> receiverData() async {
+    final data =
+        await _store.collection(LogicConst.users).doc(receiverId).get();
 
     return data.data()!;
   }

@@ -27,7 +27,7 @@ class MessageList extends StatelessWidget {
               children: snapshot.data!.docs.reversed.map((doc) {
                 final message =
                     MessageModel.fromMap(doc.data() as Map<String, dynamic>);
-                cubit.seen(message);
+
                 return Align(
                   alignment: id != message.senderId
                       ? Alignment.centerLeft

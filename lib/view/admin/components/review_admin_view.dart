@@ -89,9 +89,14 @@ class ReviewAdminView extends StatelessWidget {
             children: [
               ElevatedButton.icon(
                 onPressed: () {
-                  cubit.accepteRequest(request.userId).then((value) {
-                    Navigator.pushReplacementNamed(
-                        context, MainAdminPage.routeName);
+                  cubit.accepteRequest(request.userId).then((value) async {
+                    await cubit
+                        .notify(
+                            request.userId, 'You Accepted For Online Coaching')
+                        .then((value) {
+                      Navigator.pushReplacementNamed(
+                          context, MainAdminPage.routeName);
+                    });
                   });
                 },
                 icon: const Icon(Icons.done),
@@ -102,9 +107,14 @@ class ReviewAdminView extends StatelessWidget {
               ),
               ElevatedButton.icon(
                 onPressed: () {
-                  cubit.rejectRequest(request.userId).then((value) {
-                    Navigator.pushReplacementNamed(
-                        context, MainAdminPage.routeName);
+                  cubit.rejectRequest(request.userId).then((value) async {
+                    await cubit
+                        .notify(request.userId,
+                            'you are not accepted for Online Coaching')
+                        .then((value) {
+                      Navigator.pushReplacementNamed(
+                          context, MainAdminPage.routeName);
+                    });
                   });
                 },
                 icon: const Icon(Icons.close),

@@ -35,6 +35,8 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
           BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.peopleGroup), label: ''),
           BottomNavigationBarItem(
+              icon: Icon(FontAwesomeIcons.map), label: ''),
+          BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.message), label: ''),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
         ],

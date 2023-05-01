@@ -7,7 +7,8 @@ class UpdateTraineeProfileView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-        child: Text('Trainee Profile'));
+    return SafeArea(
+        child: ElevatedButton(
+            onPressed: () async {}, child: const Text('get token')));
   }
 }

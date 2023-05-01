@@ -127,6 +127,8 @@ class _ExcerciseViewState extends State<ExcerciseView> {
               ),
             ],
           );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
         }
         return Center(
             child: SvgPicture.asset(

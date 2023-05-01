@@ -10,6 +10,10 @@ class LogicConst {
   static const String excercises = 'excercises';
   static const String excercise = 'excercise';
 
+  static const String baseUrl = 'https://fcm.googleapis.com/fcm/send';
+  static const String serverKey =
+      'AAAASDMMuWc:APA91bEacGsvXSovzu5sUJxew9Bllu3V0O1q0ss6S9pfqA645msVfRR57TtjlyP7nY-FAjxAvB2PN8x00myp-OioNTGnpPODLWsBJpyDuj6vTJ-DxZdwjvIxWOV_v8IjavCb4_3GMiWw';
+
   static const int minuts = 0;
   static const int second = 1;
 

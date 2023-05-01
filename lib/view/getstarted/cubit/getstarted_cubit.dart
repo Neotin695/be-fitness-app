@@ -1,10 +1,10 @@
-
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/address_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -37,13 +37,14 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
   final _storage = FirebaseStorage.instance;
   final _auth = FirebaseAuth.instance.currentUser!;
 
-  TraineeModel initData(profilePhoto) {
+  TraineeModel initData(profilePhoto, token) {
     return TraineeModel(
         id: _auth.uid,
         userName: userName.text,
         age: int.parse(age.text),
         address: address,
         profilePhoto: profilePhoto,
+        token: token,
         email: _auth.email!,
         gender: GenderService().convertStringToEnum(genderSelected),
         level: LevelService().convertStringToEnum(levelSelected),
@@ -62,7 +63,8 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
       emit(const UploadFailure(message: 'please bring address'));
     }
     final profilePhoto = await uploadProfilePhoto();
-    final trainee = initData(profilePhoto);
+    final token = await FirebaseMessaging.instance.getToken();
+    final trainee = initData(profilePhoto, token);
     try {
       _store.doc(trainee.id).set(trainee.toMap());
       emit(UploadSucess());

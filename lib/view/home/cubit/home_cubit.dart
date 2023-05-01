@@ -1,3 +1,4 @@
+import 'package:be_fitness_app/view/maps/screens/map_page.dart';
 import 'package:be_fitness_app/view/profile/screens/profile_page.dart';
 import 'package:be_fitness_app/view/workout/screens/main_workout_page.dart';
 import 'package:equatable/equatable.dart';
@@ -15,6 +16,7 @@ class HomeCubit extends Cubit<HomeState> {
   List<Widget> pages = [
     const MainWorkoutPage(),
     const CoachsPage(),
+    const MapPage(),
     const MessagePage(),
     const ProfilePage()
   ];

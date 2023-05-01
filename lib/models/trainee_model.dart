@@ -12,7 +12,7 @@ class TraineeModel extends Equatable {
   AddressModel address;
   String profilePhoto;
   Gender gender;
-  
+  String token;
   int age;
   double height;
   double weight;
@@ -25,6 +25,7 @@ class TraineeModel extends Equatable {
     required this.address,
     required this.profilePhoto,
     required this.age,
+    required this.token,
     required this.height,
     required this.weight,
     required this.gender,
@@ -41,6 +42,7 @@ class TraineeModel extends Equatable {
       profilePhoto,
       age,
       height,
+      token,
       weight,
       gender,
       level,
@@ -56,6 +58,7 @@ class TraineeModel extends Equatable {
       'profilePhoto': profilePhoto,
       'age': age,
       'height': height,
+      'token': token,
       'weight': weight,
       'gender': GenderService().convertEnumToString(gender),
       'level': LevelService().convertEnumToString(level),
@@ -70,6 +73,7 @@ class TraineeModel extends Equatable {
       address: AddressModel.fromMap(map['address']),
       profilePhoto: map['profilePhoto'] as String,
       age: int.parse(map['age'].toString()),
+      token: map['token'] as String,
       height: double.parse(map['height'].toString()),
       weight: double.parse(map['weight'].toString()),
       gender: GenderService().convertStringToEnum(map['gender'].toString()),

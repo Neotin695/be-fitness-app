@@ -2,6 +2,7 @@ import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/target_muscles.dart';
 import 'package:be_fitness_app/core/service/internet_service.dart';
+import 'package:be_fitness_app/core/service/notification/push_notification.dart';
 import 'package:be_fitness_app/models/excercise_model.dart';
 import 'package:be_fitness_app/models/request_online_coach.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,6 +32,12 @@ class AdminCubit extends Cubit<AdminState> {
 
   Duration selectedTime = const Duration(seconds: 0);
   Duration defaultTime = const Duration(seconds: 0);
+
+  Future<Map<String, dynamic>> receiverData(userId) async {
+    final data = await _store.collection(LogicConst.users).doc(userId).get();
+
+    return data.data()!;
+  }
 
   Future<void> uploadExcercise() async {
     emit(UploadingExcercise());
@@ -77,7 +84,6 @@ class AdminCubit extends Cubit<AdminState> {
       _store.collection(LogicConst.requests).get().then((value) {
         for (var doc in value.docs) {
           tempRequests.add(RequestOnlineCoachModel.fromMap(doc.data()));
-         
         }
         emit(FetchRequestsState(requests: tempRequests));
       });
@@ -114,6 +120,13 @@ class AdminCubit extends Cubit<AdminState> {
       emit(FailureState(message: e.toString()));
     }
     emit(AccepteRequest());
+  }
+
+  Future<void> notify(userId,body) async {
+    await PushNotification().snetNotification(
+        (await receiverData(userId))['token'],
+       body,
+        'Online Coach');
   }
 
   void emitFailure() {

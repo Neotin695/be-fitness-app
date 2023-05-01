@@ -4,8 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
 
 class BeFitnessApp extends MaterialApp {
-  BeFitnessApp(RouteGenerator routeGenerator, {super.key})
+  final GlobalKey<NavigatorState> navigatorKey;
+  BeFitnessApp(RouteGenerator routeGenerator,
+      {super.key, required this.navigatorKey})
       : super(
+            navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor: Colors.indigo,
@@ -25,24 +28,3 @@ class BeFitnessApp extends MaterialApp {
             initialRoute: DecisionsTree.routeName,
             onGenerateRoute: routeGenerator.generateRoute);
 }
-
-
-/* 
-{
-          '/': (_) => const DecisionsTree(),
-          MainAdminPage.routeName: (_) => const MainAdminPage(),
-          ReviewPage.routeName: (_) => const ReviewPage(),
-          WelcomeScreen.routeName: (_) => const WelcomeScreen(),
-          GetStartedScreen.routeName: (_) => const GetStartedScreen(),
-          VerifyCoachScreen.routeName: (_) => const VerifyCoachScreen(),
-          CreateProfileScreen.routeName: (_) => const CreateProfileScreen(),
-          NotAcceptedScreen.routeName: (_) => const NotAcceptedScreen(),
-          HomeLayoutPage.routeName: (_) => const HomeLayoutPage(),
-          BodyPartPage.routeName: (_) => const BodyPartPage(),
-          ExcerciseAdminPage.routeName: (_) => const ExcerciseAdminPage(),
-          ChatRoomPage.routeName: (_) => const ChatRoomPage(),
-          MessagePage.routeName: (_) => const MessagePage(),
-          ExcercisePage.routeName: (_) => const ExcercisePage(),
-          PlayExcercisePage.routeName: (_) => const PlayExcercisePage(),
-          ProfilePage.routeName: (_) => const ProfilePage(),
-        }, */
