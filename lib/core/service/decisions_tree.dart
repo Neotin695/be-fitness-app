@@ -1,10 +1,12 @@
 import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
-import 'package:be_fitness_app/view/auth/screens/welcome_screen.dart';
+import 'package:be_fitness_app/view/auth/screens/auth_sign_page.dart';
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_page.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sizer/sizer.dart';
 
 import '../../view/coach/screens/not_accepted_screen.dart';
 import '../appconstance/logic_constance.dart';
@@ -15,44 +17,51 @@ class DecisionsTree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (_, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data!.email == 'mehani695@gmail.com') {
-            return const MainAdminPage();
-          }
-          return FutureBuilder<DocumentSnapshot>(
-            future: FirebaseFirestore.instance
-                .collection(LogicConst.tempUser)
-                .doc(FirebaseAuth.instance.currentUser!.uid)
-                .get(),
-            builder: (_, snapshot) {
-              if (snapshot.hasData) {
-                final String status = (snapshot.data!.data()
-                    as Map<String, dynamic>)[LogicConst.status];
-                if (status == LogicConst.unauthenticate) {
-                  return const NotAcceptedScreen();
-                } else if (status == LogicConst.newTxt) {
-                  if (FirebaseAuth.instance.currentUser!.email ==
-                          'mehani695@gmail.com' ||
-                      FirebaseAuth.instance.currentUser!.email ==
-                          'asia24954@gmail.com') {
-                    return const MainAdminPage();
+    return Scaffold(
+      body: StreamBuilder(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (_, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data!.email == 'mehani695@gmail.com') {
+              return const MainAdminPage();
+            }
+            return FutureBuilder<DocumentSnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection(LogicConst.tempUser)
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .get(),
+              builder: (_, snapshot) {
+                if (snapshot.hasData) {
+                  final String status = (snapshot.data!.data()
+                      as Map<String, dynamic>)[LogicConst.status];
+                  if (status == LogicConst.unauthenticate) {
+                    return const NotAcceptedScreen();
+                  } else if (status == LogicConst.newTxt) {
+                    if (FirebaseAuth.instance.currentUser!.email ==
+                            'mehani695@gmail.com' ||
+                        FirebaseAuth.instance.currentUser!.email ==
+                            'asia24954@gmail.com') {
+                      return const MainAdminPage();
+                    }
+                    return const GetStartedScreen();
+                  } else if (status == LogicConst.authenticate) {
+                    return const HomeLayoutPage();
                   }
-                  return const GetStartedScreen();
-                } else if (status == LogicConst.authenticate) {
-                  return const HomeLayoutPage();
+                  return const AuthSignInPage();
                 }
-                return const WelcomeScreen();
-              }
-              return const WelcomeScreen();
-            },
-          );
-        } else {
-          return const WelcomeScreen();
-        }
-      },
+                return const AuthSignInPage();
+              },
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: LoadingAnimationWidget.dotsTriangle(
+                    color: Theme.of(context).colorScheme.surfaceTint,
+                    size: 35.sp));
+          } else {
+            return const AuthSignInPage();
+          }
+        },
+      ),
     );
   }
 }

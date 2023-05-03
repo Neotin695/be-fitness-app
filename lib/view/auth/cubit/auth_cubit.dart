@@ -4,6 +4,8 @@ import 'package:be_fitness_app/core/service/internet_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -14,6 +16,20 @@ class AuthCubit extends Cubit<AuthState> {
   static AuthCubit get(context) => BlocProvider.of(context);
 
   AuthCubit() : super(AuthInitial());
+
+  final TextEditingController userName = TextEditingController();
+  final TextEditingController email = TextEditingController();
+  final TextEditingController password = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey();
+
+  final store = FirebaseFirestore.instance;
+  final storage = FirebaseStorage.instance;
+  final auth = FirebaseAuth.instance;
+
+  bool visibility = false;
+
+  Future<void> signInWithEmail() async {}
+  Future<void> signUpWithEmail() async {}
 
   Future<UserCredential> _signInWithGoogle() async {
     try {
@@ -27,13 +43,13 @@ class AuthCubit extends Cubit<AuthState> {
         idToken: googleAuth?.idToken,
       );
 
-      return await FirebaseAuth.instance.signInWithCredential(credential);
+      return await auth.signInWithCredential(credential);
     } catch (e) {
       rethrow;
     }
   }
 
-  Future<void> signIn() async {
+  Future<void> signInWithGoogle() async {
     bool isConnected = await InternetService().isConnected();
     if (!isConnected) {
       emit(const AuthFailure(

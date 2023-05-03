@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import '../screens/chat_room_page.dart';
@@ -92,7 +93,10 @@ class _MessageViewState extends State<MessageView> {
             }).toList(),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: LoadingAnimationWidget.dotsTriangle(
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                  size: 35.sp));
         }
         return Center(
             child: SvgPicture.asset(

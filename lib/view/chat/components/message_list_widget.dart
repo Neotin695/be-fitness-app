@@ -37,8 +37,10 @@ class MessageList extends StatelessWidget {
               }).toList(),
             );
           }
-          return const SizedBox(
-            child: Text('no Message yet!'),
+          return const Center(
+            child: SizedBox(
+              child: Text('no Message yet!'),
+            ),
           );
         });
   }

@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gif_view/gif_view.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import '../screens/play_excercise_page.dart';
@@ -32,7 +33,7 @@ class _ExcerciseViewState extends State<ExcerciseView> {
           .collection(collectionName())
           .snapshots(),
       builder: ((context, snapshot) {
-        if (snapshot.hasData) {
+        if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
           final firstExcercise = ExcerciseModel.fromMap(
               snapshot.data!.docs.first.data() as Map<String, dynamic>);
 
@@ -51,8 +52,7 @@ class _ExcerciseViewState extends State<ExcerciseView> {
                       height: 30.h,
                       color: Colors.transparent,
                     ),
-                    Container(
-                      color: Colors.white,
+                    SizedBox(
                       height: 15.h,
                       child: Card(
                         elevation: 4,
@@ -81,8 +81,7 @@ class _ExcerciseViewState extends State<ExcerciseView> {
                         ),
                       ),
                     ),
-                    Container(
-                      color: Colors.white,
+                    SizedBox(
                       height: 100.h,
                       child: Card(
                         elevation: 6,
@@ -128,7 +127,10 @@ class _ExcerciseViewState extends State<ExcerciseView> {
             ],
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
+          return Center(
+              child: LoadingAnimationWidget.dotsTriangle(
+                  color: Theme.of(context).colorScheme.surfaceTint,
+                  size: 35.sp));
         }
         return Center(
             child: SvgPicture.asset(

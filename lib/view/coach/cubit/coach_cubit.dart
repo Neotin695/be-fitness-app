@@ -17,7 +17,7 @@ import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/coach_model.dart';
-import 'package:be_fitness_app/models/rating_model.dart';
+import 'package:be_fitness_app/models/review_model.dart';
 import 'package:be_fitness_app/models/request_online_coach.dart';
 
 import '../../../models/address_model.dart';
@@ -232,11 +232,13 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         nationalId: nationalId.text,
         profilePhoto: request.personalImg,
         gender: GenderService().convertStringToEnum(selectedGender),
-        rating: RatingModel(
-          totalRating: 0,
-          ratingCount: const [],
-          ratingAverage: 0,
-        ),
+        rating: ReviewModel(
+            totalRating: 0,
+            ratingCount: const [],
+            ratingAverage: 0,
+            userName: '',
+            profilePhoto: '',
+            textReview: ''),
         subscribers: const []);
   }
 

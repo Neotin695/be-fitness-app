@@ -13,12 +13,13 @@ class DrawerAdmin extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Drawer(
+        backgroundColor: Theme.of(context).colorScheme.surface,
         child: Column(
           children: [
             Container(
               width: double.infinity,
               height: 25.h,
-              color: Colors.blue,
+              color: Theme.of(context).colorScheme.onSecondary,
               child: Center(
                 child: Text(
                   AppConst.brandTxt,

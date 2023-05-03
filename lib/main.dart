@@ -1,19 +1,29 @@
 import 'package:be_fitness_app/be_fitness_app.dart';
 import 'package:be_fitness_app/core/service/route_generator.dart';
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sizer/sizer.dart';
 
 import 'core/service/firebase/firebase_options.dart';
 import 'core/service/notification/messaging.dart';
+import 'core/theme/colors_schemes.dart';
+import 'core/theme/custom_color.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey();
 
+SharedPreferences? pref;
+
+initShared() async {
+  pref = await SharedPreferences.getInstance();
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await initShared();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -48,18 +58,38 @@ void main() async {
   });
   await Messaging().notificationPlugIn();
   await Messaging().setForegroundNotification();
-  runApp(const MainWidget());
+  if (pref!.getBool('first') == null) {
+    await pref!.setBool('first', true);
+  }
+  runApp(DynamicColorBuilder(
+      builder: (ColorScheme? lightDynamic, ColorScheme? darkDynamic) {
+    ColorScheme lightScheme;
+    ColorScheme darkScheme;
+
+    if (lightDynamic != null && darkDynamic != null) {
+      lightScheme = lightDynamic.harmonized();
+      lightCustomColors = lightCustomColors.harmonized(lightScheme);
+
+      darkScheme = darkDynamic.harmonized();
+      darkCustomColors = darkCustomColors.harmonized(darkScheme);
+    } else {
+      lightScheme = lightColorScheme;
+      darkScheme = darkColorScheme;
+    }
+    return MainWidget(lightScheme: lightScheme, darkScheme: darkScheme);
+  }));
 }
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
-
-  print("Handling a background message: ${message.messageId}");
 }
 
 class MainWidget extends StatefulWidget {
-  const MainWidget({super.key});
+  final ColorScheme darkScheme;
+  final ColorScheme lightScheme;
+  const MainWidget(
+      {super.key, required this.darkScheme, required this.lightScheme});
 
   @override
   State<MainWidget> createState() => _MainWidgetState();
@@ -78,6 +108,8 @@ class _MainWidgetState extends State<MainWidget> {
       return BeFitnessApp(
         RouteGenerator(),
         navigatorKey: navigatorKey,
+        widget.darkScheme,
+        widget.lightScheme,
       );
     });
   }

@@ -1,12 +1,16 @@
-
+import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/models/coach_model.dart';
 import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
 import 'package:be_fitness_app/view/coach/cubit/coach_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_stars/flutter_rating_stars.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
+import '../../../core/service/decisions_tree.dart';
+import '../../../core/sharedwidget/custom_button.dart';
+import '../../../main.dart';
 
 // ignore: must_be_immutable
 class ReviewCoachView extends StatefulWidget {
@@ -22,16 +26,17 @@ class _ReviewCoachViewState extends State<ReviewCoachView> {
   Widget build(BuildContext context) {
     final cubit = CoachCubit.get(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Container(
-          color: Colors.blue,
+        SizedBox(
           width: double.infinity,
-          height: 35.h,
+          height: 40.h,
           child: Center(
             child: widget.coach.profilePhoto.isNotEmpty
-                ? CircleAvatar(
-                    radius: 50.sp,
-                    foregroundImage: NetworkImage(widget.coach.profilePhoto),
+                ? Image.network(
+                    widget.coach.profilePhoto,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
                   )
                 : Image.asset(
                     MediaConst.person,
@@ -40,53 +45,127 @@ class _ReviewCoachViewState extends State<ReviewCoachView> {
           ),
         ),
         SizedBox(height: 2.h),
-        SizedBox(
-          width: double.infinity,
-          height: 15.h,
-          child: ratingWidget(cubit),
-        ),
-        const Divider(),
-        Card(
-          elevation: 3,
-          child: ListTile(
-            title: Text('Name: ${widget.coach.userName}'),
+        ListTile(
+          title: Text(
+            widget.coach.userName,
+            style: TextStyle(fontSize: 18.sp),
+          ),
+          subtitle: Text(
+            GenderService().convertEnumToString(widget.coach.gender),
+            style: TextStyle(
+                fontSize: 15.sp,
+                color: Theme.of(context).colorScheme.onPrimaryContainer),
+          ),
+          trailing: FloatingActionButton(
+            onPressed: () {
+              Navigator.pushNamed(context, ChatRoomPage.routeName,
+                  arguments: widget.coach.id);
+            },
+            child: const Icon(Icons.message),
           ),
         ),
-        const Divider(),
+        SizedBox(height: 5.h),
         Card(
-          elevation: 3,
-          child: ListTile(
-            title: Text(
-                'Address: ${widget.coach.address.country}, ${widget.coach.address.locality}'),
+          margin: EdgeInsets.symmetric(horizontal: 5.w),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  '${6}\n Experience',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                  ),
+                ),
+                Text(
+                  '${60}\n Active Clients',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18.sp,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        const Divider(),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            ElevatedButton(
-                onPressed: () async {
-                  if (isSubscribe(cubit)) {
-                    var tempCoach = await cubit.unSubscribe(widget.coach);
-                    setState(() {
-                      widget.coach = tempCoach;
-                    });
-                  } else {
-                    var tempCoach = await cubit.subscribe(widget.coach);
-                    setState(() {
-                      widget.coach = tempCoach;
-                    });
-                  }
-                },
-                child: Text(isSubscribe(cubit) ? 'UnSubcribe' : 'Subcribe')),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, ChatRoomPage.routeName,
-                      arguments: widget.coach.id);
-                },
-                child: const Text('message'))
-          ],
-        )
+        SizedBox(height: 5.h),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ListTile(
+                leading: Text(
+                  'Reviews',
+                  style: TextStyle(fontSize: 18.sp, color: Colors.white),
+                ),
+                trailing: Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 4.w, vertical: 0.7.h),
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.onPrimaryContainer,
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    '${widget.coach.rating.ratingAverage}',
+                    style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                  ),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    width: 15.w,
+                    height: 9.h,
+                    alignment: Alignment.center,
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 1.w, vertical: 1.h),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.onPrimaryContainer,
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Text(
+                      '${widget.coach.rating.ratingCount.length}',
+                      style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                    ),
+                  ),
+                  
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Read All Reviews',
+                      style: TextStyle(
+                          fontSize: 14.sp,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+        Center(
+          child: ElevatedButton(
+            onPressed: () async {
+              if (isSubscribe(cubit)) {
+                var tempCoach = await cubit.unSubscribe(widget.coach);
+                setState(() {
+                  widget.coach = tempCoach;
+                });
+              } else {
+                var tempCoach = await cubit.subscribe(widget.coach);
+                setState(() {
+                  widget.coach = tempCoach;
+                });
+              }
+            },
+            child: Text(isSubscribe(cubit) ? 'UnSubcribe' : 'Subcribe'),
+          ),
+        ),
       ],
     );
   }

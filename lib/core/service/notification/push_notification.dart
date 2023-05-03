@@ -31,7 +31,6 @@ class PushNotification {
         'to': token,
       },
     );
-    print(response.statusCode);
     return response.statusCode == 200;
   }
 }

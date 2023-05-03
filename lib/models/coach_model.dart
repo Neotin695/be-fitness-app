@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 
 import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/models/address_model.dart';
-import 'package:be_fitness_app/models/rating_model.dart';
+import 'package:be_fitness_app/models/review_model.dart';
 
 // ignore: must_be_immutable
 class CoachModel extends Equatable {
@@ -22,7 +22,7 @@ class CoachModel extends Equatable {
   String birthDate;
   String certificateId;
   String nationalId;
-  RatingModel rating;
+  ReviewModel rating;
   List<String> subscribers;
   CoachModel({
     required this.id,
@@ -73,7 +73,6 @@ class CoachModel extends Equatable {
       'address': address.toMap(),
       'profilePhoto': profilePhoto,
       'gender': GenderService().convertEnumToString(gender),
-      
       'birthDate': birthDate,
       'certificateId': certificateId,
       'nationalId': nationalId,
@@ -90,15 +89,14 @@ class CoachModel extends Equatable {
       userName: map['userName'] as String,
       token: map['token'] as String,
       email: map['email'] as String,
-      address: AddressModel.fromMap(map['address'] as Map<String,dynamic>),
+      address: AddressModel.fromMap(map['address'] as Map<String, dynamic>),
       profilePhoto: map['profilePhoto'] as String,
       gender: GenderService().convertStringToEnum(map['gender'].toString()),
       birthDate: map['birthDate'] as String,
       certificateId: map['certificateId'] as String,
       nationalId: map['nationalId'] as String,
-      rating: RatingModel.fromMap(map['rating'] as Map<String,dynamic>),
-      
-      subscribers: List<String>.from(map['subscribers'].map((e)=> e)),
+      rating: ReviewModel.fromMap(map['rating'] as Map<String, dynamic>),
+      subscribers: List<String>.from(map['subscribers'].map((e) => e)),
     );
   }
 
@@ -115,7 +113,7 @@ class CoachModel extends Equatable {
     String? birthDate,
     String? certificateId,
     String? nationalId,
-    RatingModel? rating,
+    ReviewModel? rating,
     List<String>? subscribers,
   }) {
     return CoachModel(
@@ -138,7 +136,8 @@ class CoachModel extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory CoachModel.fromJson(String source) => CoachModel.fromMap(json.decode(source) as Map<String, dynamic>);
+  factory CoachModel.fromJson(String source) =>
+      CoachModel.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

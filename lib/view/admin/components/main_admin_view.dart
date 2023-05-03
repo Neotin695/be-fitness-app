@@ -3,6 +3,7 @@ import 'package:be_fitness_app/view/admin/cubit/admin_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../models/request_online_coach.dart';
@@ -47,7 +48,10 @@ class MainAdminView extends StatelessWidget {
                 },
               );
             } else if (state is LoadingRequestState) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                  child: LoadingAnimationWidget.dotsTriangle(
+                      color: Theme.of(context).colorScheme.surfaceTint,
+                      size: 35.sp));
             }
             return Center(
                 child: SvgPicture.asset(

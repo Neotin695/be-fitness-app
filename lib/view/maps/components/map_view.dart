@@ -28,8 +28,9 @@ class _MapsViewState extends State<MapsView> {
   @override
   void initState() {
     //getPolyPoint();
-    getLocation();
-
+    if (mounted) {
+      getLocation();
+    }
     super.initState();
   }
 
@@ -69,42 +70,51 @@ class _MapsViewState extends State<MapsView> {
               ),
             },
             onTap: (latlng) async {
-              setState(() {
-                targetLocation = latlng;
-              });
+              if (mounted) {
+                setState(() {
+                  targetLocation = latlng;
+                });
+              }
               await getPolyPoint();
             },
             onMapCreated: (GoogleMapController controller) {
-              setState(() {
-                mapController.complete(controller);
-              });
+              if (mounted) {
+                setState(() {
+                  mapController.complete(controller);
+                });
+              }
             },
           )
-        : Column(
-            children: [
-              Center(
-                  child: LoadingAnimationWidget.dotsTriangle(
-                      color: Colors.blue, size: 18.sp)),
-              SizedBox(height: 2.h),
-              Text(
-                'please wait we locating your location',
-                style: TextStyle(fontSize: 20.sp),
-              ),
-            ],
+        : Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                        color: Theme.of(context).colorScheme.surfaceTint,
+                        size: 35.sp)),
+                SizedBox(height: 2.h),
+                Text(
+                  'please wait we locating your location',
+                  style: TextStyle(fontSize: 20.sp),
+                ),
+              ],
+            ),
           );
   }
 
   void getLocation() async {
     location.getLocation().then((value) {
-      setState(() {
-        currentLocation = value;
-      });
+      if (mounted) {
+        setState(() {
+          currentLocation = value;
+        });
+      }
     });
     newCameraPosition = await mapController.future;
     location.onLocationChanged.listen((newLoc) {
       currentLocation = newLoc;
-      // newCameraPosition.animateCamera(CameraUpdate.newCameraPosition(
-      //     CameraPosition(target: LatLng(newLoc.latitude!, newLoc.longitude!))));
+
       if (mounted) {
         setState(() {});
       }
