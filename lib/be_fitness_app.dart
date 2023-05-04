@@ -10,6 +10,8 @@ import 'core/theme/colors_schemes.dart';
 import 'core/theme/custom_color.dart';
 
 class BeFitnessApp extends MaterialApp {
+  @override
+  // ignore: overridden_fields
   final GlobalKey<NavigatorState> navigatorKey;
   final ColorScheme darkScheme;
   final ColorScheme lightScheme;
@@ -19,11 +21,22 @@ class BeFitnessApp extends MaterialApp {
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
+              fontFamily: 'IntegralCF',
               useMaterial3: true,
               colorScheme: lightScheme,
+              textTheme: TextTheme(
+                  bodyLarge:
+                      TextStyle(fontSize: 25.sp, fontWeight: FontWeight.w800),
+                  bodyMedium: TextStyle(fontSize: 14.sp)),
               extensions: [lightCustomColors],
             ),
             darkTheme: ThemeData(
+              fontFamily: 'IntegralCF',
+              textTheme: TextTheme(
+                  bodyLarge:
+                      TextStyle(fontSize: 23.sp, fontWeight: FontWeight.w800),
+                  bodyMedium:
+                      TextStyle(fontFamily: 'IntegralCF', fontSize: 10.sp)),
               useMaterial3: true,
               elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ButtonStyle(
@@ -53,17 +66,3 @@ class BeFitnessApp extends MaterialApp {
                 : DecisionsTree.routeName,
             onGenerateRoute: routeGenerator.generateRoute);
 }
-
-/* theme: ThemeData(
-                primaryColor: const Color.fromRGBO(208, 253, 62, 1),
-                elevatedButtonTheme: ElevatedButtonThemeData(
-                    style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(Size(70.w, 9.h)),
-                        maximumSize: MaterialStateProperty.all(Size(70.w, 9.h)),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30))),
-                        foregroundColor:
-                            MaterialStateProperty.all(Colors.black),
-                        backgroundColor: MaterialStateProperty.all(
-                            const Color.fromRGBO(208, 253, 62, 1)))),
-                canvasColor: const Color.fromRGBO(28, 28, 30, 1)), */

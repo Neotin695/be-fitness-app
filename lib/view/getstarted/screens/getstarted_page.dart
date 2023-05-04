@@ -5,7 +5,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
-import '../../coach/screens/verify_coach_screen.dart';
+import '../../../core/sharedwidget/custom_circular_button.dart';
+import '../../coach/screens/create_coach_page.dart';
 
 class GetStartedScreen extends StatefulWidget {
   static const String routeName = 'getstarted';
@@ -21,41 +22,52 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text(AppConst.appBarWelcome),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: 4.h),
-          SvgPicture.asset(
-            MediaConst.choose,
-            width: 25.w,
-            height: 25.h,
-          ),
-          SizedBox(height: 5.h),
-          Center(
-              child: Text(
-            AppConst.getStartedHeading,
-            style: TextStyle(fontSize: 25.sp),
-          )),
-          SizedBox(height: 5.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, CreateProfileScreen.routeName);
-                  },
-                  child: const Text(AppConst.confirmTxt)),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, VerifyCoachPage.routeName);
-                },
-                child: const Text(AppConst.cancelTxt),
-              )
-            ],
-          )
-        ],
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              'TELL US WHO ARE YOU?',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            Text(
+              'Coach for training trainees',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 10.h),
+            CircularButton(
+              hero: 'trainee',
+              onPressed: () {
+                Navigator.pushNamed(context, CreateProfilePage.routeName);
+              },
+              icon: SvgPicture.asset(
+                MediaConst.trainee,
+                width: 8.w,
+                height: 8.h,
+                colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                    BlendMode.srcIn),
+              ),
+              text: 'Trainee',
+            ),
+            CircularButton(
+              hero: 'coach',
+              onPressed: () {
+                Navigator.pushNamed(context, VerifyCoachPage.routeName);
+              },
+              icon: SvgPicture.asset(
+                MediaConst.coach,
+                width: 8.w,
+                height: 8.h,
+                colorFilter: ColorFilter.mode(
+                    Theme.of(context).colorScheme.onPrimaryContainer,
+                    BlendMode.srcIn),
+              ),
+              text: 'Coach',
+            ),
+          ],
+        ),
       ),
     );
   }

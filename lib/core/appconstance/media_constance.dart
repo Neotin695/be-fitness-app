@@ -9,6 +9,8 @@ class MediaConst {
   static const String admin = 'assets/icons/admin.svg';
   static const String arrow = 'assets/icons/arrow.svg';
   static const String google = 'assets/icons/google_button.svg';
+  static const String trainee = 'assets/icons/trainee.svg';
+  static const String coach = 'assets/icons/trainer.svg';
 
   static const List<String> images = [
     'assets/images/1.jpeg',

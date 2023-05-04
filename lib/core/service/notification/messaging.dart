@@ -26,21 +26,11 @@ class Messaging {
   }
 
   Future<void> initialNotification() async {
-    NotificationSettings settings = await firebaseMessaging.requestPermission(
-      alert: true,
-      announcement: false,
-      badge: true,
-      criticalAlert: false,
-      provisional: false,
-      sound: true,
-    );
-    print(settings.authorizationStatus);
   }
 
   void onMessaging() {
     FirebaseMessaging.onMessage.listen((event) {
       RemoteNotification notification = event.notification!;
-      AndroidNotification android = event.notification!.android!;
 
       if (event.notification != null) {
         flutterLocalNotificationsPlugin.show(

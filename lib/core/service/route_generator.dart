@@ -10,7 +10,7 @@ import 'package:be_fitness_app/view/getstarted/screens/create_profile_page.dart'
 import 'package:be_fitness_app/view/getstarted/screens/getstarted_page.dart';
 import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
 import 'package:be_fitness_app/view/profile/screens/profile_page.dart';
-import 'package:be_fitness_app/view/coach/screens/verify_coach_screen.dart';
+import 'package:be_fitness_app/view/coach/screens/create_coach_page.dart';
 import 'package:be_fitness_app/view/workout/screens/play_excercise_page.dart';
 import 'package:flutter/material.dart';
 
@@ -39,8 +39,8 @@ class RouteGenerator {
         return _pageRoute(const GetStartedScreen());
       case VerifyCoachPage.routeName:
         return _pageRoute(const VerifyCoachPage());
-      case CreateProfileScreen.routeName:
-        return _pageRoute(const CreateProfileScreen());
+      case CreateProfilePage.routeName:
+        return _pageRoute(const CreateProfilePage());
       case NotAcceptedScreen.routeName:
         return _pageRoute(const NotAcceptedScreen());
       case HomeLayoutPage.routeName:

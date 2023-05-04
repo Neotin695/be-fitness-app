@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../components/create_profile_view.dart';
 
-class CreateProfileScreen extends StatefulWidget {
+class CreateProfilePage extends StatefulWidget {
   static const String routeName = 'createProfileScreen';
-  const CreateProfileScreen({super.key});
+  const CreateProfilePage({super.key});
 
   @override
-  State<CreateProfileScreen> createState() => _CreateProfileScreenState();
+  State<CreateProfilePage> createState() => _CreateProfilePageState();
 }
 
-class _CreateProfileScreenState extends State<CreateProfileScreen> {
+class _CreateProfilePageState extends State<CreateProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

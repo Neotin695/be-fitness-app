@@ -50,7 +50,7 @@ class _OnboardingViewState extends State<OnboardingView> {
                 },
                 text: 'Start Now',
                 icon: SvgPicture.asset(MediaConst.arrow),
-                color: const Color(0xFFD0FD3E),
+                color: Theme.of(context).colorScheme.primary,
                 radius: 30,
                 width: 80.w,
                 hegiht: 10.h,

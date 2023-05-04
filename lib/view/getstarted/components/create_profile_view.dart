@@ -1,19 +1,19 @@
-import 'dart:io';
-
 import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
+import 'package:be_fitness_app/core/sharedwidget/custom_button.dart';
 import 'package:cool_alert/cool_alert.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
-import '../../../core/service/locatoin_service.dart';
+import '../../../core/sharedwidget/custom_circular_button.dart';
+import '../../../core/sharedwidget/custom_list_wheel.dart';
 import '../../home/screens/home_layout_page.dart';
 import '../cubit/getstarted_cubit.dart';
-import 'custom_text_field.dart';
 
 class CreateProfileView extends StatefulWidget {
   const CreateProfileView({
@@ -47,20 +47,66 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
         child: Form(
           key: cubit.key,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 2.h),
-              SvgPicture.asset(
-                MediaConst.account,
-                width: 15.w,
-                height: 15.h,
+              Expanded(
+                child: PageView(
+                  controller: cubit.controller,
+                  children: fetchWidgets(cubit),
+                  onPageChanged: (index) {
+                    setState(() {
+                      cubit.index = index;
+                    });
+                  },
+                ),
               ),
-              SizedBox(height: 2.h),
-              Text(
-                AppConst.createProfileHeading,
-                style: TextStyle(fontSize: 24.sp),
-              ),
-              Expanded(child: buildStepperWidget(cubit)),
+              SizedBox(height: 5.h),
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 5.h),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Visibility(
+                      visible: cubit.index != 0,
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          cubit.controller.previousPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                        },
+                        backgroundColor:
+                            Theme.of(context).colorScheme.onInverseSurface,
+                        child: const Icon(Icons.arrow_back),
+                      ),
+                    ),
+                    BeButton(
+                      onPressed: () async {
+                        if (cubit.index == fetchWidgets(cubit).length - 1) {
+                          print('hello');
+                        } else {
+                          cubit.controller.nextPage(
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.easeInOut);
+                        }
+                      },
+                      text: 'Next',
+                      color: Theme.of(context).colorScheme.primaryContainer,
+                      radius: 30,
+                      width: 40.w,
+                      hegiht: 10.h,
+                      icon: SvgPicture.asset(
+                        MediaConst.arrow,
+                        colorFilter: ColorFilter.mode(
+                            Theme.of(context).colorScheme.onPrimaryContainer,
+                            BlendMode.srcIn),
+                      ),
+                      textStyle: TextStyle(
+                          fontSize: 14.sp,
+                          color:
+                              Theme.of(context).colorScheme.onPrimaryContainer),
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
@@ -68,121 +114,209 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
     );
   }
 
-  Widget buildStepperWidget(GetstartedCubit cubit) {
-    return Stepper(
-      steps: fetchStep(cubit),
-      currentStep: cubit.currentStep,
-      onStepContinue: () {
-        bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
-        if (isLastStep) {
-          cubit.uploadData();
-        } else {
-          setState(() {
-            cubit.currentStep++;
-          });
-        }
-      },
-      onStepCancel: () {
-        bool isFirstStep = cubit.currentStep == 0;
-        if (!isFirstStep) {
-          setState(() {
-            cubit.currentStep -= 1;
-          });
-        }
-      },
-      controlsBuilder: (context, details) {
-        bool isLastStep = cubit.currentStep == fetchStep(cubit).length - 1;
-        return ElevatedButton(
-          onPressed: details.onStepContinue,
-          child: Text(isLastStep ? AppConst.uploadTxt : AppConst.continueTxt),
-        );
-      },
-    );
-  }
-
-  List<Step> fetchStep(GetstartedCubit cubit) {
+  List<Widget> fetchWidgets(GetstartedCubit cubit) {
     return [
-      Step(
-        isActive: cubit.currentStep >= 0,
-        state: cubit.currentStep > 0 ? StepState.complete : StepState.indexed,
-        title: const Text(AppConst.basicInfoTxt),
-        content: Column(
-          children: [
-            InkWell(
-              onTap: () async {
-                cubit.imagePath = await pickSingleImage(ImageSource.camera);
-              },
-              child: CircleAvatar(
-                foregroundImage: FileImage(File(cubit.imagePath)),
+      Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'TELL US ABOUT YOURSELF!',
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-            ),
-            CustomTextField(
-              cn: cubit.userName,
-              title: AppConst.userNameTxt,
-              icon: Icons.person,
-              inputType: TextInputType.name,
-              fieldFor: FieldFor.name,
-            ),
-            CustomTextField(
-              cn: cubit.age,
-              title: AppConst.ageTxt,
-              icon: Icons.person_2_outlined,
-              inputType: TextInputType.number,
-              fieldFor: FieldFor.age,
-            ),
-          ],
+              SizedBox(height: 3.h),
+              Text(
+                'To give you a better experience we need to know your gender',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              SizedBox(height: 20.h),
+              CircularButton(
+                hero: 'female',
+                color: cubit.genderSelected == 'female'
+                    ? null
+                    : cubit.unselectedColor,
+                onPressed: () {
+                  setState(() {
+                    cubit.genderSelected = 'female';
+                  });
+                },
+                icon: const Icon(Icons.female),
+                text: 'Female',
+              ),
+              CircularButton(
+                hero: 'male',
+                color: cubit.genderSelected == 'male'
+                    ? null
+                    : cubit.unselectedColor,
+                onPressed: () {
+                  setState(() {
+                    cubit.genderSelected = 'male';
+                  });
+                },
+                icon: const Icon(Icons.male),
+                text: 'Male',
+              )
+            ],
+          ),
         ),
       ),
-      Step(
-        isActive: cubit.currentStep >= 1,
-        state: cubit.currentStep > 1 ? StepState.complete : StepState.indexed,
-        title: const Text(AppConst.additionalInfoTxt),
-        content: Column(
-          children: [
-            CustomTextField(
-              cn: cubit.height,
-              title: AppConst.heightTxt,
-              icon: Icons.height,
-              inputType: TextInputType.number,
-              fieldFor: FieldFor.height,
-            ),
-            CustomTextField(
-              cn: cubit.weight,
-              title: AppConst.weightTxt,
-              icon: Icons.line_weight,
-              inputType: TextInputType.number,
-              fieldFor: FieldFor.weight,
-            ),
-            dropDownButton(cubit),
-          ],
-        ),
-      ),
-      Step(
-        isActive: cubit.currentStep >= 2,
-        state: cubit.currentStep > 2 ? StepState.complete : StepState.indexed,
-        title: const Text(AppConst.locationTxt),
-        content: Column(
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: Column(
           children: [
             Text(
-                '${cubit.address.name}, ${cubit.address.country}, ${cubit.address.locality}, ${cubit.address.postalCode},'),
-            ElevatedButton.icon(
-              onPressed: () async {
-                var tempAddress = await LocationService().getCurrentLocation();
-                setState(() {
-                  cubit.address = tempAddress;
-                });
-              },
-              label: const Text(AppConst.locateLocationTxt),
-              icon: const Icon(Icons.my_location),
-            )
+              'HOW OLD ARE YOU?',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(height: 3.h),
+            Text(
+              'This helps us create your personalized plan',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 20.h),
+            Expanded(
+              child: BeListWheel(
+                list: cubit.ages.map((e) {
+                  return Center(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                      child: Text(
+                        '$e',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onSelectedChange: (index) {
+                  setState(() {
+                    cubit.age = cubit.ages[index] + 1;
+                  });
+                },
+              ),
+            ),
           ],
         ),
       ),
-      Step(
-        state: cubit.currentStep > 3 ? StepState.complete : StepState.indexed,
-        isActive: cubit.currentStep >= 3,
-        title: const Text(AppConst.completeTxt),
-        content: const SizedBox(),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: Column(
+          children: [
+            Text(
+              'WHAT`S YOUR WEIGHT?',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(height: 3.h),
+            Text(
+              'You can always change this later',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 20.h),
+            Expanded(
+              child: BeListWheel(
+                list: cubit.weights.map((e) {
+                  return Center(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                      child: Text(
+                        '$e KG',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onSelectedChange: (index) {
+                  setState(() {
+                    cubit.weight = cubit.weights[index];
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: Column(
+          children: [
+            Text(
+              'WHAT`S YOUR HEIGHT?',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(height: 3.h),
+            Text(
+              'This helps us create your personalized plan',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 20.h),
+            Expanded(
+              child: BeListWheel(
+                list: cubit.heights.getRange(130, 201).map((e) {
+                  return Center(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                      child: Text(
+                        '$e CM',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onSelectedChange: (index) {
+                  setState(() {
+                    cubit.height = cubit.heights[index];
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: Column(
+          children: [
+            Text(
+              'YOUR REGULAR PHYSICAL ACTIVITY LEVEL?',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(height: 3.h),
+            Text(
+              'This helps us create your personalized plan',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 10.h),
+            Expanded(
+              child: BeListWheel(
+                list: cubit.levels.map((e) {
+                  return Center(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                      child: Text(
+                        e,
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onSelectedChange: (index) {
+                  setState(() {
+                    cubit.levelSelected = cubit.levels[index];
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     ];
   }
@@ -194,47 +328,6 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
       title: AppConst.errorTxt,
       text: state.message,
       onCancelBtnTap: () => Navigator.pop(context),
-    );
-  }
-
-  Row dropDownButton(GetstartedCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        DropdownButton<String>(
-          value: cubit.genderSelected,
-          items: [AppConst.maleTxt, AppConst.femaleTxt]
-              .map<DropdownMenuItem<String>>((e) {
-            return DropdownMenuItem(
-              value: e,
-              child: Text(e),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              cubit.genderSelected = value!;
-            });
-          },
-        ),
-        DropdownButton<String>(
-          value: cubit.levelSelected,
-          items: [
-            AppConst.beginnerTxt,
-            AppConst.intermediateTxt,
-            AppConst.advancedTxt
-          ].map<DropdownMenuItem<String>>((e) {
-            return DropdownMenuItem(
-              value: e,
-              child: Text(e),
-            );
-          }).toList(),
-          onChanged: (value) {
-            setState(() {
-              cubit.levelSelected = value!;
-            });
-          },
-        ),
-      ],
     );
   }
 }

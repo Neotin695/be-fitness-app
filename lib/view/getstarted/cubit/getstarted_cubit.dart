@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../core/appconstance/app_constance.dart';
 import '../../../core/service/enumservice/gender_service.dart';
 import '../../../core/service/enumservice/level_service.dart';
 import '../../../core/service/internet_service.dart';
@@ -20,15 +21,31 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
   static GetstartedCubit get(context) => BlocProvider.of(context);
   GetstartedCubit() : super(GetstartedInitial());
   final TextEditingController userName = TextEditingController();
-  final TextEditingController height = TextEditingController();
-  final TextEditingController weight = TextEditingController();
-  final TextEditingController age = TextEditingController();
+  double height = 0;
+  double weight = 0;
+  int age = 0;
+
   final GlobalKey<FormState> key = GlobalKey();
+  final PageController controller = PageController();
 
   String genderSelected = 'male';
   String levelSelected = 'intermediate';
+
+  Color? unselectedColor = const Color(0xFF00210B);
   String imagePath = '';
-  int currentStep = 0;
+  int index = 0;
+
+  final ages = List.generate(100, (index) => index);
+  final levels = [
+    AppConst.beginnerTxt,
+    AppConst.intermediateTxt,
+    AppConst.advancedTxt
+  ];
+  final List<double> weights =
+      List.generate(100, (index) => double.parse(index.toString()));
+
+  final List<double> heights =
+      List.generate(201, (index) => double.parse(index.toString()));
 
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
@@ -39,17 +56,18 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
 
   TraineeModel initData(profilePhoto, token) {
     return TraineeModel(
-        id: _auth.uid,
-        userName: userName.text,
-        age: int.parse(age.text),
-        address: address,
-        profilePhoto: profilePhoto,
-        token: token,
-        email: _auth.email!,
-        gender: GenderService().convertStringToEnum(genderSelected),
-        level: LevelService().convertStringToEnum(levelSelected),
-        height: double.parse(height.text),
-        weight: double.parse(weight.text));
+      id: _auth.uid,
+      userName: userName.text,
+      age: age + 1,
+      address: address,
+      profilePhoto: profilePhoto,
+      token: token,
+      email: _auth.email!,
+      gender: GenderService().convertStringToEnum(genderSelected),
+      level: LevelService().convertStringToEnum(levelSelected),
+      height: height + 1,
+      weight: weight + 1,
+    );
   }
 
   Future<void> uploadData() async {
@@ -78,24 +96,26 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
   }
 
   Future<String> uploadProfilePhoto() async {
-    final task = await uploadSingleFile(imagePath, _storage.ref(_auth.uid));
+    if (imagePath.isNotEmpty) {
+      final task = await uploadSingleFile(imagePath, _storage.ref(_auth.uid));
 
-    if (task.state == TaskState.running) {
-      emit(UploadLoading());
-    }
+      if (task.state == TaskState.running) {
+        emit(UploadLoading());
+      }
 
-    if (task.state == TaskState.success) {
-      emit(UploadSucess());
-      return await task.ref.getDownloadURL();
+      if (task.state == TaskState.success) {
+        emit(UploadSucess());
+        return await task.ref.getDownloadURL();
+      }
     }
     return '';
   }
 
   void resetValues() {
     userName.clear();
-    age.clear();
-    weight.clear();
-    height.clear();
+    age = 0;
+    weight = 0;
+    height = 0;
     genderSelected = 'male';
     levelSelected = 'intermediate';
     address = AddressModel(
