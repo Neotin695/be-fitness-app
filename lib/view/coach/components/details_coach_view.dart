@@ -2,26 +2,22 @@ import 'package:be_fitness_app/core/service/enumservice/gender_service.dart';
 import 'package:be_fitness_app/models/coach_model.dart';
 import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
 import 'package:be_fitness_app/view/coach/cubit/coach_cubit.dart';
+import 'package:be_fitness_app/view/coach/screens/display_reviews_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
-import '../../../core/service/decisions_tree.dart';
-import '../../../core/sharedwidget/custom_button.dart';
-import '../../../main.dart';
 
 // ignore: must_be_immutable
-class ReviewCoachView extends StatefulWidget {
+class DetailsCoachView extends StatefulWidget {
   CoachModel coach;
-  ReviewCoachView({super.key, required this.coach});
+  DetailsCoachView({super.key, required this.coach});
 
   @override
-  State<ReviewCoachView> createState() => _ReviewCoachViewState();
+  State<DetailsCoachView> createState() => _DetailsCoachViewState();
 }
 
-class _ReviewCoachViewState extends State<ReviewCoachView> {
+class _DetailsCoachViewState extends State<DetailsCoachView> {
   @override
   Widget build(BuildContext context) {
     final cubit = CoachCubit.get(context);
@@ -110,7 +106,7 @@ class _ReviewCoachViewState extends State<ReviewCoachView> {
                       color: Theme.of(context).colorScheme.onPrimaryContainer,
                       borderRadius: BorderRadius.circular(10)),
                   child: Text(
-                    '${widget.coach.rating.ratingAverage}',
+                    '3.4',
                     style: TextStyle(fontSize: 14.sp, color: Colors.black),
                   ),
                 ),
@@ -128,13 +124,16 @@ class _ReviewCoachViewState extends State<ReviewCoachView> {
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                         borderRadius: BorderRadius.circular(50)),
                     child: Text(
-                      '${widget.coach.rating.ratingCount.length}',
+                      '3.5',
                       style: TextStyle(fontSize: 14.sp, color: Colors.black),
                     ),
                   ),
-                  
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, DisplayReviewsPage.routeName,
+                          arguments: widget.coach.id);
+                    },
                     child: Text(
                       'Read All Reviews',
                       style: TextStyle(
@@ -173,7 +172,7 @@ class _ReviewCoachViewState extends State<ReviewCoachView> {
   bool isSubscribe(CoachCubit cubit) =>
       widget.coach.subscribers.contains(cubit.auth.uid);
 
-  Widget ratingWidget(CoachCubit cubit) {
+  /*  Widget ratingWidget(CoachCubit cubit) {
     return Card(
       elevation: 3,
       child: Center(
@@ -220,5 +219,5 @@ class _ReviewCoachViewState extends State<ReviewCoachView> {
         ),
       ),
     );
-  }
+  } */
 }

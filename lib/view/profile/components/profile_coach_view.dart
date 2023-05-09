@@ -112,7 +112,7 @@ class _ProfileCoachViewState extends State<ProfileCoachView> with PickMedia {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            RatingStars(
+           /*  RatingStars(
               value: widget.coachModel.rating.ratingAverage,
               onValueChanged: (v) {},
               starBuilder: (index, color) => Icon(
@@ -138,7 +138,7 @@ class _ProfileCoachViewState extends State<ProfileCoachView> with PickMedia {
               valueLabelMargin: const EdgeInsets.only(right: 8),
               starOffColor: const Color(0xffe7e8ea),
               starColor: Colors.yellow,
-            ),
+            ), */
             Text(
               ' ${widget.coachModel.subscribers.length}\n Subscribers',
               textAlign: TextAlign.center,

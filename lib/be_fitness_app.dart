@@ -1,6 +1,7 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/core/service/route_generator.dart';
 import 'package:be_fitness_app/main.dart';
+import 'package:be_fitness_app/view/coach/screens/add_review_page.dart';
 import 'package:be_fitness_app/view/onboarding/screens/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/responsive_wrapper.dart';
@@ -11,14 +12,14 @@ import 'core/theme/custom_color.dart';
 
 class BeFitnessApp extends MaterialApp {
   @override
-  // ignore: overridden_fields
-  final GlobalKey<NavigatorState> navigatorKey;
   final ColorScheme darkScheme;
   final ColorScheme lightScheme;
-  BeFitnessApp(RouteGenerator routeGenerator, this.darkScheme, this.lightScheme,
-      {super.key, required this.navigatorKey})
-      : super(
-            navigatorKey: navigatorKey,
+  BeFitnessApp(
+    RouteGenerator routeGenerator,
+    this.darkScheme,
+    this.lightScheme, {
+    super.key,
+  }) : super(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               fontFamily: 'IntegralCF',
@@ -31,10 +32,11 @@ class BeFitnessApp extends MaterialApp {
               extensions: [lightCustomColors],
             ),
             darkTheme: ThemeData(
-              fontFamily: 'IntegralCF',
               textTheme: TextTheme(
-                  bodyLarge:
-                      TextStyle(fontSize: 23.sp, fontWeight: FontWeight.w800),
+                  bodyLarge: TextStyle(
+                      fontFamily: 'IntegralCF',
+                      fontSize: 23.sp,
+                      fontWeight: FontWeight.w800),
                   bodyMedium:
                       TextStyle(fontFamily: 'IntegralCF', fontSize: 10.sp)),
               useMaterial3: true,
@@ -61,8 +63,8 @@ class BeFitnessApp extends MaterialApp {
                   background: Container(color: const Color(0xFFF5F5F5)));
             },
             themeMode: ThemeMode.dark,
-            initialRoute: pref!.getBool('first')!
-                ? OnBoardingPage.routeName
-                : DecisionsTree.routeName,
+            initialRoute: !pref!.getBool('first')!
+                ? DecisionsTree.routeName
+                : OnBoardingPage.routeName,
             onGenerateRoute: routeGenerator.generateRoute);
 }

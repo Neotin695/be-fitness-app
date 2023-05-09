@@ -1,6 +1,8 @@
+import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/view/home/cubit/home_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeLayoutView extends StatefulWidget {
@@ -15,33 +17,24 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
   Widget build(BuildContext context) {
     HomeCubit cubit = HomeCubit.get(context);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('BE FITNESS'),
-        actions: [
-          IconButton(
-              onPressed: () => FirebaseAuth.instance.signOut(),
-              icon: const Icon(Icons.logout))
-        ],
-      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (i) => setState(() => cubit.changeIndex(i)),
         selectedItemColor: Colors.blue,
         unselectedItemColor: Colors.grey,
         currentIndex: cubit.index,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.house), label: ''),
-          BottomNavigationBarItem(
+              icon: SvgPicture.asset(MediaConst.home), label: ''),
+          const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.peopleGroup), label: ''),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.map), label: ''),
-          BottomNavigationBarItem(
+          const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.message), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
+          const BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
         ],
       ),
-      body: cubit.currentPage(),
+      body: SafeArea(child: cubit.currentPage()),
     );
   }
 }

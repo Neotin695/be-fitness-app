@@ -22,7 +22,7 @@ class CoachModel extends Equatable {
   String birthDate;
   String certificateId;
   String nationalId;
-  ReviewModel rating;
+  
   List<String> subscribers;
   CoachModel({
     required this.id,
@@ -37,7 +37,7 @@ class CoachModel extends Equatable {
     required this.birthDate,
     required this.certificateId,
     required this.nationalId,
-    required this.rating,
+    
     required this.subscribers,
   });
 
@@ -56,7 +56,7 @@ class CoachModel extends Equatable {
       birthDate,
       certificateId,
       nationalId,
-      rating,
+      
       token,
       subscribers,
     ];
@@ -76,7 +76,7 @@ class CoachModel extends Equatable {
       'birthDate': birthDate,
       'certificateId': certificateId,
       'nationalId': nationalId,
-      'rating': rating.toMap(),
+      
       'subscribers': subscribers,
     };
   }
@@ -95,7 +95,7 @@ class CoachModel extends Equatable {
       birthDate: map['birthDate'] as String,
       certificateId: map['certificateId'] as String,
       nationalId: map['nationalId'] as String,
-      rating: ReviewModel.fromMap(map['rating'] as Map<String, dynamic>),
+      
       subscribers: List<String>.from(map['subscribers'].map((e) => e)),
     );
   }
@@ -129,16 +129,10 @@ class CoachModel extends Equatable {
       birthDate: birthDate ?? this.birthDate,
       certificateId: certificateId ?? this.certificateId,
       nationalId: nationalId ?? this.nationalId,
-      rating: rating ?? this.rating,
+      
       subscribers: subscribers ?? this.subscribers,
     );
   }
 
-  String toJson() => json.encode(toMap());
-
-  factory CoachModel.fromJson(String source) =>
-      CoachModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool get stringify => true;
+ 
 }

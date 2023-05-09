@@ -9,6 +9,7 @@ class LogicConst {
   static const String state = 'state';
   static const String excercises = 'excercises';
   static const String excercise = 'excercise';
+  static const String reviews = 'reviews';
 
   static const String baseUrl = 'https://fcm.googleapis.com/fcm/send';
   static const String serverKey =

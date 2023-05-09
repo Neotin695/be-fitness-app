@@ -76,10 +76,7 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
           message: 'No internet!, please your connection and try again'));
       return;
     }
-    if (!key.currentState!.validate()) return;
-    if (address.country.isEmpty) {
-      emit(const UploadFailure(message: 'please bring address'));
-    }
+
     final profilePhoto = await uploadProfilePhoto();
     final token = await FirebaseMessaging.instance.getToken();
     final trainee = initData(profilePhoto, token);

@@ -13,10 +13,7 @@ class ExcercisePage extends StatelessWidget {
     final arguments =
         ModalRoute.of(context)!.settings.arguments as List<dynamic>;
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Excercises'),
-      ),
+      
       body: BlocProvider(
         create: (context) => WorkoutCubit(),
         child: ExcerciseView(arguments: arguments),

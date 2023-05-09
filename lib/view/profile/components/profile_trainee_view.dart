@@ -5,6 +5,7 @@ import 'package:be_fitness_app/models/trainee_model.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
 import 'package:be_fitness_app/view/profile/screens/update_profile_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
@@ -23,82 +24,86 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
   @override
   Widget build(BuildContext context) {
     final cubit = ProfileCubit.get(context);
-    return SingleChildScrollView(
+
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Center(
-            child: Container(
-              color: Colors.blue,
-              width: double.infinity,
-              height: 35.h,
-              child: InkWell(
-                onTap: () async {
-                  cubit.imagePath = await pickSingleImage(ImageSource.camera);
-                },
-                child: widget.traineeModel.profilePhoto.isNotEmpty
-                    ? CircleAvatar(
-                        radius: 50.sp,
-                        foregroundImage:
-                            FileImage(File(widget.traineeModel.profilePhoto)),
-                      )
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(365),
-                        child: Image.asset(
-                          MediaConst.person,
-                          filterQuality: FilterQuality.high,
+          Padding(
+            padding: EdgeInsets.only(
+              top: 10.h,
+              bottom: 2.h,
+            ),
+            child: Stack(
+              children: [
+                SvgPicture.asset(
+                  MediaConst.border,
+                  width: 20.w,
+                  height: 20.h,
+                ),
+                Positioned(
+                  left: 3.w,
+                  top: 2.2.h,
+                  child: widget.traineeModel.profilePhoto.isNotEmpty
+                      ? CircleAvatar(
+                          radius: 50.sp,
+                          backgroundImage: const AssetImage(
+                              'assets/images/border_photo.png'),
+                          foregroundImage:
+                              FileImage(File(widget.traineeModel.profilePhoto)),
+                        )
+                      : CircleAvatar(
+                          radius: 40.sp,
+                          foregroundImage: const AssetImage(MediaConst.person),
                         ),
-                      ),
-              ),
+                ),
+              ],
             ),
           ),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Name: ${widget.traineeModel.userName}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Email: ${widget.traineeModel.email}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Address: ${widget.traineeModel.address.country}'),
+          Padding(
+            padding: EdgeInsets.only(bottom: 5.h),
+            child: Text(
+              cubit.auth.displayName!.split(' ').join('\n'),
+              textAlign: TextAlign.start,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontSize: 25.sp),
             ),
           ),
           const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Age: ${widget.traineeModel.age}'),
+          ListTile(
+            title: const Text('Edit Profile'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Privacy Policy'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Settings'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {},
+          ),
+          const Divider(),
+          const Spacer(),
+          const Divider(),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, UpdateProfilePage.routeName,
+                  arguments: widget.traineeModel);
+            },
+            child: Text(
+              'Sign Out',
+              style: TextStyle(fontSize: 16.sp, color: Colors.red),
             ),
           ),
           const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Height: ${widget.traineeModel.height}CM'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Weight: ${widget.traineeModel.weight}KG'),
-            ),
-          ),
-          const Divider(),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, UpdateProfilePage.routeName,
-                    arguments: widget.traineeModel);
-              },
-              child: const Text('Edit Profile'))
         ],
       ),
     );

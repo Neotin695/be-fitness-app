@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/core/service/enumservice/target_muscles.dart';
 import 'package:be_fitness_app/models/excercise_model.dart';
+import 'package:be_fitness_app/view/musicplayer/screens/music_player_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,110 +37,121 @@ class _ExcerciseViewState extends State<ExcerciseView> {
           .snapshots(),
       builder: ((context, snapshot) {
         if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
-          final firstExcercise = ExcerciseModel.fromMap(
-              snapshot.data!.docs.first.data() as Map<String, dynamic>);
-
           return Stack(
             children: [
               Image.asset(
                 MediaConst.images[index()],
                 width: double.infinity,
-                height: 50.h,
+                height: 100.h,
                 fit: BoxFit.cover,
               ),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      height: 30.h,
-                      color: Colors.transparent,
-                    ),
-                    SizedBox(
-                      height: 15.h,
-                      child: Card(
-                        elevation: 4,
-                        child: Center(
-                          child: ListTile(
-                            leading: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: GifView.network(
-                                firstExcercise.gifUrl,
-                                width: 30.w,
-                                height: 30.h,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                            title: Text(firstExcercise.name),
-                            trailing: const Icon(Icons.arrow_forward_rounded),
-                            subtitle: Text(TargetMusclesService()
-                                .convertEnumToString(
-                                    firstExcercise.targetMuscles)),
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, PlayExcercisePage.routeName,
-                                  arguments: firstExcercise);
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 100.h,
-                      child: Card(
-                        elevation: 6,
-                        child: ListView(
-                          children: snapshot.data!.docs.map((e) {
+              BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+                child: Container(
+                  color: Colors.black38,
+                ),
+              ),
+              Column(
+                children: [
+                  AppBar(
+                    centerTitle: true,
+                    title: const Text('Excercises'),
+                    backgroundColor: Colors.transparent,
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      child: ListView(
+                        children: snapshot.data!.docs.map(
+                          (e) {
                             final excercise = ExcerciseModel.fromMap(
                                 e.data() as Map<String, dynamic>);
-                            return firstExcercise != excercise
-                                ? Column(
+                            return InkWell(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, MusicPlayerPage.routeName,
+                                    arguments: [index(), excercise]);
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(15),
+                                  ),
+                                  child: Stack(
+                                    alignment: Alignment.bottomLeft,
                                     children: [
-                                      ListTile(
-                                        leading: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                          child: GifView.network(
-                                            excercise.gifUrl,
-                                            width: 20.w,
-                                            height: 20.h,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                        title: Text(excercise.name),
-                                        subtitle: Text(TargetMusclesService()
-                                            .convertEnumToString(
-                                                excercise.targetMuscles)),
-                                        onTap: () {
-                                          Navigator.pushNamed(context,
-                                              PlayExcercisePage.routeName,
-                                              arguments: excercise);
-                                        },
+                                      GifView.network(
+                                        excercise.gifUrl,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        colorBlendMode: BlendMode.darken,
+                                        height: 30.h,
+                                        color:
+                                            const Color.fromARGB(108, 0, 0, 0),
                                       ),
-                                      const Divider(),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 3.w,
+                                              bottom: 1.h,
+                                              right: 3.w,
+                                            ),
+                                            child: Text(
+                                              excercise.name,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyMedium!
+                                                  .copyWith(fontSize: 18.sp),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: EdgeInsets.only(
+                                              left: 3.w,
+                                              bottom: 1.h,
+                                              right: 3.w,
+                                            ),
+                                            child: Text(
+                                              TargetMusclesService()
+                                                  .convertEnumToString(
+                                                      excercise.targetMuscles),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall!
+                                                  .copyWith(fontSize: 18.sp),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ],
-                                  )
-                                : const SizedBox();
-                          }).toList(),
-                        ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ).toList(),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ],
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
-              child: LoadingAnimationWidget.dotsTriangle(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  size: 35.sp));
+            child: LoadingAnimationWidget.dotsTriangle(
+                color: Theme.of(context).colorScheme.surfaceTint, size: 35.sp),
+          );
         }
         return Center(
-            child: SvgPicture.asset(
-          MediaConst.empty,
-          width: 30.w,
-          height: 30.h,
-        ));
+          child: SvgPicture.asset(
+            MediaConst.empty,
+            width: 30.w,
+            height: 30.h,
+          ),
+        );
       }),
     );
   }

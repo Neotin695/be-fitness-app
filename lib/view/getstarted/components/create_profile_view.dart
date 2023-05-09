@@ -81,7 +81,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
                     BeButton(
                       onPressed: () async {
                         if (cubit.index == fetchWidgets(cubit).length - 1) {
-                          print('hello');
+                          await cubit.uploadData();
                         } else {
                           cubit.controller.nextPage(
                               duration: const Duration(milliseconds: 300),

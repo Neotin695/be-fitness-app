@@ -10,6 +10,10 @@ class CoachsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Fitness Trainers'),
+        centerTitle: true,
+      ),
       body: BlocProvider(
         create: (context) => CoachCubit(),
         child: const CoachsView(),

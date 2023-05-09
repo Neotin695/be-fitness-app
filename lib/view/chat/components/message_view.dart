@@ -37,60 +37,62 @@ class _MessageViewState extends State<MessageView> {
               height: 30.h,
             ));
           }
-          return ListView(
-            children: snapshot.data!.docs.map((doc) {
-              final chatRoom =
-                  ChatModel.fromMap(doc.data() as Map<String, dynamic>);
+          return Expanded(
+            child: ListView(
+              children: snapshot.data!.docs.map((doc) {
+                final chatRoom =
+                    ChatModel.fromMap(doc.data() as Map<String, dynamic>);
 
-              isNew = chatRoom.messageModel.senderId !=
-                  FirebaseAuth.instance.currentUser!.uid;
-              return Container(
-                margin: EdgeInsets.symmetric(vertical: 2.h),
-                child: Card(
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  elevation: 2,
-                  child: ListTile(
-                    onTap: () {
-                      Navigator.pushNamed(context, ChatRoomPage.routeName,
-                          arguments: FirebaseAuth.instance.currentUser!.uid ==
-                                  chatRoom.messageModel.senderId
-                              ? chatRoom.messageModel.receiverId
-                              : chatRoom.messageModel.senderId);
-                    },
-                    leading: Icon(
-                      Icons.person,
-                      size: 25.sp,
-                    ),
-                    trailing: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(chatRoom.messageModel.time),
-                        isNew
-                            ? Container(
-                                padding: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(365),
-                                    color: Colors.green),
-                                child: const Text('New'),
-                              )
-                            : const SizedBox()
-                      ],
-                    ),
-                    title: Text(
-                      chatRoom.userName,
-                    ),
-                    subtitle: Text(
-                      chatRoom.messageModel.message,
-                      style: TextStyle(
-                          color: isNew ? Colors.green : Colors.grey,
-                          fontWeight:
-                              isNew ? FontWeight.bold : FontWeight.normal),
+                isNew = chatRoom.messageModel.senderId !=
+                    FirebaseAuth.instance.currentUser!.uid;
+                return Container(
+                  margin: EdgeInsets.symmetric(vertical: 2.h),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10)),
+                    elevation: 2,
+                    child: ListTile(
+                      onTap: () {
+                        Navigator.pushNamed(context, ChatRoomPage.routeName,
+                            arguments: FirebaseAuth.instance.currentUser!.uid ==
+                                    chatRoom.messageModel.senderId
+                                ? chatRoom.messageModel.receiverId
+                                : chatRoom.messageModel.senderId);
+                      },
+                      leading: Icon(
+                        Icons.person,
+                        size: 25.sp,
+                      ),
+                      trailing: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Text(chatRoom.messageModel.time),
+                          isNew
+                              ? Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(365),
+                                      color: Colors.green),
+                                  child: const Text('New'),
+                                )
+                              : const SizedBox()
+                        ],
+                      ),
+                      title: Text(
+                        chatRoom.userName,
+                      ),
+                      subtitle: Text(
+                        chatRoom.messageModel.message,
+                        style: TextStyle(
+                            color: isNew ? Colors.green : Colors.grey,
+                            fontWeight:
+                                isNew ? FontWeight.bold : FontWeight.normal),
+                      ),
                     ),
                   ),
-                ),
-              );
-            }).toList(),
+                );
+              }).toList(),
+            ),
           );
         } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(

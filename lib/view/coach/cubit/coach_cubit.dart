@@ -28,6 +28,7 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
   static CoachCubit get(context) => BlocProvider.of(context);
   CoachCubit() : super(CoachInitial());
   final TextEditingController name = TextEditingController();
+  final TextEditingController descController = TextEditingController();
   final TextEditingController certificateId = TextEditingController();
   final TextEditingController nationalId = TextEditingController();
 
@@ -43,6 +44,8 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
   String selectedGender = 'male';
   int currentStep = 0;
   DateTime birthDate = DateTime.now();
+
+  double reviewRate = 0;
 
   RequestOnlineCoachModel request = RequestOnlineCoachModel(
       nationalIdFrontImg: '',
@@ -79,6 +82,22 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
     }
   }
 
+  Future<void> uploadReview(String userId) async {
+    store
+        .collection(LogicConst.users)
+        .doc(userId)
+        .collection(LogicConst.reviews)
+        .doc()
+        .set(ReviewModel(
+                date: DateTime.now().toString(),
+                discriptionReview: descController.text,
+                userId: auth.uid,
+                userName: auth.displayName ?? 'Unknown',
+                profilePhoto: '',
+                rate: reviewRate)
+            .toMap());
+  }
+
   Future<CoachModel> subscribe(CoachModel coach) async {
     coach.subscribers.add(auth.uid);
 
@@ -102,26 +121,6 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         (await store.collection(LogicConst.users).doc(coach.id).get()).data()
             as Map<String, dynamic>);
   }
-
-  Future<CoachModel> rate(double rateValue, CoachModel coach) async {
-    if (isAlreadyRated(coach)) {
-      coach.rating.ratingCount.add(auth.uid);
-      coach.rating.totalRating += rateValue;
-      var evaluatorsCount = coach.rating.ratingCount.length;
-      var totalRating = coach.rating.totalRating;
-      coach.rating.ratingAverage = totalRating / evaluatorsCount;
-      store.collection(LogicConst.users).doc(coach.id).update(coach.toMap());
-
-      return CoachModel.fromMap(
-          (await store.collection(LogicConst.users).doc(coach.id).get()).data()
-              as Map<String, dynamic>);
-    } else {
-      return coach;
-    }
-  }
-
-  bool isAlreadyRated(CoachModel coach) =>
-      !coach.rating.ratingCount.contains(auth.uid);
 
   Future<void> sentRequest() async {
     if (!key.currentState!.validate()) {
@@ -232,13 +231,6 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         nationalId: nationalId.text,
         profilePhoto: request.personalImg,
         gender: GenderService().convertStringToEnum(selectedGender),
-        rating: ReviewModel(
-            totalRating: 0,
-            ratingCount: const [],
-            ratingAverage: 0,
-            userName: '',
-            profilePhoto: '',
-            textReview: ''),
         subscribers: const []);
   }
 

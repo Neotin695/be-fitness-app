@@ -25,27 +25,21 @@ class _PlayExcerciseViewState extends State<PlayExcerciseView> {
             repeat: ImageRepeat.repeat,
           ),
           SizedBox(height: 1.h),
-          Card(
-            elevation: 4,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    'TargetMuscles: ${TargetMusclesService().convertEnumToString(widget.excercise.targetMuscles)}',
-                    style: TextStyle(fontSize: 13.sp),
-                  ),
-                  Text(
-                    widget.excercise.name,
-                    style: TextStyle(fontSize: 13.sp),
-                  ),
-                ],
-              ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: Text(
+              widget.excercise.name,
+              style: TextStyle(fontSize: 18.sp),
             ),
-          )
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
+            child: Text(
+              TargetMusclesService()
+                  .convertEnumToString(widget.excercise.targetMuscles),
+              style: TextStyle(fontSize: 18.sp),
+            ),
+          ),
         ],
       ),
     );

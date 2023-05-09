@@ -107,7 +107,6 @@ class _MainWidgetState extends State<MainWidget> {
     return Sizer(builder: (context, orientation, deviceType) {
       return BeFitnessApp(
         RouteGenerator(),
-        navigatorKey: navigatorKey,
         widget.darkScheme,
         widget.lightScheme,
       );

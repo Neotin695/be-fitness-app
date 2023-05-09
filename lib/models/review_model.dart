@@ -1,82 +1,53 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 // ignore: must_be_immutable
 class ReviewModel extends Equatable {
-  double totalRating;
-  List<String> ratingCount;
-  double ratingAverage;
-  String textReview;
+  String discriptionReview;
   String userName;
   String profilePhoto;
+  String userId;
+  double rate;
+  String date;
   ReviewModel({
-    required this.totalRating,
-    required this.ratingCount,
-    required this.ratingAverage,
-    required this.textReview,
+    required this.discriptionReview,
     required this.userName,
     required this.profilePhoto,
+    required this.rate,
+    required this.userId,
+    required this.date,
   });
 
   @override
   List<Object> get props {
     return [
-      totalRating,
-      ratingCount,
-      ratingAverage,
-      textReview,
+      discriptionReview,
       userName,
       profilePhoto,
+      rate,
+      userId,
+      date,
     ];
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'totalRating': totalRating,
-      'ratingCount': ratingCount,
-      'ratingAverage': ratingAverage,
-      'textReview': textReview,
+      'discriptionReview': discriptionReview,
       'userName': userName,
       'profilePhoto': profilePhoto,
+      'rate': rate,
+      'userId': userId,
+      'date': date,
     };
   }
 
   factory ReviewModel.fromMap(Map<String, dynamic> map) {
     return ReviewModel(
-      totalRating: map['totalRating'] as double,
-      ratingCount: List<String>.from(map['ratingCount'].map((e) => e)),
-      ratingAverage: map['ratingAverage'] as double,
-      textReview: map['textReview'] as String,
+      discriptionReview: map['discriptionReview'] as String,
       userName: map['userName'] as String,
       profilePhoto: map['profilePhoto'] as String,
+      rate: map['rate'] as double,
+      date: map['date'] as String,
+      userId: map['userId'] as String,
     );
   }
-
-  ReviewModel copyWith({
-    double? totalRating,
-    List<String>? ratingCount,
-    double? ratingAverage,
-    String? textReview,
-    String? userName,
-    String? profilePhoto,
-  }) {
-    return ReviewModel(
-      totalRating: totalRating ?? this.totalRating,
-      ratingCount: ratingCount ?? this.ratingCount,
-      ratingAverage: ratingAverage ?? this.ratingAverage,
-      textReview: textReview ?? this.textReview,
-      userName: userName ?? this.userName,
-      profilePhoto: profilePhoto ?? this.profilePhoto,
-    );
-  }
-
-  String toJson() => json.encode(toMap());
-
-  factory ReviewModel.fromJson(String source) =>
-      ReviewModel.fromMap(json.decode(source) as Map<String, dynamic>);
-
-  @override
-  bool get stringify => true;
 }
