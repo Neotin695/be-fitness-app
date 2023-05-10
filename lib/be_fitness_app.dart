@@ -22,7 +22,7 @@ class BeFitnessApp extends MaterialApp {
   }) : super(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              fontFamily: 'IntegralCF',
+              
               useMaterial3: true,
               colorScheme: lightScheme,
               textTheme: TextTheme(

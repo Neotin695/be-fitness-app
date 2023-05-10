@@ -10,14 +10,13 @@ enum FieldFor {
 class CustomTextFieldCoach extends StatelessWidget {
   final TextEditingController cn;
   final String title;
-  final IconData icon;
+
   final TextInputType inputType;
   final FieldFor fieldFor;
   const CustomTextFieldCoach(
       {super.key,
       required this.cn,
       required this.title,
-      required this.icon,
       required this.inputType,
       required this.fieldFor});
 
@@ -31,7 +30,6 @@ class CustomTextFieldCoach extends StatelessWidget {
         validator: validatorLogic,
         decoration: InputDecoration(
           labelText: title,
-          prefixIcon: Icon(icon),
         ),
       ),
     );

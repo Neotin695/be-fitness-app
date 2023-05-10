@@ -35,7 +35,7 @@ class AppConst {
   static const String personalPhotoTxt = 'Personal Photo';
   static const String takePersonalPhotoTxt = 'take personal photo';
   static const String certificateDocTxt = 'Certificate Doc';
-  static const String frontIdCardDocTxt = 'Front Id Card Doc';
-  static const String backIdCardDocTxt = 'Back Id Card Doc';
+  static const String frontCardIdDocTxt = 'Front Card Id Doc';
+  static const String backCardIdDocTxt = 'Back Card Id Doc';
   static const String errorMessage = 'somthing want wrong!, please try again';
 }

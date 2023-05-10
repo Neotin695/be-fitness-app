@@ -1,4 +1,4 @@
-import 'package:be_fitness_app/view/coach/components/stepper_widget.dart';
+import 'package:be_fitness_app/view/coach/components/page_view_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,14 +10,14 @@ import '../../../core/appconstance/media_constance.dart';
 import '../cubit/coach_cubit.dart';
 import '../screens/not_accepted_screen.dart';
 
-class BodyVerifyCoach extends StatefulWidget {
-  const BodyVerifyCoach({super.key});
+class CreateCoachView extends StatefulWidget {
+  const CreateCoachView({super.key});
 
   @override
-  State<BodyVerifyCoach> createState() => _BodyVerifyCoachState();
+  State<CreateCoachView> createState() => _CreateCoachViewState();
 }
 
-class _BodyVerifyCoachState extends State<BodyVerifyCoach> {
+class _CreateCoachViewState extends State<CreateCoachView> {
   @override
   Widget build(BuildContext context) {
     CoachCubit cubit = CoachCubit.get(context);
@@ -38,12 +38,7 @@ class _BodyVerifyCoachState extends State<BodyVerifyCoach> {
           key: cubit.key,
           child: Column(
             children: [
-              SvgPicture.asset(MediaConst.verify, width: 25.w, height: 25.h),
-              Text(
-                AppConst.verifyCoachHeading,
-                style: TextStyle(fontSize: 25.sp),
-              ),
-              Expanded(child: CustomStepperWidget(cubit: cubit))
+              Expanded(child: PageViewWidget(cubit: cubit)),
             ],
           ),
         ),

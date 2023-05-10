@@ -54,7 +54,7 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
             CircularButton(
               hero: 'coach',
               onPressed: () {
-                Navigator.pushNamed(context, VerifyCoachPage.routeName);
+                Navigator.pushNamed(context, CreateCoachPage.routeName);
               },
               icon: SvgPicture.asset(
                 MediaConst.coach,

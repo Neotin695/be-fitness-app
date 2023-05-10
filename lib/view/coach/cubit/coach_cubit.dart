@@ -31,6 +31,7 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
   final TextEditingController descController = TextEditingController();
   final TextEditingController certificateId = TextEditingController();
   final TextEditingController nationalId = TextEditingController();
+  final PageController pageController = PageController();
 
   final GlobalKey<FormState> key = GlobalKey();
 
@@ -41,8 +42,9 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
 
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
-  String selectedGender = 'male';
-  int currentStep = 0;
+  String genderSelected = 'male';
+  Color? unselectedColor = const Color(0xFF00210B);
+
   DateTime birthDate = DateTime.now();
 
   double reviewRate = 0;
@@ -230,7 +232,7 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         certificateId: certificateId.text,
         nationalId: nationalId.text,
         profilePhoto: request.personalImg,
-        gender: GenderService().convertStringToEnum(selectedGender),
+        gender: GenderService().convertStringToEnum(genderSelected),
         subscribers: const []);
   }
 

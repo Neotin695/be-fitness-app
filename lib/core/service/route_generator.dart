@@ -40,8 +40,8 @@ class RouteGenerator {
         return _pageRoute(const AuthSignUpPage());
       case GetStartedScreen.routeName:
         return _pageRoute(const GetStartedScreen());
-      case VerifyCoachPage.routeName:
-        return _pageRoute(const VerifyCoachPage());
+      case CreateCoachPage.routeName:
+        return _pageRoute(const CreateCoachPage());
       case CreateProfilePage.routeName:
         return _pageRoute(const CreateProfilePage());
       case NotAcceptedScreen.routeName:

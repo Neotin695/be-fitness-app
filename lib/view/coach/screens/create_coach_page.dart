@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../components/verify_coach_view.dart';
+import '../components/create_coach_view.dart';
 import '../cubit/coach_cubit.dart';
 
-class VerifyCoachPage extends StatefulWidget {
+class CreateCoachPage extends StatefulWidget {
   static const String routeName = 'verifyCoachScreen';
-  const VerifyCoachPage({super.key});
+  const CreateCoachPage({super.key});
 
   @override
-  State<VerifyCoachPage> createState() => _VerifyCoachPageState();
+  State<CreateCoachPage> createState() => _CreateCoachPageState();
 }
 
-class _VerifyCoachPageState extends State<VerifyCoachPage> {
+class _CreateCoachPageState extends State<CreateCoachPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
         body: BlocProvider(
           create: (context) => CoachCubit(),
-          child: const BodyVerifyCoach(),
+          child: const CreateCoachView(),
         ));
   }
 }
