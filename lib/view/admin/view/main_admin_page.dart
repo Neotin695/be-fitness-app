@@ -15,6 +15,8 @@ class MainAdminPage extends StatelessWidget {
     return Scaffold(
       drawer: const DrawerAdmin(),
       appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Main Admin'),
         actions: [
           IconButton(
               onPressed: () => FirebaseAuth.instance.signOut(),

@@ -17,126 +17,104 @@ class ReviewAdminView extends StatelessWidget {
     AdminCubit cubit = AdminCubit.get(context);
     return SafeArea(
       child: SingleChildScrollView(
-        child: Container(
-          color: Colors.white54,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(height: 3.h),
-              CarouselSlider(
-                options: CarouselOptions(height: 30.h),
-                items: [
-                  request.personalImg,
-                  request.certificateIdImg,
-                  request.nationalIdBakcImg,
-                  request.nationalIdFrontImg
-                ].map((img) {
-                  return CachedNetworkImage(
-                    imageUrl: img,
-                    placeholder: (_, url) => SizedBox(
-                        height: 10.h,
-                        width: 10.w,
-                        child: const CircularProgressIndicator()),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  );
-                }).toList(),
-              ),
-              SizedBox(height: 2.h),
-              customContainerWidget(request, [
-                Text('Nmae: ${request.fulName}',
-                    style: TextStyle(fontSize: 17.sp)),
-                const Divider(),
-                Text('BirthDate: ${request.birthDate}',
-                    style: TextStyle(fontSize: 17.sp)),
-              ]),
-              SizedBox(height: 2.h),
-              customContainerWidget(request, [
-                Text(
-                    'Address: ${request.address.name}, ${request.address.country}, ${request.address.locality}, ${request.address.postalCode},',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 17.sp)),
-              ]),
-              SizedBox(height: 2.h),
-              customContainerWidget(request, [
-                Text('National Id: ${request.nationalId}',
-                    style: TextStyle(fontSize: 17.sp)),
-                const Divider(),
-                Text('Certificate Id: ${request.certificateId}',
-                    style: TextStyle(fontSize: 17.sp)),
-              ]),
-              SizedBox(height: 2.h),
-              buttonSection(context, cubit, request),
-            ],
-          ),
+        child: Column(
+          children: [
+            SizedBox(height: 3.h),
+            CarouselSlider(
+              options: CarouselOptions(height: 40.h),
+              items: [
+                request.personalImg,
+                request.certificateIdImg,
+                request.nationalIdBakcImg,
+                request.nationalIdFrontImg
+              ].map((img) {
+                return CachedNetworkImage(
+                  imageUrl: img,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                  placeholder: (_, url) => SizedBox(
+                      height: 10.h, child: const CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                );
+              }).toList(),
+            ),
+            SizedBox(height: 2.h),
+            ListTile(
+              title: Text(request.fulName, style: TextStyle(fontSize: 17.sp)),
+              subtitle: Text(request.birthDate,
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 13.sp)),
+            ),
+            const Divider(),
+            const Divider(),
+            ListTile(
+              title: Text(
+                  '${request.address.name}, ${request.address.country}, ${request.address.locality}, ${request.address.postalCode},',
+                  style: TextStyle(fontSize: 17.sp)),
+              subtitle: Text('Address',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 12.sp)),
+            ),
+            const Divider(),
+            ListTile(
+              title: Text(request.certificateId,
+                  style: TextStyle(fontSize: 17.sp)),
+              subtitle: Text('Certificate Number',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 12.sp)),
+            ),
+            const Divider(),
+            ListTile(
+              title:
+                  Text(request.nationalId, style: TextStyle(fontSize: 17.sp)),
+              subtitle: Text('National Id Number',
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.inversePrimary,
+                      fontSize: 12.sp)),
+            ),
+            const Divider(),
+            SizedBox(height: 2.h),
+            buttonSection(context, cubit, request),
+          ],
         ),
       ),
     );
   }
 
-  BlocBuilder<AdminCubit, AdminState> buttonSection(
+  Widget buttonSection(
       BuildContext context, AdminCubit cubit, RequestOnlineCoachModel request) {
-    return BlocBuilder<AdminCubit, AdminState>(
-      builder: (context, state) {
-        if (state is AccepteRequest) {
-        } else if (state is RejectRequest) {}
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30), color: Colors.white),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              ElevatedButton.icon(
-                onPressed: () {
-                  cubit.accepteRequest(request.userId).then((value) async {
-                    await cubit
-                        .notify(
-                            request.userId, 'You Accepted For Online Coaching')
-                        .then((value) {
-                      Navigator.pushReplacementNamed(
-                          context, MainAdminPage.routeName);
-                    });
-                  });
-                },
-                icon: const Icon(Icons.done),
-                label: const Text('Confirm'),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.green),
-                ),
-              ),
-              ElevatedButton.icon(
-                onPressed: () {
-                  cubit.rejectRequest(request.userId).then((value) async {
-                    await cubit
-                        .notify(request.userId,
-                            'you are not accepted for Online Coaching')
-                        .then((value) {
-                      Navigator.pushReplacementNamed(
-                          context, MainAdminPage.routeName);
-                    });
-                  });
-                },
-                icon: const Icon(Icons.close),
-                label: const Text('Decline'),
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.redAccent),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
-
-  customContainerWidget(RequestOnlineCoachModel request, List<Widget> widgets) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 3.h),
+      margin: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30), color: Colors.white),
-      child: Column(
-        children: widgets,
+        borderRadius: BorderRadius.circular(30),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          FloatingActionButton(
+            heroTag: 'accepted',
+            onPressed: () {
+              cubit.accepteRequest(request.userId).then((value) {
+                Navigator.pop(context);
+              });
+            },
+            backgroundColor: Theme.of(context).colorScheme.primary,
+            foregroundColor: Theme.of(context).colorScheme.onPrimary,
+            child: const Icon(Icons.done),
+          ),
+          FloatingActionButton(
+            heroTag: 'reject',
+            onPressed: () {
+              cubit.rejectRequest(request.userId).then((value) {
+                Navigator.pop(context);
+              });
+            },
+            child: const Icon(Icons.close),
+          )
+        ],
       ),
     );
   }

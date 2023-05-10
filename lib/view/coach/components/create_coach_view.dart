@@ -36,11 +36,7 @@ class _CreateCoachViewState extends State<CreateCoachView> {
       child: SafeArea(
         child: Form(
           key: cubit.key,
-          child: Column(
-            children: [
-              Expanded(child: PageViewWidget(cubit: cubit)),
-            ],
-          ),
+          child: PageViewWidget(cubit: cubit),
         ),
       ),
     );

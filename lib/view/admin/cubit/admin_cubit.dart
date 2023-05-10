@@ -28,10 +28,11 @@ class AdminCubit extends Cubit<AdminState> {
   bool isSelected() =>
       selectedBodyPart != 'body part' &&
       selectedTargetMuscles != 'target muscles' &&
-      selectedTime != defaultTime;
+      x != 0 &&
+      y != 0;
 
-  Duration selectedTime = const Duration(seconds: 0);
-  Duration defaultTime = const Duration(seconds: 0);
+  int x = 0;
+  int y = 0;
 
   Future<Map<String, dynamic>> receiverData(userId) async {
     final data = await _store.collection(LogicConst.users).doc(userId).get();
@@ -62,13 +63,14 @@ class AdminCubit extends Cubit<AdminState> {
         name: excerciseName.text,
         targetMuscles:
             TargetMusclesService().convertStringToEnum(selectedTargetMuscles),
-        timer: [selectedTime.inMinutes, selectedTime.inSeconds]);
+        duration: [x, y]);
   }
 
   void resetData() {
     selectedBodyPart = 'body part';
     selectedTargetMuscles = 'target muscles';
-    selectedTime = const Duration(seconds: 0);
+    x = 0;
+    y = 0;
     excerciseName.clear();
     gifUrl.clear();
   }
@@ -122,11 +124,9 @@ class AdminCubit extends Cubit<AdminState> {
     emit(AccepteRequest());
   }
 
-  Future<void> notify(userId,body) async {
+  Future<void> notify(userId, body) async {
     await PushNotification().snetNotification(
-        (await receiverData(userId))['token'],
-       body,
-        'Online Coach');
+        (await receiverData(userId))['token'], body, 'Online Coach');
   }
 
   void emitFailure() {

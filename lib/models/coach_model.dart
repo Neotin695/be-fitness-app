@@ -18,11 +18,11 @@ class CoachModel extends Equatable {
   AddressModel address;
   String profilePhoto;
   Gender gender;
-
+  double averageRate;
   String birthDate;
   String certificateId;
   String nationalId;
-  
+
   List<String> subscribers;
   CoachModel({
     required this.id,
@@ -33,11 +33,11 @@ class CoachModel extends Equatable {
     required this.email,
     required this.address,
     required this.profilePhoto,
+    required this.averageRate,
     required this.gender,
     required this.birthDate,
     required this.certificateId,
     required this.nationalId,
-    
     required this.subscribers,
   });
 
@@ -56,8 +56,8 @@ class CoachModel extends Equatable {
       birthDate,
       certificateId,
       nationalId,
-      
       token,
+      averageRate,
       subscribers,
     ];
   }
@@ -76,7 +76,7 @@ class CoachModel extends Equatable {
       'birthDate': birthDate,
       'certificateId': certificateId,
       'nationalId': nationalId,
-      
+      'averageRate': averageRate,
       'subscribers': subscribers,
     };
   }
@@ -89,13 +89,13 @@ class CoachModel extends Equatable {
       userName: map['userName'] as String,
       token: map['token'] as String,
       email: map['email'] as String,
+      averageRate: double.parse(map['averageRate'].toString()),
       address: AddressModel.fromMap(map['address'] as Map<String, dynamic>),
       profilePhoto: map['profilePhoto'] as String,
       gender: GenderService().convertStringToEnum(map['gender'].toString()),
       birthDate: map['birthDate'] as String,
       certificateId: map['certificateId'] as String,
       nationalId: map['nationalId'] as String,
-      
       subscribers: List<String>.from(map['subscribers'].map((e) => e)),
     );
   }
@@ -114,6 +114,7 @@ class CoachModel extends Equatable {
     String? certificateId,
     String? nationalId,
     ReviewModel? rating,
+    double? averageRate,
     List<String>? subscribers,
   }) {
     return CoachModel(
@@ -122,6 +123,7 @@ class CoachModel extends Equatable {
       isCoach: isCoach ?? this.isCoach,
       userName: userName ?? this.userName,
       token: token ?? this.token,
+      averageRate: averageRate ?? this.averageRate,
       email: email ?? this.email,
       address: address ?? this.address,
       profilePhoto: profilePhoto ?? this.profilePhoto,
@@ -129,10 +131,7 @@ class CoachModel extends Equatable {
       birthDate: birthDate ?? this.birthDate,
       certificateId: certificateId ?? this.certificateId,
       nationalId: nationalId ?? this.nationalId,
-      
       subscribers: subscribers ?? this.subscribers,
     );
   }
-
- 
 }

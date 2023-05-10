@@ -5,8 +5,9 @@ import 'package:sizer/sizer.dart';
 class BeListWheel extends StatefulWidget {
   final List<Widget> list;
   final void Function(int) onSelectedChange;
-
-  const BeListWheel({
+  double? itemExtent;
+  BeListWheel({
+    this.itemExtent,
     super.key,
     required this.list,
     required this.onSelectedChange,
@@ -21,7 +22,7 @@ class _BeListWheelState extends State<BeListWheel> {
   Widget build(BuildContext context) {
     return CupertinoPicker(
         looping: true,
-        itemExtent: 80,
+        itemExtent: widget.itemExtent??80,
         useMagnifier: true,
         magnification: 1,
         selectionOverlay: Center(

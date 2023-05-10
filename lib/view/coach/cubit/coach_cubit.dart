@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:document_scanner_flutter/configs/configs.dart';
@@ -43,11 +44,17 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
   AddressModel address = AddressModel(
       name: '', postalCode: '', country: '', subLocality: '', locality: '');
   String genderSelected = 'male';
+  int index = 0;
   Color? unselectedColor = const Color(0xFF00210B);
 
   DateTime birthDate = DateTime.now();
 
   double reviewRate = 0;
+  int oneStar = 0;
+  int twoStar = 0;
+  int threeStar = 0;
+  int fourStar = 0;
+  int fiveStar = 0;
 
   RequestOnlineCoachModel request = RequestOnlineCoachModel(
       nationalIdFrontImg: '',
@@ -68,6 +75,25 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
 
   File src = File('');
 
+  void ratingSummary(List<ReviewModel> reviews) {
+    for (var review in reviews) {
+      if (between(review.rate, 1, 2)) {
+        ++oneStar;
+      } else if (between(review.rate, 2, 3)) {
+        ++twoStar;
+      } else if (between(review.rate, 3, 4)) {
+        ++threeStar;
+      } else if (between(review.rate, 4, 5)) {
+        ++fourStar;
+      } else {
+        ++fiveStar;
+      }
+    }
+  }
+
+  double tRate = 0;
+  bool between(value, num1, num2) => value >= num1 && value < num2;
+
   Future<String> pickSingleImg() async {
     try {
       return await pickSingleImage(ImageSource.camera);
@@ -84,8 +110,8 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
     }
   }
 
-  Future<void> uploadReview(String userId) async {
-    store
+  Future<CoachModel> uploadReview(String userId) async {
+    await store
         .collection(LogicConst.users)
         .doc(userId)
         .collection(LogicConst.reviews)
@@ -97,7 +123,33 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
                 userName: auth.displayName ?? 'Unknown',
                 profilePhoto: '',
                 rate: reviewRate)
-            .toMap());
+            .toMap())
+        .then((value) async {
+      await store
+          .collection(LogicConst.users)
+          .doc(userId)
+          .collection(LogicConst.reviews)
+          .get()
+          .then((value) async {
+        var reviews =
+            List.from(value.docs.map((doc) => ReviewModel.fromMap(doc.data())));
+
+        var rates = reviews.map<double>((e) {
+          return e.rate;
+        }).toList();
+
+        for (var element in rates) {
+          tRate += element;
+        }
+        await store
+            .collection(LogicConst.users)
+            .doc(userId)
+            .update({'averageRate': (tRate / reviews.length)});
+      });
+    });
+    return CoachModel.fromMap(
+        (await store.collection(LogicConst.users).doc(userId).get()).data()
+            as Map<String, dynamic>);
   }
 
   Future<CoachModel> subscribe(CoachModel coach) async {
@@ -227,6 +279,7 @@ class CoachCubit extends Cubit<CoachState> with PickMedia {
         userName: name.text,
         email: auth.email!,
         token: token,
+        averageRate: 0,
         birthDate: DateFormat('yyyy-mm-dd').format(birthDate),
         address: address,
         certificateId: certificateId.text,

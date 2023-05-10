@@ -57,7 +57,7 @@ class BodyNotAccepted extends StatelessWidget {
                   padding: EdgeInsets.symmetric(horizontal: 3.w, vertical: 2.h),
                   child: Text(AppConst.notAceeptedHeading,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 22.sp)),
+                      style: TextStyle(fontSize: 17.sp)),
                 )
               ],
             ),

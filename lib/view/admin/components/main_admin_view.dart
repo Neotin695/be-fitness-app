@@ -78,22 +78,20 @@ class RequestItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Image.network(
-        request.personalImg,
-        width: 10.w,
-        height: 10.h,
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(request.personalImg),
+        radius: 35,
       ),
+      onTap: () {
+        Navigator.pushNamed(context, ReviewPage.routeName, arguments: request);
+      },
       title: Text(request.fulName, style: TextStyle(fontSize: 15.sp)),
-      subtitle: Text(request.nationalId, style: TextStyle(fontSize: 12.sp)),
-      trailing: IconButton(
-        icon: Icon(
-          Icons.more_horiz,
-          size: 15.sp,
-        ),
-        onPressed: () {
-          Navigator.pushNamed(context, ReviewPage.routeName,
-              arguments: request);
-        },
+      subtitle: Text(request.nationalId,
+          style: TextStyle(
+              fontSize: 13.sp, color: Theme.of(context).colorScheme.primary)),
+      trailing: Icon(
+        Icons.arrow_forward_ios,
+        size: 15.sp,
       ),
     );
   }

@@ -69,7 +69,7 @@ class CoachsView extends StatelessWidget {
                                     .onPrimaryContainer,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Text(
-                              '4.5',
+                              coach.averageRate.toString(),
                               style: TextStyle(
                                   fontSize: 10.sp, color: Colors.black),
                             ),

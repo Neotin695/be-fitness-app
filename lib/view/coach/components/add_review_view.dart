@@ -1,3 +1,4 @@
+import 'package:be_fitness_app/models/coach_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sizer/sizer.dart';
@@ -50,6 +51,7 @@ class _AddReviewViewState extends State<AddReviewView> {
               child: TextField(
                 minLines: 3,
                 maxLines: 5,
+                style: Theme.of(context).textTheme.bodyMedium,
                 controller: cubit.descController,
                 decoration: const InputDecoration(
                   hintText: 'Review (Optional)',

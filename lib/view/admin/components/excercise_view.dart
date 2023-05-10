@@ -1,5 +1,6 @@
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
+import 'package:be_fitness_app/core/sharedwidget/custom_list_wheel.dart';
 import 'package:be_fitness_app/view/admin/cubit/admin_cubit.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/cupertino.dart';
@@ -42,10 +43,6 @@ class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
           child: Column(
             children: [
               SizedBox(height: 7.h),
-              Text(
-                'Add Excercise',
-                style: TextStyle(fontSize: 25.sp),
-              ),
               SizedBox(height: 3.h),
               SvgPicture.asset(
                 MediaConst.workout,
@@ -107,18 +104,46 @@ class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
             children: [
               Center(
                 child: SizedBox(
-                  height: 30.h,
-                  width: 90.w,
-                  child: CupertinoTimerPicker(
-                    initialTimerDuration: cubit.selectedTime,
-                    mode: CupertinoTimerPickerMode.ms,
-                    onTimerDurationChanged: (value) {
-                      setState(() {
-                        cubit.selectedTime = value;
-                      });
-                    },
-                  ),
-                ),
+                    height: 30.h,
+                    width: 30.w,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: BeListWheel(
+                            itemExtent: 41,
+                            list: List.generate(
+                                100,
+                                (index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('$index'),
+                                    )),
+                            onSelectedChange: (v) {
+                              cubit.x = v;
+                              setState(() {
+                                
+                              });
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: BeListWheel(
+                            itemExtent: 41,
+                            list: List.generate(
+                                100,
+                                (index) => Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text('$index'),
+                                    )),
+                            onSelectedChange: (v) {
+                               cubit.y = v;
+                              setState(() {
+                                
+                              });
+                            },
+                          ),
+                        ),
+                      ],
+                    )),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -187,8 +212,9 @@ class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
       padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
       child: TextFormField(
         controller: cn,
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
-          labelText: label,
+          hintText: label,
         ),
         validator: (value) {
           if (value!.isEmpty) {

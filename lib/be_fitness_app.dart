@@ -22,7 +22,6 @@ class BeFitnessApp extends MaterialApp {
   }) : super(
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
-              
               useMaterial3: true,
               colorScheme: lightScheme,
               textTheme: TextTheme(
@@ -32,13 +31,14 @@ class BeFitnessApp extends MaterialApp {
               extensions: [lightCustomColors],
             ),
             darkTheme: ThemeData(
+              fontFamily: 'IntegralCF-Regular',
               textTheme: TextTheme(
                   bodyLarge: TextStyle(
                       fontFamily: 'IntegralCF',
                       fontSize: 23.sp,
                       fontWeight: FontWeight.w800),
-                  bodyMedium:
-                      TextStyle(fontFamily: 'IntegralCF', fontSize: 10.sp)),
+                  bodyMedium: TextStyle(
+                      fontFamily: 'IntegralCF-Regular', fontSize: 10.sp)),
               useMaterial3: true,
               elevatedButtonTheme: ElevatedButtonThemeData(
                   style: ButtonStyle(

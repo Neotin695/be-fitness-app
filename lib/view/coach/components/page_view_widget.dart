@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/app_constance.dart';
+import '../../../core/appconstance/media_constance.dart';
 import '../../../core/service/locatoin_service.dart';
+import '../../../core/sharedwidget/custom_button.dart';
 import '../../../core/sharedwidget/custom_circular_button.dart';
 import '../cubit/coach_cubit.dart';
 import 'custom_text_field_coach.dart';
@@ -20,10 +23,67 @@ class _PageViewWidgetState extends State<PageViewWidget> {
   @override
   Widget build(BuildContext context) {
     final cubit = widget.cubit;
-    return PageView(
-      controller: cubit.pageController,
-      children: fetchStep(cubit),
-      onPageChanged: (value) {},
+    return Column(
+      children: [
+        Expanded(
+          child: PageView(
+            controller: cubit.pageController,
+            children: fetchWidgets(cubit),
+            onPageChanged: (index) {
+              setState(() {
+                cubit.index = index;
+              });
+            },
+          ),
+        ),
+        SizedBox(height: 5.h),
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 3.w),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Visibility(
+                visible: cubit.index != 0,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    cubit.pageController.previousPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                  },
+                  backgroundColor:
+                      Theme.of(context).colorScheme.onInverseSurface,
+                  child: const Icon(Icons.arrow_back),
+                ),
+              ),
+              BeButton(
+                onPressed: () async {
+                  if (cubit.index == fetchWidgets(cubit).length - 1) {
+                    await cubit.sentRequest();
+                  } else {
+                    cubit.pageController.nextPage(
+                        duration: const Duration(milliseconds: 300),
+                        curve: Curves.easeInOut);
+                  }
+                },
+                text: 'Next',
+                color: Theme.of(context).colorScheme.primaryContainer,
+                radius: 30,
+                width: 40.w,
+                hegiht: 10.h,
+                icon: SvgPicture.asset(
+                  MediaConst.arrow,
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.onPrimaryContainer,
+                      BlendMode.srcIn),
+                ),
+                textStyle: TextStyle(
+                    fontSize: 14.sp,
+                    color: Theme.of(context).colorScheme.onPrimaryContainer),
+              )
+            ],
+          ),
+        )
+      ],
     );
   }
 
@@ -31,29 +91,81 @@ class _PageViewWidgetState extends State<PageViewWidget> {
     await cubit.sentRequest();
   }
 
-  List<Widget> fetchStep(CoachCubit cubit) {
+  List<Widget> fetchWidgets(CoachCubit cubit) {
     return [
       Padding(
         padding: EdgeInsets.symmetric(horizontal: 3.w),
-        child: Column(
-          children: [
-            Text(
-              'TELL US ABOUT YOURSELF!',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            SizedBox(height: 3.h),
-            Text(
-              'To give you a better experience we need to know your gender',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            SizedBox(height: 10.h),
-            CustomTextFieldCoach(
-                cn: cubit.name,
-                title: 'Name',
-                inputType: TextInputType.name,
-                fieldFor: FieldFor.name)
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'TELL US ABOUT YOURSELF!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              SizedBox(height: 3.h),
+              Text(
+                'To check real name to give trainee better safe',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              SizedBox(height: 10.h),
+              CustomTextFieldCoach(
+                  cn: cubit.name,
+                  title: 'Name',
+                  inputType: TextInputType.name,
+                  fieldFor: FieldFor.name)
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'TELL US ABOUT YOURSELF!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              SizedBox(height: 3.h),
+              Text(
+                'To check if you true coach to give trainee better safe',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              SizedBox(height: 10.h),
+              CustomTextFieldCoach(
+                  cn: cubit.certificateId,
+                  title: 'Certificate Number',
+                  inputType: TextInputType.name,
+                  fieldFor: FieldFor.name)
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'TELL US ABOUT YOURSELF!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              SizedBox(height: 3.h),
+              Text(
+                'To check with your national card id to give trainee better safe',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              SizedBox(height: 10.h),
+              CustomTextFieldCoach(
+                  cn: cubit.nationalId,
+                  title: 'National id numder',
+                  inputType: TextInputType.name,
+                  fieldFor: FieldFor.name)
+            ],
+          ),
         ),
       ),
       Padding(
@@ -70,31 +182,36 @@ class _PageViewWidgetState extends State<PageViewWidget> {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            SizedBox(height: 10.h),
-            CircularButton(
-              hero: 'female',
-              color: cubit.genderSelected == 'female'
-                  ? null
-                  : cubit.unselectedColor,
-              onPressed: () {
-                setState(() {
-                  cubit.genderSelected = 'female';
-                });
-              },
-              icon: const Icon(Icons.female),
-              text: 'Female',
+            SizedBox(height: 5.h),
+            Expanded(
+              child: CircularButton(
+                hero: 'female',
+                color: cubit.genderSelected == 'female'
+                    ? null
+                    : cubit.unselectedColor,
+                onPressed: () {
+                  setState(() {
+                    cubit.genderSelected = 'female';
+                  });
+                },
+                icon: const Icon(Icons.female),
+                text: 'Female',
+              ),
             ),
-            CircularButton(
-              hero: 'male',
-              color:
-                  cubit.genderSelected == 'male' ? null : cubit.unselectedColor,
-              onPressed: () {
-                setState(() {
-                  cubit.genderSelected = 'male';
-                });
-              },
-              icon: const Icon(Icons.male),
-              text: 'Male',
+            Expanded(
+              child: CircularButton(
+                hero: 'male',
+                color: cubit.genderSelected == 'male'
+                    ? null
+                    : cubit.unselectedColor,
+                onPressed: () {
+                  setState(() {
+                    cubit.genderSelected = 'male';
+                  });
+                },
+                icon: const Icon(Icons.male),
+                text: 'Male',
+              ),
             )
           ],
         ),
@@ -176,10 +293,6 @@ class _PageViewWidgetState extends State<PageViewWidget> {
               onPressed: () async {
                 cubit.request.nationalIdFrontImg =
                     await cubit.pickSingleDoc(context);
-
-                cubit.pageController.nextPage(
-                    duration: const Duration(milliseconds: 500),
-                    curve: Curves.easeInOut);
               },
               icon: const Icon(Icons.document_scanner),
               label: const Text(AppConst.frontCardIdDocTxt),
@@ -230,7 +343,6 @@ class _PageViewWidgetState extends State<PageViewWidget> {
           ],
         ),
       ),
-      const SizedBox(),
     ];
   }
 

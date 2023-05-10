@@ -28,8 +28,9 @@ class CustomTextFieldCoach extends StatelessWidget {
         controller: cn,
         keyboardType: inputType,
         validator: validatorLogic,
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
-          labelText: title,
+          hintText: title,
         ),
       ),
     );

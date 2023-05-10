@@ -12,7 +12,7 @@ class ExcerciseAdminPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Excercise'),
+        title: const Text('Add Excercise'),
       ),
       body: BlocProvider(
         create: (context) => AdminCubit(),

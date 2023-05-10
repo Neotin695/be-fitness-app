@@ -1,5 +1,6 @@
 import 'package:be_fitness_app/core/appconstance/logic_constance.dart';
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
+import 'package:be_fitness_app/models/coach_model.dart';
 import 'package:be_fitness_app/view/coach/components/review_item_view.dart';
 import 'package:be_fitness_app/view/coach/cubit/coach_cubit.dart';
 import 'package:flutter/material.dart';
@@ -12,41 +13,66 @@ import '../../../models/review_model.dart';
 import '../screens/add_review_page.dart';
 
 class DisplayReviewsView extends StatefulWidget {
-  final String userId;
+  final CoachModel coach;
 
-  const DisplayReviewsView({super.key, required this.userId});
+  const DisplayReviewsView({super.key, required this.coach});
 
   @override
   State<DisplayReviewsView> createState() => _DisplayReviewsViewState();
 }
 
 class _DisplayReviewsViewState extends State<DisplayReviewsView> {
+  bool isFirst = true;
+
+  @override
+  void dispose() {
+    isFirst = true;
+    super.dispose();
+  }
+
+  double totalRate = 0;
+
   @override
   Widget build(BuildContext context) {
     final cubit = CoachCubit.get(context);
     return StreamBuilder(
       stream: cubit.store
           .collection(LogicConst.users)
-          .doc(widget.userId)
+          .doc(widget.coach.id)
           .collection(LogicConst.reviews)
           .snapshots(),
-      builder: (context, snashot) {
-        if (snashot.hasData) { 
-          final List<ReviewModel> reviews = List.from(
-              snashot.data!.docs.map((doc) => ReviewModel.fromMap(doc.data())));
-          double totalRate = 0;
-          reviews.map<double>((e) => totalRate += e.rate);
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          final List<ReviewModel> reviews = List.from(snapshot.data!.docs
+              .map((doc) => ReviewModel.fromMap(doc.data())));
+
+          if (isFirst) {
+            var rates = reviews.map<double>((e) {
+              return e.rate;
+            }).toList();
+
+            for (var element in rates) {
+              totalRate += element;
+            }
+            cubit.ratingSummary(reviews);
+            isFirst = false;
+          }
           return Column(
             children: [
-              RatingSummary(
-                counter: reviews.length,
-                average: reviews.length / totalRate,
-                showAverage: true,
-                counterFiveStars: 5,
-                counterFourStars: 4,
-                counterThreeStars: 3,
-                counterTwoStars: 2,
-                counterOneStars: 1,
+              Visibility(
+                visible: reviews.isNotEmpty,
+                child: Expanded(
+                  child: RatingSummary(
+                    counter: reviews.length,
+                    average: (totalRate / reviews.length),
+                    showAverage: true,
+                    counterFiveStars: cubit.fiveStar,
+                    counterFourStars: cubit.fourStar,
+                    counterThreeStars: cubit.threeStar,
+                    counterTwoStars: cubit.twoStar,
+                    counterOneStars: cubit.oneStar,
+                  ),
+                ),
               ),
               Expanded(
                 child: ListView(
@@ -61,18 +87,20 @@ class _DisplayReviewsViewState extends State<DisplayReviewsView> {
                 visible: !alreadyReview(reviews, cubit),
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushReplacementNamed(
+                    isFirst = true;
+                    Navigator.pushNamed(
                       context,
                       AddReviewPage.routeName,
-                      arguments: widget.userId,
+                      arguments: widget.coach.id,
                     );
                   },
                   child: const Text('Write a Review'),
                 ),
-              )
+              ),
+              SizedBox(height: 3.h),
             ],
           );
-        } else if (snashot.connectionState == ConnectionState.waiting) {
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: LoadingAnimationWidget.dotsTriangle(
                 color: Theme.of(context).colorScheme.surfaceTint, size: 35.sp),
