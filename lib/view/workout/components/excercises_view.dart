@@ -11,7 +11,6 @@ import 'package:gif_view/gif_view.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sizer/sizer.dart';
 
-
 class ExcerciseView extends StatefulWidget {
   final List<dynamic> arguments;
   const ExcerciseView({super.key, required this.arguments});
@@ -21,11 +20,6 @@ class ExcerciseView extends StatefulWidget {
 }
 
 class _ExcerciseViewState extends State<ExcerciseView> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
