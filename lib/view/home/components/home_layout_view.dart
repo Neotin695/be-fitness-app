@@ -1,6 +1,5 @@
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/view/home/cubit/home_cubit.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -24,7 +23,12 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
         currentIndex: cubit.index,
         items: [
           BottomNavigationBarItem(
-              icon: SvgPicture.asset(MediaConst.home), label: ''),
+              icon: SvgPicture.asset(
+                MediaConst.home,
+                colorFilter:
+                    const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+              ),
+              label: ''),
           const BottomNavigationBarItem(
               icon: Icon(Icons.health_and_safety), label: ''),
           const BottomNavigationBarItem(

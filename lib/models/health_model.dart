@@ -1,9 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
-import 'dart:math';
 
 import 'package:equatable/equatable.dart';
 
+// ignore: must_be_immutable
 class HealthModel extends Equatable {
   double calories;
   List<String> cautions;
@@ -30,6 +30,7 @@ class HealthModel extends Equatable {
       HealthModel.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+// ignore: must_be_immutable
 class TotalNuration extends Equatable {
   Nutrient fat;
   Nutrient procnt;
@@ -77,6 +78,7 @@ class TotalNuration extends Equatable {
       TotalNuration.fromMap(json.decode(source) as Map<String, dynamic>);
 }
 
+// ignore: must_be_immutable
 class Nutrient extends Equatable {
   String label;
   String unit;

@@ -8,7 +8,13 @@ class UpdateTraineeProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: ElevatedButton(
-            onPressed: () async {}, child: const Text('get token'),style:ButtonStyle(minimumSize: MaterialStateProperty.all(Size(30,30)))));
+      child: ElevatedButton(
+        onPressed: () async {},
+        style: ButtonStyle(
+          minimumSize: MaterialStateProperty.all(const Size(30, 30)),
+        ),
+        child: const Text('get token'),
+      ),
+    );
   }
 }

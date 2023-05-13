@@ -5,8 +5,7 @@ import 'package:be_fitness_app/models/trainee_model.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
 import 'package:be_fitness_app/view/profile/screens/update_profile_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:image_picker/image_picker.dart';
+
 import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/media_constance.dart';
@@ -37,25 +36,33 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
             ),
             child: Stack(
               children: [
-                SvgPicture.asset(
-                  MediaConst.border,
-                  width: 20.w,
-                  height: 20.h,
-                ),
                 Positioned(
                   left: 3.w,
                   top: 2.2.h,
                   child: widget.traineeModel.profilePhoto.isNotEmpty
-                      ? CircleAvatar(
-                          radius: 50.sp,
-                          backgroundImage: const AssetImage(
-                              'assets/images/border_photo.png'),
-                          foregroundImage:
-                              FileImage(File(widget.traineeModel.profilePhoto)),
+                      ? Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(MediaConst.border))),
+                          child: CircleAvatar(
+                            radius: 35.sp,
+                            backgroundImage: const AssetImage(
+                                'assets/images/border_photo.png'),
+                            foregroundImage: FileImage(
+                                File(widget.traineeModel.profilePhoto)),
+                          ),
                         )
-                      : CircleAvatar(
-                          radius: 40.sp,
-                          foregroundImage: const AssetImage(MediaConst.person),
+                      : Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(MediaConst.border))),
+                          child: CircleAvatar(
+                            radius: 35.sp,
+                            foregroundImage:
+                                const AssetImage(MediaConst.person),
+                          ),
                         ),
                 ),
               ],

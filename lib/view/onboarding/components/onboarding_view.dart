@@ -20,45 +20,47 @@ class _OnboardingViewState extends State<OnboardingView> {
   @override
   Widget build(BuildContext context) {
     final cubit = OnboardingCubit.get(context);
-    return PageView(
-      onPageChanged: (value) => setState(() {
-        cubit.onPageChange(value);
-      }),
-      children: cubit.listData().map<Widget>((data) {
-        return Column(
-          children: [
-            Image.asset(data.image,
-                width: double.infinity, fit: BoxFit.cover, height: 80.h),
-            rectangleDig(width: -100.w, height: -12.h),
-            Text(
-              data.title,
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+    return SafeArea(
+      child: PageView(
+        onPageChanged: (value) => setState(() {
+          cubit.onPageChange(value);
+        }),
+        children: cubit.listData().map<Widget>((data) {
+          return Column(
+            children: [
+              Image.asset(data.image,
+                  width: double.infinity, fit: BoxFit.cover, height: 80.h),
+              rectangleDig(width: -100.w, height: -12.h),
+              Text(
+                data.title,
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 15.h),
-            Visibility(
-              visible: cubit.listData().length - 1 == cubit.index,
-              child: BeButton(
-                onPressed: () async {
-                  await pref!.setBool('first', false).then((value) {
-                    Navigator.pushReplacementNamed(
-                        context, DecisionsTree.routeName);
-                  });
-                },
-                text: 'Start Now',
-                icon: SvgPicture.asset(MediaConst.arrow),
-                color: Theme.of(context).colorScheme.primary,
-                radius: 30,
-                width: 80.w,
-                hegiht: 10.h,
-              ),
-            )
-          ],
-        );
-      }).toList(),
+              SizedBox(height: 15.h),
+              Visibility(
+                visible: cubit.listData().length - 1 == cubit.index,
+                child: BeButton(
+                  onPressed: () async {
+                    await pref!.setBool('first', false).then((value) {
+                      Navigator.pushReplacementNamed(
+                          context, DecisionsTree.routeName);
+                    });
+                  },
+                  text: 'Start Now',
+                  icon: SvgPicture.asset(MediaConst.arrow),
+                  color: Theme.of(context).colorScheme.primary,
+                  radius: 30,
+                  width: 80.w,
+                  hegiht: 10.h,
+                ),
+              )
+            ],
+          );
+        }).toList(),
+      ),
     );
   }
 }

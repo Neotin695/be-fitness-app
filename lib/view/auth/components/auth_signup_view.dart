@@ -12,7 +12,6 @@ import '../../../core/sharedwidget/custom_paint.dart';
 import '../../getstarted/screens/getstarted_page.dart';
 import '../../home/screens/home_layout_page.dart';
 import '../cubit/auth_cubit.dart';
-import '../screens/auth_signup_page.dart';
 
 class AuthSignUpView extends StatefulWidget {
   const AuthSignUpView({super.key});

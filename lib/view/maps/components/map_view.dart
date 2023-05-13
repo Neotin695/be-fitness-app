@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:be_fitness_app/core/appconstance/map_const.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:location/location.dart';
@@ -129,14 +128,12 @@ class _MapsViewState extends State<MapsView> {
       PointLatLng(currentLocation!.latitude!, currentLocation!.longitude!),
       PointLatLng(targetLocation.latitude, targetLocation.longitude),
     );
-    print(targetLocation);
-    print(result.points);
+
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       }
       setState(() {});
     }
-    print(result.points.isNotEmpty);
   }
 }

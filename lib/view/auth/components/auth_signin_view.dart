@@ -1,5 +1,4 @@
 import 'package:be_fitness_app/core/sharedwidget/custom_button.dart';
-import 'package:be_fitness_app/view/auth/screens/auth_sign_page.dart';
 import 'package:be_fitness_app/view/auth/screens/auth_signup_page.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';

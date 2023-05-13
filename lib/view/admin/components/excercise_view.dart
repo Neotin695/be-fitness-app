@@ -3,7 +3,6 @@ import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/core/sharedwidget/custom_list_wheel.dart';
 import 'package:be_fitness_app/view/admin/cubit/admin_cubit.dart';
 import 'package:cool_alert/cool_alert.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -119,9 +118,7 @@ class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
                                     )),
                             onSelectedChange: (v) {
                               cubit.x = v;
-                              setState(() {
-                                
-                              });
+                              setState(() {});
                             },
                           ),
                         ),
@@ -135,10 +132,8 @@ class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
                                       child: Text('$index'),
                                     )),
                             onSelectedChange: (v) {
-                               cubit.y = v;
-                              setState(() {
-                                
-                              });
+                              cubit.y = v;
+                              setState(() {});
                             },
                           ),
                         ),

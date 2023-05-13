@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -38,12 +37,11 @@ class MapsCubit extends Cubit<MapsState> {
     );
 
     if (result.points.isNotEmpty) {
-      result.points.forEach((point) =>
-          polylineCoordinates.add(LatLng(point.latitude, point.longitude)));
+      for (var point in result.points) {
+        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+      }
     }
   }
-
-
 
   Future<LatLng> getCurrentLocation() async {
     bool serviceEnabled;

@@ -1,11 +1,10 @@
 import 'package:be_fitness_app/core/appconstance/media_constance.dart';
+import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/coach_model.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
-import 'package:be_fitness_app/view/profile/screens/update_profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_stars/flutter_rating_stars.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:sizer/sizer.dart';
 
 class ProfileCoachView extends StatefulWidget {
@@ -20,131 +19,107 @@ class _ProfileCoachViewState extends State<ProfileCoachView> with PickMedia {
   @override
   Widget build(BuildContext context) {
     final cubit = ProfileCubit.get(context);
-    return SingleChildScrollView(
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 8.w),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            color: Colors.blue,
-            width: double.infinity,
-            height: 35.h,
-            child: Center(
-              child: InkWell(
-                onTap: () async {
-                  cubit.imagePath = await pickSingleImage(ImageSource.camera);
-                },
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(
+                  top: 10.h,
+                  bottom: 2.h,
+                ),
                 child: widget.coachModel.profilePhoto.isNotEmpty
-                    ? CircleAvatar(
-                        radius: 50.sp,
-                        foregroundImage:
-                            NetworkImage(widget.coachModel.profilePhoto),
+                    ? Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(MediaConst.border))),
+                        child: CircleAvatar(
+                          radius: 35.sp,
+                          foregroundImage:
+                              NetworkImage(widget.coachModel.profilePhoto),
+                        ),
                       )
-                    : Image.asset(
-                        MediaConst.person,
-                        filterQuality: FilterQuality.high,
+                    : Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(MediaConst.border))),
+                        child: CircleAvatar(
+                          radius: 35.sp,
+                          backgroundImage: const AssetImage(MediaConst.border),
+                          foregroundImage: const AssetImage(MediaConst.person),
+                        ),
                       ),
               ),
-            ),
-          ),
-          SizedBox(
-            width: double.infinity,
-            height: 15.h,
-            child: ratingWidget(),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Name: ${widget.coachModel.userName}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Email: ${widget.coachModel.email}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text(
-                  'Address: ${widget.coachModel.address.country}, ${widget.coachModel.address.locality}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Certificate Id: ${widget.coachModel.certificateId}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('National Id: ${widget.coachModel.nationalId}'),
-            ),
-          ),
-          const Divider(),
-          Card(
-            elevation: 3,
-            child: ListTile(
-              title: Text('Birth of Date: ${widget.coachModel.birthDate}'),
-            ),
-          ),
-          const Divider(),
-          ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, UpdateProfilePage.routeName,
-                    arguments: widget.coachModel);
-              },
-              child: const Text('Edit Profile'))
-        ],
-      ),
-    );
-  }
-
-  Widget ratingWidget() {
-    return Card(
-      elevation: 3,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-           /*  RatingStars(
-              value: widget.coachModel.rating.ratingAverage,
-              onValueChanged: (v) {},
-              starBuilder: (index, color) => Icon(
-                Icons.star,
-                color: color,
-                size: 30.sp,
+              Container(
+                height: 20.h,
+                width: 0.2.w,
+                margin: EdgeInsets.only(top: 8.h, left: 15.w),
+                color: Colors.grey,
               ),
-              starCount: 5,
-              starSize: 30.sp,
-              valueLabelTextStyle: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 17.0),
-              valueLabelRadius: 10,
-              maxValue: 5,
-              starSpacing: 2,
-              maxValueVisibility: true,
-              valueLabelVisibility: true,
-              animationDuration: const Duration(milliseconds: 1000),
-              valueLabelPadding:
-                  const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
-              valueLabelMargin: const EdgeInsets.only(right: 8),
-              starOffColor: const Color(0xffe7e8ea),
-              starColor: Colors.yellow,
-            ), */
-            Text(
-              ' ${widget.coachModel.subscribers.length}\n Subscribers',
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
+              Container(
+                margin: EdgeInsets.only(top: 8.h),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    '${widget.coachModel.averageRate} \n Total Rate',
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(bottom: 5.h),
+            child: Text(
+              cubit.auth.displayName!.split(' ').join('\n'),
+              textAlign: TextAlign.start,
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyLarge!
+                  .copyWith(fontSize: 25.sp),
+            ),
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Edit Profile'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Privacy Policy'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {},
+          ),
+          const Divider(),
+          ListTile(
+            title: const Text('Settings'),
+            trailing: const Icon(Icons.arrow_forward_ios),
+            onTap: () {},
+          ),
+          const Divider(),
+          const Spacer(),
+          const Divider(),
+          TextButton(
+            onPressed: () {
+              FirebaseAuth.instance.signOut().then((value) =>
+                  Navigator.pushReplacementNamed(
+                      context, DecisionsTree.routeName));
+            },
+            child: Text(
+              'Sign Out',
+              style: TextStyle(fontSize: 16.sp, color: Colors.red),
+            ),
+          ),
+          const Divider(),
+        ],
       ),
     );
   }

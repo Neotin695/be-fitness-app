@@ -1,4 +1,3 @@
-import 'package:be_fitness_app/core/appconstance/app_constance.dart';
 import 'package:be_fitness_app/view/getstarted/screens/create_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';

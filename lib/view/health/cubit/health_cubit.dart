@@ -1,11 +1,9 @@
 import 'package:be_fitness_app/models/health_model.dart';
-import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 
 import '../../../core/appconstance/logic_constance.dart';
 
@@ -55,7 +53,7 @@ class HealthCubit extends Cubit<HealthState> {
             LogicConst.ingr: searchController.text
           });
       emit(NutrientLoaded());
-      print(response.data);
+
       if (response.statusCode == 200) {
         return Right(HealthModel.fromMap(response.data!));
       }

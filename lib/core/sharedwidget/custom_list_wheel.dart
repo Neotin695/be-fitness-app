@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
 
+// ignore: must_be_immutable
 class BeListWheel extends StatefulWidget {
   final List<Widget> list;
   final void Function(int) onSelectedChange;

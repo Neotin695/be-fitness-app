@@ -2,10 +2,6 @@ import 'package:be_fitness_app/view/onboarding/cubit/onboarding_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:sizer/sizer.dart';
-
-import '../../../core/sharedwidget/custom_paint.dart';
-import '../../../models/page_view_model.dart';
 import '../components/onboarding_view.dart';
 
 class OnBoardingPage extends StatefulWidget {
@@ -26,6 +22,4 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
       child: const OnboardingView(),
     ));
   }
-
- 
 }

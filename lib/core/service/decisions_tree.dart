@@ -29,7 +29,7 @@ class DecisionsTree extends StatelessWidget {
             }
             return FutureBuilder<DocumentSnapshot>(
               future: FirebaseFirestore.instance
-                  .collection(LogicConst.tempUser)
+                  .collection(LogicConst.tempUser) 
                   .doc(FirebaseAuth.instance.currentUser!.uid)
                   .get(),
               builder: (_, snapshot) {

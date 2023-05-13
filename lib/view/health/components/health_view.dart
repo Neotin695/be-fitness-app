@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:searchbar_animation/searchbar_animation.dart';
 import 'package:simple_circular_progress_bar/simple_circular_progress_bar.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 
 class HealthView extends StatefulWidget {
   const HealthView({super.key});

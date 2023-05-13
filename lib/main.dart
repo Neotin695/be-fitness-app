@@ -31,7 +31,6 @@ void main() async {
   await Messaging().initialNotification();
   FirebaseMessaging.onMessage.listen((event) {
     RemoteNotification notification = event.notification!;
-    AndroidNotification android = event.notification!.android!;
 
     if (event.notification != null) {
       Messaging().flutterLocalNotificationsPlugin.show(
@@ -51,8 +50,6 @@ void main() async {
   });
 
   FirebaseMessaging.onMessageOpenedApp.listen((event) {
-    RemoteNotification notification = event.notification!;
-    AndroidNotification android = event.notification!.android!;
 
     if (event.notification != null) {}
   });

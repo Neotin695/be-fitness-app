@@ -2,11 +2,8 @@ import 'package:be_fitness_app/view/coach/components/page_view_widget.dart';
 import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../core/appconstance/app_constance.dart';
-import '../../../core/appconstance/media_constance.dart';
 import '../cubit/coach_cubit.dart';
 import '../screens/not_accepted_screen.dart';
 
