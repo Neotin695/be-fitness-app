@@ -18,11 +18,11 @@ class MediaConst {
     'assets/images/1.jpeg',
     'assets/images/27.jpeg',
     'assets/images/3.jpeg',
-    'assets/images/4.jpeg',
+    'assets/images/20.jpeg',
     'assets/images/9.jpeg',
     'assets/images/18.jpeg',
     'assets/images/7.jpeg',
-    'assets/images/3.jpeg',
-    'assets/images/3.jpeg',
+    'assets/images/4.jpeg',
+    'assets/images/23.jpeg',
   ];
 }

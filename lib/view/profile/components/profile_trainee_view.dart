@@ -1,9 +1,11 @@
 import 'dart:io';
 
+import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/trainee_model.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
 import 'package:be_fitness_app/view/profile/screens/update_profile_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:sizer/sizer.dart';
@@ -34,38 +36,33 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
               top: 10.h,
               bottom: 2.h,
             ),
-            child: Stack(
-              children: [
-                Positioned(
-                  left: 3.w,
-                  top: 2.2.h,
-                  child: widget.traineeModel.profilePhoto.isNotEmpty
-                      ? Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(MediaConst.border))),
-                          child: CircleAvatar(
-                            radius: 35.sp,
-                            backgroundImage: const AssetImage(
-                                'assets/images/border_photo.png'),
-                            foregroundImage: FileImage(
-                                File(widget.traineeModel.profilePhoto)),
-                          ),
-                        )
-                      : Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                              image: DecorationImage(
-                                  image: AssetImage(MediaConst.border))),
-                          child: CircleAvatar(
-                            radius: 35.sp,
-                            foregroundImage:
-                                const AssetImage(MediaConst.person),
-                          ),
-                        ),
-                ),
-              ],
+            child: Positioned(
+              left: 3.w,
+              top: 2.2.h,
+              child: widget.traineeModel.profilePhoto.isNotEmpty
+                  ? Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(MediaConst.border))),
+                      child: CircleAvatar(
+                        radius: 35.sp,
+                        backgroundImage:
+                            const AssetImage('assets/images/border_photo.png'),
+                        foregroundImage:
+                            NetworkImage(widget.traineeModel.profilePhoto),
+                      ),
+                    )
+                  : Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage(MediaConst.border))),
+                      child: CircleAvatar(
+                        radius: 35.sp,
+                        foregroundImage: const AssetImage(MediaConst.person),
+                      ),
+                    ),
             ),
           ),
           Padding(
@@ -102,8 +99,9 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
           const Divider(),
           TextButton(
             onPressed: () {
-              Navigator.pushNamed(context, UpdateProfilePage.routeName,
-                  arguments: widget.traineeModel);
+              FirebaseAuth.instance.signOut().then((value) =>
+                  Navigator.pushReplacementNamed(
+                      context, DecisionsTree.routeName));
             },
             child: Text(
               'Sign Out',

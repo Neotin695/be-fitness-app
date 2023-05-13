@@ -1,3 +1,4 @@
+import 'package:be_fitness_app/view/coach/screens/display_reviews_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sizer/sizer.dart';
@@ -50,7 +51,10 @@ class _AddReviewViewState extends State<AddReviewView> {
               child: TextField(
                 minLines: 3,
                 maxLines: 5,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 18.sp),
                 controller: cubit.descController,
                 decoration: const InputDecoration(
                   hintText: 'Review (Optional)',
@@ -64,12 +68,14 @@ class _AddReviewViewState extends State<AddReviewView> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-                onPressed: () async {
-                  await cubit.uploadReview(widget.userId).then((value) {
-                    Navigator.pop(context);
-                  });
-                },
-                child: const Text('Send')),
+              onPressed: () async {
+                await cubit.uploadReview(widget.userId).then((value) {
+                  Navigator.pushReplacementNamed(
+                      context, DisplayReviewsPage.routeName);
+                });
+              },
+              child: const Text('Send'),
+            ),
           ),
         ],
       ),

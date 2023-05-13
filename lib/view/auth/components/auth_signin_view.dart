@@ -29,11 +29,11 @@ class _AuthSignInViewState extends State<AuthSignInView> {
         if (state is AuthSucess) {
         } else if (state is AuthFailure) {
           showErrorMessage(context, state);
-        }
+        } else if (state is AuthLoading) {}
       },
       child: SafeArea(
         child: Form(
-          key: cubit.formKey,
+          key: cubit.formKeySignIn,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -45,6 +45,10 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                   padding: EdgeInsets.symmetric(horizontal: 7.w),
                   child: TextFormField(
                     controller: cubit.email,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontSize: 18.sp),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'please enter your email';
@@ -55,14 +59,6 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                         return 'invalid email';
                       }
                       return null;
-                    },
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        cubit.formKey.currentState!.validate();
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      }
                     },
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
@@ -85,14 +81,10 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                     },
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: cubit.visibility,
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        cubit.formKey.currentState!.validate();
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      }
-                    },
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontSize: 18.sp),
                     decoration: InputDecoration(
                         labelStyle:
                             TextStyle(fontSize: 16.sp, color: Colors.white),
@@ -132,7 +124,9 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                     SizedBox(width: 4.w),
                     BeButton(
                       onPressed: () async {
-                        await cubit.signInWithEmail();
+                        await cubit.signInWithEmail().then((value) =>
+                            Navigator.pushReplacementNamed(
+                                context, DecisionsTree.routeName));
                       },
                       radius: 30,
                       text: 'Sign In',

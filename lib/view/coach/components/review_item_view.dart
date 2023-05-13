@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sizer/sizer.dart';
+import 'package:intl/intl.dart';
 
 import '../../../core/appconstance/media_constance.dart';
 import '../../../models/review_model.dart';
@@ -34,7 +35,8 @@ class ReviewItem extends StatelessWidget {
                 SizedBox(width: 2.w),
                 Text(review.userName),
                 const Spacer(),
-                Text(review.date),
+                Text(DateFormat('yy-MM-dd (hh:mm)')
+                    .format(DateTime.parse(review.date))),
               ],
             ),
             SizedBox(height: 5.h),

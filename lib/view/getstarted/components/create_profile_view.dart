@@ -5,6 +5,7 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:horizontal_picker/horizontal_picker.dart';
 
 import 'package:sizer/sizer.dart';
 
@@ -113,6 +114,26 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
     );
   }
 
+  /* 
+  BeListWheel(
+                list: cubit.weights.map((e) {
+                  return Center(
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
+                      child: Text(
+                        '$e KG',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ),
+                  );
+                }).toList(),
+                onSelectedChange: (index) {
+                  
+                },
+              ),
+   */
+
   List<Widget> fetchWidgets(GetstartedCubit cubit) {
     return [
       Center(
@@ -215,22 +236,19 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
             ),
             SizedBox(height: 20.h),
             Expanded(
-              child: BeListWheel(
-                list: cubit.weights.map((e) {
-                  return Center(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-                      child: Text(
-                        '$e KG',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  );
-                }).toList(),
-                onSelectedChange: (index) {
+              child: HorizontalPicker(
+                minValue: 0,
+                maxValue: 100,
+                divisions: 100,
+                height: 10.h,
+                suffix: " Kg",
+                showCursor: true,
+                backgroundColor: Colors.grey.shade900,
+                activeItemTextColor: Colors.white,
+                passiveItemsTextColor: Theme.of(context).colorScheme.primary,
+                onChanged: (value) {
                   setState(() {
-                    cubit.weight = cubit.weights[index];
+                    cubit.weight = value;
                   });
                 },
               ),

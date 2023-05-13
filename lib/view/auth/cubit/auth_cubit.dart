@@ -20,7 +20,8 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController userName = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
-  final GlobalKey<FormState> formKey = GlobalKey();
+  final GlobalKey<FormState> formKeySignIn = GlobalKey();
+  final GlobalKey<FormState> formKeySignUp = GlobalKey();
 
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
@@ -28,8 +29,43 @@ class AuthCubit extends Cubit<AuthState> {
 
   bool visibility = false;
 
-  Future<void> signInWithEmail() async {}
-  Future<void> signUpWithEmail() async {}
+  Future<void> signInWithEmail() async {
+    bool isConnected = await InternetService().isConnected();
+    if (!isConnected) {
+      emit(const AuthFailure(
+          message: 'No internet!, Please check your connection and try agian'));
+      return;
+    }
+    if (!formKeySignIn.currentState!.validate()) {
+      return;
+    }
+    emit(AuthLoading());
+    await auth.signInWithEmailAndPassword(
+        email: email.text, password: password.text);
+    emit(const AuthSucess(isNewUser: false));
+  }
+
+  Future<void> signUpWithEmail() async {
+    print('clicked');
+    bool isConnected = await InternetService().isConnected();
+    if (!isConnected) {
+      emit(const AuthFailure(
+          message: 'No internet!, Please check your connection and try agian'));
+      return;
+    }
+    if (!formKeySignUp.currentState!.validate()) {
+      return;
+    }
+    emit(AuthLoading());
+    final UserCredential login = await auth.createUserWithEmailAndPassword(
+        email: email.text, password: password.text);
+    await auth.currentUser!.updateDisplayName(userName.text);
+    if (login.additionalUserInfo!.isNewUser) {
+      initUser(login.user!.uid);
+      emit(AuthSucess(isNewUser: login.additionalUserInfo!.isNewUser));
+    }
+    emit(const AuthSucess(isNewUser: true));
+  }
 
   Future<UserCredential> _signInWithGoogle() async {
     try {

@@ -33,7 +33,7 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
       },
       child: SafeArea(
         child: Form(
-          key: cubit.formKey,
+          key: cubit.formKeySignUp,
           child: SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -45,6 +45,10 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                   padding: EdgeInsets.symmetric(horizontal: 7.w),
                   child: TextFormField(
                     controller: cubit.email,
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontSize: 18.sp),
                     validator: (value) {
                       if (value!.isEmpty) {
                         return 'please enter your email';
@@ -55,14 +59,6 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                         return 'invalid email';
                       }
                       return null;
-                    },
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        cubit.formKey.currentState!.validate();
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      }
                     },
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
@@ -85,14 +81,10 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                     },
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: cubit.visibility,
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        cubit.formKey.currentState!.validate();
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      }
-                    },
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontSize: 18.sp),
                     decoration: InputDecoration(
                         labelStyle:
                             TextStyle(fontSize: 16.sp, color: Colors.white),
@@ -121,14 +113,10 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                     },
                     keyboardType: TextInputType.visiblePassword,
                     obscureText: cubit.visibility,
-                    onChanged: (value) {
-                      if (value.isNotEmpty) {
-                        cubit.formKey.currentState!.validate();
-                        if (mounted) {
-                          setState(() {});
-                        }
-                      }
-                    },
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium!
+                        .copyWith(fontSize: 18.sp),
                     decoration: InputDecoration(
                         labelStyle:
                             TextStyle(fontSize: 16.sp, color: Colors.white),
@@ -157,9 +145,9 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                         icon: SvgPicture.asset(MediaConst.google)),
                     SizedBox(width: 4.w),
                     BeButton(
-                      onPressed: () async {
-                        await cubit.signUpWithEmail();
-                      },
+                      onPressed: () async => await cubit.signUpWithEmail().then(
+                          (value) => Navigator.pushReplacementNamed(
+                              context, AuthSignInPage.routeName)),
                       radius: 30,
                       icon: SvgPicture.asset(MediaConst.arrow),
                       width: 40.w,

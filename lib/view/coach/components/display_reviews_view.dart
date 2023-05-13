@@ -77,8 +77,11 @@ class _DisplayReviewsViewState extends State<DisplayReviewsView> {
               Expanded(
                 child: ListView(
                   children: reviews.map<Widget>((review) {
-                    return ReviewItem(
-                      review: review,
+                    return Container(
+                      margin: EdgeInsets.symmetric(horizontal: 3.w),
+                      child: ReviewItem(
+                        review: review,
+                      ),
                     );
                   }).toList(),
                 ),
@@ -87,8 +90,7 @@ class _DisplayReviewsViewState extends State<DisplayReviewsView> {
                 visible: !alreadyReview(reviews, cubit),
                 child: ElevatedButton(
                   onPressed: () {
-                    isFirst = true;
-                    Navigator.pushNamed(
+                    Navigator.pushReplacementNamed(
                       context,
                       AddReviewPage.routeName,
                       arguments: widget.coach.id,
