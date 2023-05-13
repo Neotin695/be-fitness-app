@@ -26,6 +26,8 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
           BottomNavigationBarItem(
               icon: SvgPicture.asset(MediaConst.home), label: ''),
           const BottomNavigationBarItem(
+              icon: Icon(Icons.health_and_safety), label: ''),
+          const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.peopleGroup), label: ''),
           const BottomNavigationBarItem(
               icon: Icon(FontAwesomeIcons.map), label: ''),

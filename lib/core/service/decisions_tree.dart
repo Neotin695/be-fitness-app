@@ -22,7 +22,9 @@ class DecisionsTree extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (_, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot.data!.email == 'mehani695@gmail.com') {
+            if (snapshot.data!.email == 'mehani695@gmail.com' ||
+                FirebaseAuth.instance.currentUser!.email ==
+                    'asia24954@gmail.com') {
               return const MainAdminPage();
             }
             return FutureBuilder<DocumentSnapshot>(

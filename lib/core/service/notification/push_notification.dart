@@ -5,7 +5,7 @@ class PushNotification {
   Future<bool> snetNotification(String token, String body, String title) async {
     final dio = Dio(
       BaseOptions(
-        baseUrl: LogicConst.baseUrl,
+        baseUrl: LogicConst.baseUrlFirebase,
         headers: <String, dynamic>{
           'Content-Type': 'application/json',
           'Authorization': 'key=${LogicConst.serverKey}',

@@ -66,6 +66,11 @@ dependencies:
   rating_summary: ^1.0.2+1
   syncfusion_flutter_sliders: ^20.4.54
   flutter_rating_bar: ^4.0.1
+  horizontal_picker: ^1.2.0
+  sleek_circular_slider: ^2.0.1
+  searchbar_animation: ^0.0.4
+  http: ^0.13.6
+  simple_circular_progress_bar: ^1.0.2
 
 dev_dependencies:
   flutter_test:
