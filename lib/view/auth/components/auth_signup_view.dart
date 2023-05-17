@@ -34,131 +34,124 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
       child: SafeArea(
         child: Form(
           key: cubit.formKeySignUp,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                customImageBackground(context),
-                rectangleDig(width: -160.w, height: -14.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.w),
-                  child: TextFormField(
-                    controller: cubit.email,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 18.sp),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please enter your email';
-                      }
-                      if (!RegExp(
-                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          .hasMatch(value)) {
-                        return 'invalid email';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelStyle:
-                          TextStyle(fontSize: 16.sp, color: Colors.white),
-                      labelText: 'Email',
-                    ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              customImageBackground(context),
+              rectangleDig(width: -160.w, height: -14.h),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 7.w),
+                        child: TextFormField(
+                          controller: cubit.email,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your email';
+                            }
+                            if (!RegExp(
+                                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                .hasMatch(value)) {
+                              return 'invalid email';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: InputDecoration(
+                            labelStyle:
+                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                            labelText: 'Email',
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 7.w),
+                        child: TextFormField(
+                          controller: cubit.password,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your password';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.visiblePassword,
+                          obscureText: cubit.visibility,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                              labelStyle: TextStyle(
+                                  fontSize: 16.sp, color: Colors.white),
+                              labelText: 'Password',
+                              suffix: InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      cubit.visibility = !cubit.visibility;
+                                    });
+                                  },
+                                  child: Icon(cubit.visibility
+                                      ? Icons.visibility
+                                      : Icons.visibility_off))),
+                        ),
+                      ),
+                      SizedBox(height: 2.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 7.w),
+                        child: TextFormField(
+                          controller: cubit.userName,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'please enter your username';
+                            }
+                            return null;
+                          },
+                          keyboardType: TextInputType.visiblePassword,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          decoration: InputDecoration(
+                            labelStyle:
+                                TextStyle(fontSize: 16.sp, color: Colors.white),
+                            labelText: 'UserName',
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                              onPressed: () async {
+                                await cubit.signInWithGoogle().then((value) =>
+                                    Navigator.pushReplacementNamed(
+                                        context, DecisionsTree.routeName));
+                              },
+                              icon: SvgPicture.asset(MediaConst.google)),
+                          SizedBox(width: 4.w),
+                          BeButton(
+                            onPressed: () async => await cubit
+                                .signUpWithEmail()
+                                .then((value) => Navigator.pushReplacementNamed(
+                                    context, AuthSignInPage.routeName)),
+                            radius: 30,
+                            icon: SvgPicture.asset(MediaConst.arrow),
+                            width: 40.w,
+                            text: 'Sign Up',
+                            hegiht: 7.h,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onPrimaryContainer,
+                          ),
+                          SizedBox(width: 7.w),
+                        ],
+                      ),
+                      SizedBox(height: 4.h),
+                    ],
                   ),
                 ),
-                SizedBox(height: 2.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.w),
-                  child: TextFormField(
-                    controller: cubit.password,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please enter your password';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: cubit.visibility,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 18.sp),
-                    decoration: InputDecoration(
-                        labelStyle:
-                            TextStyle(fontSize: 16.sp, color: Colors.white),
-                        labelText: 'Password',
-                        suffix: InkWell(
-                            onTap: () {
-                              setState(() {
-                                cubit.visibility = !cubit.visibility;
-                              });
-                            },
-                            child: Icon(cubit.visibility
-                                ? Icons.visibility
-                                : Icons.visibility_off))),
-                  ),
-                ),
-                SizedBox(height: 2.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 7.w),
-                  child: TextFormField(
-                    controller: cubit.userName,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'please enter your username';
-                      }
-                      return null;
-                    },
-                    keyboardType: TextInputType.visiblePassword,
-                    obscureText: cubit.visibility,
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 18.sp),
-                    decoration: InputDecoration(
-                        labelStyle:
-                            TextStyle(fontSize: 16.sp, color: Colors.white),
-                        labelText: 'UserName',
-                        suffix: InkWell(
-                            onTap: () {
-                              setState(() {
-                                cubit.visibility = !cubit.visibility;
-                              });
-                            },
-                            child: Icon(cubit.visibility
-                                ? Icons.visibility
-                                : Icons.visibility_off))),
-                  ),
-                ),
-                SizedBox(height: 13.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                        onPressed: () async {
-                          await cubit.signInWithGoogle().then((value) =>
-                              Navigator.pushReplacementNamed(
-                                  context, DecisionsTree.routeName));
-                        },
-                        icon: SvgPicture.asset(MediaConst.google)),
-                    SizedBox(width: 4.w),
-                    BeButton(
-                      onPressed: () async => await cubit.signUpWithEmail().then(
-                          (value) => Navigator.pushReplacementNamed(
-                              context, AuthSignInPage.routeName)),
-                      radius: 30,
-                      icon: SvgPicture.asset(MediaConst.arrow),
-                      width: 40.w,
-                      hegiht: 9.h,
-                      color: Theme.of(context).colorScheme.onPrimaryContainer,
-                    ),
-                    SizedBox(width: 5.w),
-                  ],
-                )
-              ],
-            ),
+              )
+            ],
           ),
         ),
       ),
@@ -195,7 +188,7 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
             },
             blendMode: BlendMode.dstATop,
             child: Image.asset('assets/images/background_signup.png',
-                width: double.infinity, fit: BoxFit.cover, height: 60.h)),
+                width: double.infinity, fit: BoxFit.cover, height: 45.h)),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
           child: Row(

@@ -36,9 +36,9 @@ class _PageViewWidgetState extends State<PageViewWidget> {
             },
           ),
         ),
-        SizedBox(height: 5.h),
+        SizedBox(height: 2.h),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 5.h, horizontal: 3.w),
+          padding: EdgeInsets.symmetric(vertical: 2.h, horizontal: 3.w),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -69,7 +69,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
                 color: Theme.of(context).colorScheme.primaryContainer,
                 radius: 30,
                 width: 40.w,
-                hegiht: 10.h,
+                hegiht: 7.h,
                 icon: SvgPicture.asset(
                   MediaConst.arrow,
                   colorFilter: ColorFilter.mode(
@@ -94,32 +94,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
   List<Widget> fetchWidgets(CoachCubit cubit) {
     return [
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                'TELL US ABOUT YOURSELF!',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              SizedBox(height: 3.h),
-              Text(
-                'To check real name to give trainee better safe',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 10.h),
-              CustomTextFieldCoach(
-                  cn: cubit.name,
-                  title: 'Name',
-                  inputType: TextInputType.name,
-                  fieldFor: FieldFor.name)
-            ],
-          ),
-        ),
-      ),
-      Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -144,7 +119,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: SingleChildScrollView(
           child: Column(
             children: [
@@ -169,7 +144,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 3.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Column(
           children: [
             Text(
@@ -217,7 +192,33 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: Column(
+          children: [
+            Text(
+              'TELL US ABOUT YOURSELF!',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            SizedBox(height: 3.h),
+            Text(
+              'To give you a better experience we need to know your birth of date',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            SizedBox(height: 5.h),
+            ElevatedButton(
+              onPressed: () {
+                pickDate(cubit);
+              },
+              child: const Text(
+                'Choose birth of date',
+              ),
+            ),
+          ],
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Column(
           children: [
             Text(
@@ -246,7 +247,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Column(
           children: [
             Text(
@@ -275,7 +276,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Column(
           children: [
             Text(
@@ -314,7 +315,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
       Padding(
-        padding: EdgeInsets.symmetric(horizontal: 4.w),
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
         child: Column(
           children: [
             Text(
@@ -349,18 +350,7 @@ class _PageViewWidgetState extends State<PageViewWidget> {
   Row dateAndGender(CoachCubit cubit) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [
-        TextButton(
-          onPressed: () {
-            pickDate(cubit);
-          },
-          child: const Text(
-            'show date time picker',
-            style: TextStyle(color: Colors.blue),
-          ),
-        ),
-        dropDownButton(cubit),
-      ],
+      children: [],
     );
   }
 

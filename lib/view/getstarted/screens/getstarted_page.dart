@@ -23,49 +23,52 @@ class _GetStartedScreenState extends State<GetStartedScreen> {
         automaticallyImplyLeading: false,
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              'TELL US WHO ARE YOU?',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-            Text(
-              'Coach for training trainees',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            SizedBox(height: 10.h),
-            CircularButton(
-              hero: 'trainee',
-              onPressed: () {
-                Navigator.pushNamed(context, CreateProfilePage.routeName);
-              },
-              icon: SvgPicture.asset(
-                MediaConst.trainee,
-                width: 8.w,
-                height: 8.h,
-                colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                    BlendMode.srcIn),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 4.w),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'TELL US WHO ARE YOU?',
+                style: Theme.of(context).textTheme.bodyLarge,
               ),
-              text: 'Trainee',
-            ),
-            CircularButton(
-              hero: 'coach',
-              onPressed: () {
-                Navigator.pushNamed(context, CreateCoachPage.routeName);
-              },
-              icon: SvgPicture.asset(
-                MediaConst.coach,
-                width: 8.w,
-                height: 8.h,
-                colorFilter: ColorFilter.mode(
-                    Theme.of(context).colorScheme.onPrimaryContainer,
-                    BlendMode.srcIn),
+              Text(
+                'Coach for training trainees',
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
-              text: 'Coach',
-            ),
-          ],
+              SizedBox(height: 3.h),
+              CircularButton(
+                hero: 'trainee',
+                onPressed: () {
+                  Navigator.pushNamed(context, CreateProfilePage.routeName);
+                },
+                icon: SvgPicture.asset(
+                  MediaConst.trainee,
+                  width: 8.w,
+                  height: 8.h,
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.onPrimaryContainer,
+                      BlendMode.srcIn),
+                ),
+                text: 'Trainee',
+              ),
+              CircularButton(
+                hero: 'coach',
+                onPressed: () {
+                  Navigator.pushNamed(context, CreateCoachPage.routeName);
+                },
+                icon: SvgPicture.asset(
+                  MediaConst.coach,
+                  width: 8.w,
+                  height: 8.h,
+                  colorFilter: ColorFilter.mode(
+                      Theme.of(context).colorScheme.onPrimaryContainer,
+                      BlendMode.srcIn),
+                ),
+                text: 'Coach',
+              ),
+            ],
+          ),
         ),
       ),
     );

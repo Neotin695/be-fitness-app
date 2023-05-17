@@ -29,7 +29,7 @@ class _OnboardingViewState extends State<OnboardingView> {
           return Column(
             children: [
               Image.asset(data.image,
-                  width: double.infinity, fit: BoxFit.cover, height: 80.h),
+                  width: double.infinity, fit: BoxFit.cover, height: 60.h),
               rectangleDig(width: -100.w, height: -12.h),
               Text(
                 data.title,
@@ -53,8 +53,8 @@ class _OnboardingViewState extends State<OnboardingView> {
                   icon: SvgPicture.asset(MediaConst.arrow),
                   color: Theme.of(context).colorScheme.primary,
                   radius: 30,
-                  width: 80.w,
-                  hegiht: 10.h,
+                  width: 70.w,
+                  hegiht: 7.h,
                 ),
               )
             ],

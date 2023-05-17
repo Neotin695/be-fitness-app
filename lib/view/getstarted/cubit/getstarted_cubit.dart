@@ -57,7 +57,7 @@ class GetstartedCubit extends Cubit<GetstartedState> with PickMedia {
   TraineeModel initData(profilePhoto, token) {
     return TraineeModel(
       id: _auth.uid,
-      userName: userName.text,
+      userName: _auth.displayName!,
       age: age + 1,
       address: address,
       profilePhoto: profilePhoto,

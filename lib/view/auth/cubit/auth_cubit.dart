@@ -27,7 +27,7 @@ class AuthCubit extends Cubit<AuthState> {
   final storage = FirebaseStorage.instance;
   final auth = FirebaseAuth.instance;
 
-  bool visibility = false;
+  bool visibility = true;
 
   Future<void> signInWithEmail() async {
     bool isConnected = await InternetService().isConnected();

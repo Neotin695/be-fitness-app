@@ -18,7 +18,7 @@ class _MainWorkoutViewState extends State<MainWorkoutView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: 7.h),
+        SizedBox(height: 5.h),
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 4.w),
           child: Text('WELCOME TO BE FITNESS,',
@@ -32,7 +32,7 @@ class _MainWorkoutViewState extends State<MainWorkoutView> {
                   .bodyMedium!
                   .copyWith(fontSize: 18.sp)),
         ),
-        SizedBox(height: 7.h),
+        SizedBox(height: 3.h),
         ListTile(
           onTap: () {},
           title: Text('Workout Categories', style: TextStyle(fontSize: 15.sp)),

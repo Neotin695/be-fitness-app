@@ -59,9 +59,9 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
                   },
                 ),
               ),
-              SizedBox(height: 5.h),
+              SizedBox(height: 1.h),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 5.h),
+                padding: EdgeInsets.symmetric(vertical: 2.h),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -92,7 +92,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
                       color: Theme.of(context).colorScheme.primaryContainer,
                       radius: 30,
                       width: 40.w,
-                      hegiht: 10.h,
+                      hegiht: 7.h,
                       icon: SvgPicture.asset(
                         MediaConst.arrow,
                         colorFilter: ColorFilter.mode(
@@ -114,70 +114,53 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
     );
   }
 
-  /* 
-  BeListWheel(
-                list: cubit.weights.map((e) {
-                  return Center(
-                    child: Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 2.w, vertical: 2.h),
-                      child: Text(
-                        '$e KG',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ),
-                  );
-                }).toList(),
-                onSelectedChange: (index) {
-                  
-                },
-              ),
-   */
-
   List<Widget> fetchWidgets(GetstartedCubit cubit) {
     return [
       Center(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Text(
-                'TELL US ABOUT YOURSELF!',
-                style: Theme.of(context).textTheme.bodyLarge,
-              ),
-              SizedBox(height: 3.h),
-              Text(
-                'To give you a better experience we need to know your gender',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              SizedBox(height: 20.h),
-              CircularButton(
-                hero: 'female',
-                color: cubit.genderSelected == 'female'
-                    ? null
-                    : cubit.unselectedColor,
-                onPressed: () {
-                  setState(() {
-                    cubit.genderSelected = 'female';
-                  });
-                },
-                icon: const Icon(Icons.female),
-                text: 'Female',
-              ),
-              CircularButton(
-                hero: 'male',
-                color: cubit.genderSelected == 'male'
-                    ? null
-                    : cubit.unselectedColor,
-                onPressed: () {
-                  setState(() {
-                    cubit.genderSelected = 'male';
-                  });
-                },
-                icon: const Icon(Icons.male),
-                text: 'Male',
-              )
-            ],
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 4.w),
+            child: Column(
+              children: [
+                Text(
+                  'TELL US ABOUT YOURSELF!',
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+                SizedBox(height: 2.h),
+                Text(
+                  'To give you a better experience we need to know your gender',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                SizedBox(height: 3.h),
+                CircularButton(
+                  hero: 'female',
+                  color: cubit.genderSelected == 'female'
+                      ? null
+                      : cubit.unselectedColor,
+                  onPressed: () {
+                    setState(() {
+                      cubit.genderSelected = 'female';
+                    });
+                  },
+                  icon: const Icon(Icons.female),
+                  text: 'Female',
+                ),
+                CircularButton(
+                  hero: 'male',
+                  color: cubit.genderSelected == 'male'
+                      ? null
+                      : cubit.unselectedColor,
+                  onPressed: () {
+                    setState(() {
+                      cubit.genderSelected = 'male';
+                    });
+                  },
+                  icon: const Icon(Icons.male),
+                  text: 'Male',
+                )
+              ],
+            ),
           ),
         ),
       ),
@@ -195,7 +178,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 3.h),
             Expanded(
               child: BeListWheel(
                 list: cubit.ages.map((e) {
@@ -234,7 +217,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 3.h),
             Expanded(
               child: HorizontalPicker(
                 minValue: 0,
@@ -243,7 +226,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
                 height: 10.h,
                 suffix: " Kg",
                 showCursor: true,
-                backgroundColor: Colors.grey.shade900,
+                backgroundColor: Theme.of(context).colorScheme.background,
                 activeItemTextColor: Colors.white,
                 passiveItemsTextColor: Theme.of(context).colorScheme.primary,
                 onChanged: (value) {
@@ -270,7 +253,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            SizedBox(height: 20.h),
+            SizedBox(height: 3.h),
             Expanded(
               child: BeListWheel(
                 list: cubit.heights.getRange(130, 201).map((e) {
@@ -310,7 +293,7 @@ class _CreateProfileViewState extends State<CreateProfileView> with PickMedia {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.bodyMedium,
             ),
-            SizedBox(height: 10.h),
+            SizedBox(height: 3.h),
             Expanded(
               child: BeListWheel(
                 list: cubit.levels.map((e) {

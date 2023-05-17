@@ -43,7 +43,7 @@ class CoachsView extends StatelessWidget {
                   elevation: 2,
                   child: Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 0.5.w, vertical: 2.h),
+                        EdgeInsets.symmetric(horizontal: 0.5.w, vertical: 1.h),
                     child: ListTile(
                       onTap: () {
                         Navigator.pushNamed(context, DetailsCoachPage.routeName,
@@ -57,7 +57,7 @@ class CoachsView extends StatelessWidget {
                         children: [
                           Text(
                             coach.userName,
-                            style: TextStyle(fontSize: 16.sp),
+                            style: TextStyle(fontSize: 14.sp),
                           ),
                           SizedBox(width: 3.w),
                           Container(

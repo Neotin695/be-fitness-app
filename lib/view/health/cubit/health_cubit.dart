@@ -41,9 +41,6 @@ class HealthCubit extends Cubit<HealthState> {
   Future<Either<bool, HealthModel>> searchNutrient() async {
     emit(LoadingState());
     try {
-      // final response = await http.get(Uri.parse(
-      //     '${LogicConst.baseUrlEdamam}?${LogicConst.appId}=${LogicConst.appIdVal}&${LogicConst.appKey}=${LogicConst.appKeyVal}&nutrition-type=logging&${LogicConst.ingr}=${searchController.text}'));
-
       final response = await dioOption.get<Map<String, dynamic>>(
           dioOption.options.baseUrl,
           queryParameters: {
