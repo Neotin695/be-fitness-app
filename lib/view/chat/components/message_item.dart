@@ -18,12 +18,12 @@ class MessageItem extends StatelessWidget {
           text: message.message,
           seen: message.isSeen,
           sent: true,
-          
           isSender: isSender(id),
-          color: isSender(id) ? Colors.blue : Colors.blueAccent,
+          color: isSender(id)
+              ? Theme.of(context).colorScheme.primaryContainer
+              : Theme.of(context).colorScheme.onSecondary,
           textStyle: const TextStyle(
             fontSize: 20,
-            color: Colors.white,
             fontStyle: FontStyle.italic,
             fontWeight: FontWeight.bold,
           ),

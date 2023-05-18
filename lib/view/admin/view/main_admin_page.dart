@@ -1,3 +1,4 @@
+import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/view/admin/components/main_admin_view.dart';
 import 'package:be_fitness_app/view/admin/cubit/admin_cubit.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,7 +20,9 @@ class MainAdminPage extends StatelessWidget {
         title: const Text('Main Admin'),
         actions: [
           IconButton(
-              onPressed: () => FirebaseAuth.instance.signOut(),
+              onPressed: () => FirebaseAuth.instance.signOut().then((value) =>
+                  Navigator.pushReplacementNamed(
+                      context, DecisionsTree.routeName)),
               icon: const Icon(Icons.logout))
         ],
       ),

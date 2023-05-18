@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
+
+
+
 import 'package:flutter_svg/svg.dart';
 import 'package:sizer/sizer.dart';
 
@@ -110,10 +113,35 @@ class _PageViewWidgetState extends State<PageViewWidget> {
               ),
               SizedBox(height: 10.h),
               CustomTextFieldCoach(
-                  cn: cubit.certificateId,
-                  title: 'Certificate Number',
+                  cn: cubit.name,
+                  title: 'Full Name',
                   inputType: TextInputType.name,
                   fieldFor: FieldFor.name)
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 5.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Text(
+                'TELL US ABOUT YOURSELF!',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              SizedBox(height: 3.h),
+              Text(
+                'To check if you true coach to give trainee better safe',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              SizedBox(height: 10.h),
+              CustomTextFieldCoach(
+                  cn: cubit.certificateId,
+                  title: 'Certificate Number',
+                  inputType: TextInputType.number,
+                  fieldFor: FieldFor.certificateId)
             ],
           ),
         ),
@@ -137,8 +165,8 @@ class _PageViewWidgetState extends State<PageViewWidget> {
               CustomTextFieldCoach(
                   cn: cubit.nationalId,
                   title: 'National id numder',
-                  inputType: TextInputType.name,
-                  fieldFor: FieldFor.name)
+                  inputType: TextInputType.number,
+                  fieldFor: FieldFor.nationalId)
             ],
           ),
         ),
@@ -345,13 +373,6 @@ class _PageViewWidgetState extends State<PageViewWidget> {
         ),
       ),
     ];
-  }
-
-  Row dateAndGender(CoachCubit cubit) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: [],
-    );
   }
 
   void pickDate(CoachCubit cubit) {

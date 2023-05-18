@@ -76,8 +76,8 @@ class _MusicPlayerViewState extends State<MusicPlayerView> {
                 borderRadius: BorderRadius.circular(10),
                 child: GifView.network(
                   widget.excercise.gifUrl,
-                  width: 90.w,
-                  height: 50.h,
+                  width: 70.w,
+                  height: 35.h,
                   fit: BoxFit.cover,
                 ),
               ),

@@ -39,10 +39,14 @@ class AuthCubit extends Cubit<AuthState> {
     if (!formKeySignIn.currentState!.validate()) {
       return;
     }
-    emit(AuthLoading());
-    await auth.signInWithEmailAndPassword(
-        email: email.text, password: password.text);
-    emit(const AuthSucess(isNewUser: false));
+    try {
+      emit(AuthLoading());
+      await auth.signInWithEmailAndPassword(
+          email: email.text, password: password.text);
+      emit(const AuthSucess(isNewUser: false));
+    } on FirebaseAuthException catch (e) {
+      emit(AuthFailure(message: e.code));
+    }
   }
 
   Future<void> signUpWithEmail() async {
@@ -56,15 +60,21 @@ class AuthCubit extends Cubit<AuthState> {
     if (!formKeySignUp.currentState!.validate()) {
       return;
     }
-    emit(AuthLoading());
-    final UserCredential login = await auth.createUserWithEmailAndPassword(
-        email: email.text, password: password.text);
-    await auth.currentUser!.updateDisplayName(userName.text);
-    if (login.additionalUserInfo!.isNewUser) {
-      initUser(login.user!.uid);
-      emit(AuthSucess(isNewUser: login.additionalUserInfo!.isNewUser));
+    try {
+      emit(AuthLoading());
+      final UserCredential login = await auth.createUserWithEmailAndPassword(
+          email: email.text, password: password.text);
+      await auth.currentUser!.updateDisplayName(userName.text);
+      if (login.additionalUserInfo!.isNewUser) {
+        initUser(login.user!.uid);
+        emit(AuthSucess(isNewUser: login.additionalUserInfo!.isNewUser));
+      }
+      emit(const AuthSucess(isNewUser: true));
+    } on FirebaseAuthException catch (e) {
+      emit(AuthFailure(message: e.code));
+    } catch (e) {
+      emit(AuthFailure(message: e.toString()));
     }
-    emit(const AuthSucess(isNewUser: true));
   }
 
   Future<UserCredential> _signInWithGoogle() async {

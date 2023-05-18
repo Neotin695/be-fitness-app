@@ -54,7 +54,7 @@ class _AddReviewViewState extends State<AddReviewView> {
                 style: Theme.of(context)
                     .textTheme
                     .bodyMedium!
-                    .copyWith(fontSize: 18.sp),
+                    .copyWith(fontSize: 15.sp),
                 controller: cubit.descController,
                 decoration: const InputDecoration(
                   hintText: 'Review (Optional)',
@@ -71,7 +71,8 @@ class _AddReviewViewState extends State<AddReviewView> {
               onPressed: () async {
                 await cubit.uploadReview(widget.userId).then((value) {
                   Navigator.pushReplacementNamed(
-                      context, DisplayReviewsPage.routeName);
+                      context, DisplayReviewsPage.routeName,
+                      arguments: value);
                 });
               },
               child: const Text('Send'),

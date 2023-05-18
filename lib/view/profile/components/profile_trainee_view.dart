@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/core/service/interfaces/serivce_mixin.dart';
 import 'package:be_fitness_app/models/trainee_model.dart';
 import 'package:be_fitness_app/view/profile/cubit/profile_cubit.dart';
-import 'package:be_fitness_app/view/profile/screens/update_profile_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +24,7 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
     final cubit = ProfileCubit.get(context);
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -78,19 +75,33 @@ class _ProfileTraineeViewState extends State<ProfileTraineeView>
           ),
           const Divider(),
           ListTile(
-            title: const Text('Edit Profile'),
+            title: Text(
+              'Edit Profile',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontSize: 17.sp),
+            ),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
-            title: const Text('Privacy Policy'),
+            title: Text('Privacy Policy',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 17.sp)),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
-            title: const Text('Settings'),
+            title: Text('Settings',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 17.sp)),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {},
           ),

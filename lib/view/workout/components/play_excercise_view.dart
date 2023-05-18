@@ -21,7 +21,7 @@ class _PlayExcerciseViewState extends State<PlayExcerciseView> {
           GifView.network(
             widget.excercise.gifUrl,
             fit: BoxFit.cover,
-            width: double.infinity,
+            width: 10.w,
             repeat: ImageRepeat.repeat,
           ),
           SizedBox(height: 1.h),

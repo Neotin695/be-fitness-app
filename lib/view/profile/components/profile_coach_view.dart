@@ -20,7 +20,7 @@ class _ProfileCoachViewState extends State<ProfileCoachView> with PickMedia {
   Widget build(BuildContext context) {
     final cubit = ProfileCubit.get(context);
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.w),
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -88,19 +88,33 @@ class _ProfileCoachViewState extends State<ProfileCoachView> with PickMedia {
           ),
           const Divider(),
           ListTile(
-            title: const Text('Edit Profile'),
+            title: Text(
+              'Edit Profile',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodyMedium!
+                  .copyWith(fontSize: 17.sp),
+            ),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
-            title: const Text('Privacy Policy'),
+            title: Text('Privacy Policy',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 17.sp)),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {},
           ),
           const Divider(),
           ListTile(
-            title: const Text('Settings'),
+            title: Text('Settings',
+                style: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(fontSize: 17.sp)),
             trailing: const Icon(Icons.arrow_forward_ios),
             onTap: () {},
           ),

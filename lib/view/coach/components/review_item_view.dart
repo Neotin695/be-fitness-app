@@ -35,12 +35,17 @@ class ReviewItem extends StatelessWidget {
                 SizedBox(width: 2.w),
                 Text(review.userName),
                 const Spacer(),
-                Text(DateFormat('yy-MM-dd (hh:mm)')
-                    .format(DateTime.parse(review.date))),
+                Text(
+                  DateFormat('yy-MM-dd (hh:mm)')
+                      .format(DateTime.parse(review.date)),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
               ],
             ),
-            SizedBox(height: 5.h),
-            Text(review.discriptionReview),
+            const Divider(),
+            Container(
+                margin: EdgeInsets.only(left: 1.w),
+                child: Text(review.discriptionReview)),
           ],
         ),
       ),

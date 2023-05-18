@@ -12,6 +12,7 @@ class InputMessage extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.5.h),
       child: TextField(
         controller: cubit.message,
+        style: Theme.of(context).textTheme.bodyMedium,
         decoration: InputDecoration(
             hintText: 'Type a message...',
             border: InputBorder.none,

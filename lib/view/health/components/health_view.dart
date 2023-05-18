@@ -31,35 +31,36 @@ class _HealthViewState extends State<HealthView> {
                 style: Theme.of(context).textTheme.bodyLarge,
               ),
               Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: 3.h,
-                  ),
-                  child: TextField(
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium!
-                        .copyWith(fontSize: 13.sp),
-                    controller: cubit.searchController,
-                    decoration: InputDecoration(
-                        contentPadding: EdgeInsets.symmetric(horizontal: 5.w),
-                        hintText: 'Search',
-                        suffixIcon: InkWell(
-                          child: const Icon(Icons.search),
-                          onTap: () async {
-                            if (cubit.searchController.text.isNotEmpty) {
-                              await cubit.searchNutrient().then((value) {
-                                value.fold((l) => found = l,
-                                    (r) => cubit.healthModel = r);
-                              });
-                              cubit.updateValue();
-                              cubit.searchController.clear();
-                              setState(() {});
-                            }
-                          },
-                        ),
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20))),
-                  )),
+                padding: EdgeInsets.symmetric(
+                  vertical: 3.h,
+                ),
+                child: TextField(
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: 13.sp),
+                  controller: cubit.searchController,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.symmetric(horizontal: 5.w),
+                      hintText: 'Search',
+                      suffixIcon: InkWell(
+                        child: const Icon(Icons.search),
+                        onTap: () async {
+                          if (cubit.searchController.text.isNotEmpty) {
+                            await cubit.searchNutrient().then((value) {
+                              value.fold((l) => found = l,
+                                  (r) => cubit.healthModel = r);
+                            });
+                            cubit.updateValue();
+                            cubit.searchController.clear();
+                            setState(() {});
+                          }
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20))),
+                ),
+              ),
               SizedBox(height: 3.h),
               cubit.healthModel != null
                   ? Column(

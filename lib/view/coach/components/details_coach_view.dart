@@ -102,6 +102,11 @@ class _DetailsCoachViewState extends State<DetailsCoachView> {
                             fontSize: 18.sp,
                           ),
                         ),
+                        Container(
+                          height: 10.h,
+                          width: 0.3.w,
+                          color: Colors.grey,
+                        ),
                         Text(
                           '${widget.coach.subscribers.length}\n Active Clients',
                           textAlign: TextAlign.center,
@@ -167,7 +172,7 @@ class _DetailsCoachViewState extends State<DetailsCoachView> {
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(
-                    horizontal: 5.w,
+                    horizontal: 2.w,
                   ),
                   child: SizedBox(
                     height: 25.h,
@@ -180,6 +185,7 @@ class _DetailsCoachViewState extends State<DetailsCoachView> {
                     ),
                   ),
                 ),
+                SizedBox(height: 4.h),
                 Center(
                   child: ElevatedButton(
                     onPressed: () async {
@@ -206,53 +212,4 @@ class _DetailsCoachViewState extends State<DetailsCoachView> {
 
   bool isSubscribe(CoachCubit cubit) =>
       widget.coach.subscribers.contains(cubit.auth.uid);
-
-  /*  Widget ratingWidget(CoachCubit cubit) {
-    return Card(
-      elevation: 3,
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            RatingStars(
-              value: widget.coach.rating.ratingAverage,
-              onValueChanged: (v) async {
-                final tempCoach = await cubit.rate(v, widget.coach);
-                setState(() {
-                  widget.coach = tempCoach;
-                });
-              },
-              starBuilder: (index, color) => Icon(
-                Icons.star,
-                color: color,
-                size: 30.sp,
-              ),
-              starCount: 5,
-              starSize: 30.sp,
-              valueLabelTextStyle: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w400,
-                  fontStyle: FontStyle.normal,
-                  fontSize: 17.0),
-              valueLabelRadius: 10,
-              maxValue: 5,
-              starSpacing: 2,
-              maxValueVisibility: true,
-              valueLabelVisibility: true,
-              animationDuration: const Duration(milliseconds: 1000),
-              valueLabelPadding:
-                  const EdgeInsets.symmetric(vertical: 1, horizontal: 8),
-              valueLabelMargin: const EdgeInsets.only(right: 8),
-              starOffColor: const Color(0xffe7e8ea),
-              starColor: Colors.yellow,
-            ),
-            Text(
-              ' ${widget.coach.subscribers.length}\n Subscribers',
-              textAlign: TextAlign.center,
-            )
-          ],
-        ),
-      ),
-    );
-  } */
 }

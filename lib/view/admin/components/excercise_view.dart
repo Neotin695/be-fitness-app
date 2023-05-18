@@ -6,7 +6,6 @@ import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:sizer/sizer.dart';
 
 class ExcerciseAdminView extends StatefulWidget {
@@ -73,12 +72,12 @@ class _ExcerciseAdminViewState extends State<ExcerciseAdminView> {
                   'Upload Excercise',
                   style: TextStyle(fontSize: 14.sp),
                 ),
-                icon: const Icon(FontAwesomeIcons.upload),
+                icon: const Icon(Icons.upload),
               )
             : const SizedBox(),
         SizedBox(width: 3.w),
         ElevatedButton.icon(
-            icon: const Icon(FontAwesomeIcons.clock),
+            icon: const Icon(Icons.alarm),
             label: Text(
               'Select Duration',
               style: TextStyle(fontSize: 14.sp),

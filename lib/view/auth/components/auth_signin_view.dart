@@ -27,9 +27,13 @@ class _AuthSignInViewState extends State<AuthSignInView> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSucess) {
+          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, DecisionsTree.routeName);
         } else if (state is AuthFailure) {
           showErrorMessage(context, state);
-        } else if (state is AuthLoading) {}
+        } else if (state is AuthLoading) {
+          CoolAlert.show(context: context, type: CoolAlertType.loading);
+        }
       },
       child: SafeArea(
         child: Form(
@@ -51,6 +55,7 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                       child: TextFormField(
                         controller: cubit.email,
                         style: Theme.of(context).textTheme.bodyMedium,
+                        textInputAction: TextInputAction.next,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'please enter your email';
@@ -75,6 +80,7 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                       padding: EdgeInsets.symmetric(horizontal: 7.w),
                       child: TextFormField(
                         controller: cubit.password,
+                        textInputAction: TextInputAction.done,
                         validator: (value) {
                           if (value!.isEmpty) {
                             return 'please enter your password';
@@ -114,9 +120,7 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                       children: [
                         IconButton(
                             onPressed: () async {
-                              await cubit.signInWithGoogle().then((value) =>
-                                  Navigator.pushReplacementNamed(
-                                      context, DecisionsTree.routeName));
+                              await cubit.signInWithGoogle();
                             },
                             icon: SvgPicture.asset(
                                 'assets/icons/google_button.svg')),

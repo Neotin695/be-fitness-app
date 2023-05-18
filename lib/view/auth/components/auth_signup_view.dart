@@ -27,8 +27,15 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSucess) {
+          Navigator.pop(context);
+          if (cubit.formKeySignUp.currentState!.validate()) {
+            Navigator.pushReplacementNamed(context, AuthSignInPage.routeName);
+          }
         } else if (state is AuthFailure) {
+          Navigator.pop(context);
           showErrorMessage(context, state);
+        } else if (state is AuthLoading) {
+          CoolAlert.show(context: context, type: CoolAlertType.loading);
         }
       },
       child: SafeArea(
@@ -61,6 +68,7 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                             return null;
                           },
                           keyboardType: TextInputType.emailAddress,
+                          textInputAction: TextInputAction.next,
                           decoration: InputDecoration(
                             labelStyle:
                                 TextStyle(fontSize: 16.sp, color: Colors.white),
@@ -81,6 +89,7 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                           },
                           keyboardType: TextInputType.visiblePassword,
                           obscureText: cubit.visibility,
+                          textInputAction: TextInputAction.next,
                           style: Theme.of(context).textTheme.bodyMedium,
                           decoration: InputDecoration(
                               labelStyle: TextStyle(
@@ -110,6 +119,7 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                           },
                           keyboardType: TextInputType.visiblePassword,
                           style: Theme.of(context).textTheme.bodyMedium,
+                          textInputAction: TextInputAction.done,
                           decoration: InputDecoration(
                             labelStyle:
                                 TextStyle(fontSize: 16.sp, color: Colors.white),
@@ -130,10 +140,8 @@ class _AuthSignUpViewState extends State<AuthSignUpView> {
                               icon: SvgPicture.asset(MediaConst.google)),
                           SizedBox(width: 4.w),
                           BeButton(
-                            onPressed: () async => await cubit
-                                .signUpWithEmail()
-                                .then((value) => Navigator.pushReplacementNamed(
-                                    context, AuthSignInPage.routeName)),
+                            onPressed: () async =>
+                                await cubit.signUpWithEmail().then((value) {}),
                             radius: 30,
                             icon: SvgPicture.asset(MediaConst.arrow),
                             width: 40.w,

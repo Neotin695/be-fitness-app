@@ -21,24 +21,24 @@ class _MessageViewState extends State<MessageView> {
   @override
   Widget build(BuildContext context) {
     bool isNew = false;
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance
-          .collection(LogicConst.users)
-          .doc(FirebaseAuth.instance.currentUser!.uid)
-          .collection('conversetions')
-          .snapshots(),
-      builder: (_, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data!.docs.isEmpty) {
-            return Center(
-                child: SvgPicture.asset(
-              MediaConst.empty,
-              width: 30.w,
-              height: 30.h,
-            ));
-          }
-          return Expanded(
-            child: ListView(
+    return SafeArea(
+      child: StreamBuilder<QuerySnapshot>(
+        stream: FirebaseFirestore.instance
+            .collection(LogicConst.users)
+            .doc(FirebaseAuth.instance.currentUser!.uid)
+            .collection('conversetions')
+            .snapshots(),
+        builder: (_, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot.data!.docs.isEmpty) {
+              return Center(
+                  child: SvgPicture.asset(
+                MediaConst.empty,
+                width: 30.w,
+                height: 30.h,
+              ));
+            }
+            return ListView(
               children: snapshot.data!.docs.map((doc) {
                 final chatRoom =
                     ChatModel.fromMap(doc.data() as Map<String, dynamic>);
@@ -46,7 +46,7 @@ class _MessageViewState extends State<MessageView> {
                 isNew = chatRoom.messageModel.senderId !=
                     FirebaseAuth.instance.currentUser!.uid;
                 return Container(
-                  margin: EdgeInsets.symmetric(vertical: 2.h),
+                  margin: EdgeInsets.symmetric(vertical: 2.h, horizontal: 2.w),
                   child: Card(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10)),
@@ -64,22 +64,39 @@ class _MessageViewState extends State<MessageView> {
                         size: 25.sp,
                       ),
                       trailing: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Text(chatRoom.messageModel.time),
+                          Expanded(
+                            child: Text(
+                              chatRoom.messageModel.time,
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ),
                           isNew
-                              ? Container(
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(365),
-                                      color: Colors.green),
-                                  child: const Text('New'),
+                              ? Expanded(
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(365),
+                                        color: Colors.green),
+                                    child: Text(
+                                      'New',
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                  ),
                                 )
                               : const SizedBox()
                         ],
                       ),
                       title: Text(
                         chatRoom.userName,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium!
+                            .copyWith(fontSize: 16.sp),
                       ),
                       subtitle: Text(
                         chatRoom.messageModel.message,
@@ -92,21 +109,21 @@ class _MessageViewState extends State<MessageView> {
                   ),
                 );
               }).toList(),
-            ),
-          );
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
+            );
+          } else if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+                child: LoadingAnimationWidget.dotsTriangle(
+                    color: Theme.of(context).colorScheme.surfaceTint,
+                    size: 35.sp));
+          }
           return Center(
-              child: LoadingAnimationWidget.dotsTriangle(
-                  color: Theme.of(context).colorScheme.surfaceTint,
-                  size: 35.sp));
-        }
-        return Center(
-            child: SvgPicture.asset(
-          MediaConst.empty,
-          width: 30.w,
-          height: 30.h,
-        ));
-      },
+              child: SvgPicture.asset(
+            MediaConst.empty,
+            width: 30.w,
+            height: 30.h,
+          ));
+        },
+      ),
     );
   }
 }

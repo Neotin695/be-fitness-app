@@ -2,7 +2,6 @@ import 'package:be_fitness_app/core/appconstance/media_constance.dart';
 import 'package:be_fitness_app/view/home/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeLayoutView extends StatefulWidget {
   const HomeLayoutView({super.key});
@@ -31,12 +30,9 @@ class _HomeLayoutViewState extends State<HomeLayoutView> {
               label: ''),
           const BottomNavigationBarItem(
               icon: Icon(Icons.health_and_safety), label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.peopleGroup), label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.map), label: ''),
-          const BottomNavigationBarItem(
-              icon: Icon(FontAwesomeIcons.message), label: ''),
+          const BottomNavigationBarItem(icon: Icon(Icons.group), label: ''),
+          const BottomNavigationBarItem(icon: Icon(Icons.map), label: ''),
+          const BottomNavigationBarItem(icon: Icon(Icons.message), label: ''),
           const BottomNavigationBarItem(icon: Icon(Icons.person), label: '')
         ],
       ),
