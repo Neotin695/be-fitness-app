@@ -3,6 +3,7 @@ import 'package:be_fitness_app/view/admin/view/excercise_admin_page.dart';
 import 'package:be_fitness_app/view/admin/view/review_page.dart';
 import 'package:be_fitness_app/view/auth/screens/auth_signup_page.dart';
 import 'package:be_fitness_app/view/coach/screens/display_reviews_page.dart';
+import 'package:be_fitness_app/view/health/view/calc_calories_page.dart';
 import 'package:be_fitness_app/view/onboarding/screens/on_boarding_page.dart';
 import 'package:be_fitness_app/view/auth/screens/auth_sign_page.dart';
 import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
@@ -44,6 +45,8 @@ class RouteGenerator {
         return _pageRoute(const CreateCoachPage());
       case CreateProfilePage.routeName:
         return _pageRoute(const CreateProfilePage());
+      case CalcCaloriesPage.routeName:
+        return _pageRoute(const CalcCaloriesPage());
       case NotAcceptedScreen.routeName:
         return _pageRoute(const NotAcceptedScreen());
       case MusicPlayerPage.routeName:

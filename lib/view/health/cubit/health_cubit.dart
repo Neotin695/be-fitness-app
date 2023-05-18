@@ -12,12 +12,16 @@ part 'health_state.dart';
 class HealthCubit extends Cubit<HealthState> {
   static HealthCubit get(context) => BlocProvider.of(context);
   HealthCubit() : super(HealthInitial());
-
   final TextEditingController searchController = TextEditingController();
+  final dioOption = Dio(BaseOptions(baseUrl: LogicConst.baseUrlEdamam));
+
+  int age = 20;
+  int weight = 50;
+  double height = 150;
+  bool genderSelected = true;
+
   HealthModel? healthModel;
-  final dioOption = Dio(BaseOptions(
-    baseUrl: LogicConst.baseUrlEdamam,
-  ));
+
   ValueNotifier<double>? calories = ValueNotifier(0.0);
   ValueNotifier<double>? fat = ValueNotifier(0.0);
   ValueNotifier<double>? procnt = ValueNotifier(0.0);
@@ -26,6 +30,17 @@ class HealthCubit extends Cubit<HealthState> {
   ValueNotifier<double>? ca = ValueNotifier(0.0);
   ValueNotifier<double>? zn = ValueNotifier(0.0);
   ValueNotifier<double>? chocdf = ValueNotifier(0.0);
+
+  double calcCalories() {
+    switch (genderSelected) {
+      case true:
+        return 88.36 + (13.4 * weight + (4.8 * height) - (5.7 * age));
+      case false:
+        return 447.6 + (9.2 * weight + (3.1 * height) - (4.3 * age));
+      default:
+        return 0;
+    }
+  }
 
   updateValue() {
     calories!.value = healthModel!.calories;
