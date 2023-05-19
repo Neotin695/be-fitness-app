@@ -24,5 +24,6 @@ class AuthSucess extends AuthState {
 }
 
 class AuthenticateState extends AuthState{}
+class AuthPassowrdReset extends AuthState{}
 
 class UnauthenticateState extends AuthState{}

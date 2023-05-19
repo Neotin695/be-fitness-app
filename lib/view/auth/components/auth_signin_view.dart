@@ -21,9 +21,16 @@ class AuthSignInView extends StatefulWidget {
 }
 
 class _AuthSignInViewState extends State<AuthSignInView> {
+  late AuthCubit cubit;
+
+  @override
+  void initState() {
+    cubit = AuthCubit.get(context);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    AuthCubit cubit = AuthCubit.get(context);
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is AuthSucess) {
@@ -33,6 +40,16 @@ class _AuthSignInViewState extends State<AuthSignInView> {
           showErrorMessage(context, state);
         } else if (state is AuthLoading) {
           CoolAlert.show(context: context, type: CoolAlertType.loading);
+        } else if (state is AuthPassowrdReset) {
+          Navigator.pop(context);
+          CoolAlert.show(
+              context: context,
+              type: CoolAlertType.success,
+              text:
+                  'we sent reset link please check your email to reset password',
+              onConfirmBtnTap: () {
+                Navigator.pop(context);
+              });
         }
       },
       child: SafeArea(
@@ -109,7 +126,9 @@ class _AuthSignInViewState extends State<AuthSignInView> {
                     Padding(
                       padding: EdgeInsets.symmetric(horizontal: 3.w),
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            showBSheet(context);
+                          },
                           child: Text(
                             'Forgot Password',
                             style: TextStyle(fontSize: 15.sp),
@@ -150,6 +169,64 @@ class _AuthSignInViewState extends State<AuthSignInView> {
         ),
       ),
     );
+  }
+
+  Future<dynamic> showBSheet(BuildContext context) {
+    cubit.email.clear();
+    cubit.password.clear();
+    return showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Column(
+            children: [
+              Expanded(
+                child: Form(
+                  key: cubit.formKeyForgotPassword,
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 7.w, vertical: 5.h),
+                    child: TextFormField(
+                      controller: cubit.emailF,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textInputAction: TextInputAction.next,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'please enter your email';
+                        }
+                        if (!RegExp(
+                                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                            .hasMatch(value)) {
+                          return 'invalid email';
+                        }
+                        return null;
+                      },
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelStyle:
+                            TextStyle(fontSize: 16.sp, color: Colors.white),
+                        labelText: 'Email',
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              BeButton(
+                onPressed: () async {
+                  if (cubit.formKeyForgotPassword.currentState!.validate()) {
+                    await cubit.forgotPassword();
+                  }
+                },
+                radius: 30,
+                text: 'Send Reset Link',
+                icon: SvgPicture.asset(MediaConst.arrow),
+                width: 70.w,
+                hegiht: 7.h,
+                color: Theme.of(context).colorScheme.onPrimaryContainer,
+              ),
+              SizedBox(height: 4.h),
+            ],
+          );
+        });
   }
 
   Widget customImageBackground(BuildContext context) {

@@ -20,14 +20,21 @@ class AuthCubit extends Cubit<AuthState> {
   final TextEditingController userName = TextEditingController();
   final TextEditingController email = TextEditingController();
   final TextEditingController password = TextEditingController();
+  final TextEditingController emailF = TextEditingController();
+  final TextEditingController passwordF = TextEditingController();
+  final TextEditingController code = TextEditingController();
   final GlobalKey<FormState> formKeySignIn = GlobalKey();
   final GlobalKey<FormState> formKeySignUp = GlobalKey();
+  final GlobalKey<FormState> formKeyForgotPassword = GlobalKey();
+
+  final PageController controller = PageController();
 
   final store = FirebaseFirestore.instance;
   final storage = FirebaseStorage.instance;
   final auth = FirebaseAuth.instance;
 
   bool visibility = true;
+  int index = 0;
 
   Future<void> signInWithEmail() async {
     bool isConnected = await InternetService().isConnected();
@@ -47,6 +54,12 @@ class AuthCubit extends Cubit<AuthState> {
     } on FirebaseAuthException catch (e) {
       emit(AuthFailure(message: e.code));
     }
+  }
+
+  Future<void> forgotPassword() async {
+    emit(AuthLoading());
+    await auth.sendPasswordResetEmail(email: emailF.text.trim());
+    emit(AuthPassowrdReset());
   }
 
   Future<void> signUpWithEmail() async {
