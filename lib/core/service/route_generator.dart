@@ -1,27 +1,27 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
-import 'package:be_fitness_app/view/admin/view/excercise_admin_page.dart';
-import 'package:be_fitness_app/view/admin/view/review_page.dart';
-import 'package:be_fitness_app/view/auth/screens/auth_signup_page.dart';
-import 'package:be_fitness_app/view/coach/screens/display_reviews_page.dart';
-import 'package:be_fitness_app/view/health/view/calc_calories_page.dart';
-import 'package:be_fitness_app/view/onboarding/screens/on_boarding_page.dart';
-import 'package:be_fitness_app/view/auth/screens/auth_sign_page.dart';
-import 'package:be_fitness_app/view/chat/screens/chat_room_page.dart';
-import 'package:be_fitness_app/view/coach/screens/details_coach_page.dart';
-import 'package:be_fitness_app/view/getstarted/screens/create_profile_page.dart';
-import 'package:be_fitness_app/view/getstarted/screens/getstarted_page.dart';
-import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
-import 'package:be_fitness_app/view/profile/screens/profile_page.dart';
-import 'package:be_fitness_app/view/coach/screens/create_coach_page.dart';
-import 'package:be_fitness_app/view/workout/screens/play_excercise_page.dart';
+import 'package:be_fitness_app/view/admin/pages/excercise_admin_page.dart';
+import 'package:be_fitness_app/view/admin/pages/review_page.dart';
+import 'package:be_fitness_app/view/auth/pages/auth_signup_page.dart';
+import 'package:be_fitness_app/view/coach/pages/display_reviews_page.dart';
+import 'package:be_fitness_app/view/health/pages/calc_calories_page.dart';
+import 'package:be_fitness_app/view/onboarding/pages/on_boarding_page.dart';
+import 'package:be_fitness_app/view/auth/pages/auth_sign_page.dart';
+import 'package:be_fitness_app/view/chat/pages/chat_room_page.dart';
+import 'package:be_fitness_app/view/coach/pages/details_coach_page.dart';
+import 'package:be_fitness_app/view/getstarted/pages/create_profile_page.dart';
+import 'package:be_fitness_app/view/getstarted/pages/getstarted_page.dart';
+import 'package:be_fitness_app/view/home/pages/home_layout_page.dart';
+import 'package:be_fitness_app/view/profile/page/profile_page.dart';
+import 'package:be_fitness_app/view/coach/pages/create_coach_page.dart';
+import 'package:be_fitness_app/view/workout/pages/play_excercise_page.dart';
 import 'package:flutter/material.dart';
 
-import '../../view/admin/view/main_admin_page.dart';
-import '../../view/coach/screens/add_review_page.dart';
-import '../../view/musicplayer/screens/music_player_page.dart';
-import '../../view/profile/screens/update_profile_page.dart';
-import '../../view/coach/screens/not_accepted_screen.dart';
-import '../../view/workout/screens/excercises_page.dart';
+import '../../view/admin/pages/main_admin_page.dart';
+import '../../view/coach/pages/add_review_page.dart';
+import '../../view/musicplayer/pages/music_player_page.dart';
+import '../../view/profile/page/update_profile_page.dart';
+import '../../view/coach/pages/not_accepted_screen.dart';
+import '../../view/workout/pages/excercises_page.dart';
 
 class RouteGenerator {
   Route<dynamic> generateRoute(RouteSettings routeSettings) {

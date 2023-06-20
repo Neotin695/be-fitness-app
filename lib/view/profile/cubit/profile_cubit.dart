@@ -9,15 +9,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../components/profile_coach_view.dart';
-import '../components/profile_trainee_view.dart';
+import '../views/profile_coach_view.dart';
+import '../views/profile_trainee_view.dart';
 
 part 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> with PickMedia {
   static ProfileCubit get(context) => BlocProvider.of(context);
   ProfileCubit() : super(ProfileInitial());
-  final TextEditingController userName = TextEditingController();
+  TextEditingController userName = TextEditingController();
   final TextEditingController age = TextEditingController();
   final TextEditingController height = TextEditingController();
   final TextEditingController weight = TextEditingController();
@@ -48,6 +48,7 @@ class ProfileCubit extends Cubit<ProfileState> with PickMedia {
   }
 
   Future<String> uploadProfilePhoto() async {
+    if (imagePath.isEmpty) return '';
     final task = await uploadSingleFile(imagePath, _storage.ref(auth.uid));
     if (task.state == TaskState.running) {
       emit(UploadingDataState());
@@ -61,5 +62,24 @@ class ProfileCubit extends Cubit<ProfileState> with PickMedia {
     return await task.ref.getDownloadURL();
   }
 
-  Future<void> updateProfile() async {}
+  Future<void> updateProfile() async {
+    if (imagePath.isEmpty) return;
+    emit(UploadingDataState());
+    final imageUrl = await uploadProfilePhoto();
+
+    await store.collection('users').doc(auth.uid).update({
+      'profilePhoto': imageUrl,
+      'userName': userName.text.trim()
+    }).then((value) => emit(UploadSuccess()));
+  }
+
+  Future<void> updateProfileWithoutImage() async {
+    emit(UploadingDataState());
+
+    await store
+        .collection('users')
+        .doc(auth.uid)
+        .update({'userName': userName.text.trim()}).then(
+            (value) => emit(UploadSuccess()));
+  }
 }

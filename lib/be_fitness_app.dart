@@ -1,7 +1,7 @@
 import 'package:be_fitness_app/core/service/decisions_tree.dart';
 import 'package:be_fitness_app/core/service/route_generator.dart';
 import 'package:be_fitness_app/main.dart';
-import 'package:be_fitness_app/view/onboarding/screens/on_boarding_page.dart';
+import 'package:be_fitness_app/view/onboarding/pages/on_boarding_page.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_framework/breakpoint.dart';
 import 'package:responsive_framework/responsive_breakpoints.dart';

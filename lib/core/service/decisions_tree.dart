@@ -1,14 +1,14 @@
-import 'package:be_fitness_app/view/admin/view/main_admin_page.dart';
-import 'package:be_fitness_app/view/auth/screens/auth_sign_page.dart';
-import 'package:be_fitness_app/view/getstarted/screens/getstarted_page.dart';
-import 'package:be_fitness_app/view/home/screens/home_layout_page.dart';
+import 'package:be_fitness_app/view/admin/pages/main_admin_page.dart';
+import 'package:be_fitness_app/view/auth/pages/auth_sign_page.dart';
+import 'package:be_fitness_app/view/getstarted/pages/getstarted_page.dart';
+import 'package:be_fitness_app/view/home/pages/home_layout_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sizer/sizer.dart';
 
-import '../../view/coach/screens/not_accepted_screen.dart';
+import '../../view/coach/pages/not_accepted_screen.dart';
 import '../appconstance/logic_constance.dart';
 
 class DecisionsTree extends StatelessWidget {

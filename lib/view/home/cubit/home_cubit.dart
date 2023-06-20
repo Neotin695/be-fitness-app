@@ -1,13 +1,13 @@
-import 'package:be_fitness_app/view/health/view/health_page.dart';
-import 'package:be_fitness_app/view/maps/screens/map_page.dart';
-import 'package:be_fitness_app/view/profile/screens/profile_page.dart';
-import 'package:be_fitness_app/view/workout/screens/main_workout_page.dart';
+import 'package:be_fitness_app/view/health/pages/health_page.dart';
+import 'package:be_fitness_app/view/maps/pages/map_page.dart';
+import 'package:be_fitness_app/view/profile/page/profile_page.dart';
+import 'package:be_fitness_app/view/workout/pages/main_workout_page.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../chat/screens/message_page.dart';
-import '../../coach/screens/coachs_page.dart';
+import '../../chat/pages/message_page.dart';
+import '../../coach/pages/coachs_page.dart';
 
 part 'home_state.dart';
 
