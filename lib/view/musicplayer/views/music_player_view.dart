@@ -42,6 +42,13 @@ class _MusicPlayerViewState extends State<MusicPlayerView> {
   }
 
   @override
+  void dispose() {
+    cubit.player.stop();
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       alignment: Alignment.center,
